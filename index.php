@@ -113,7 +113,7 @@ include 'php/jodel-web.php';
 			<a href="index.php">
 				<h1>
 					Jodel WebClient
-					<i class="fa fa-refresh fa-1x"></i>	
+					<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) echo '<i class="fa fa-refresh fa-1x"></i>';?>
 				</h1>					
 			</a>
 			<div class="clear"></div>
@@ -325,10 +325,16 @@ include 'php/jodel-web.php';
 			</p>
 		</footer>
 		
-		<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
+		
 		<!-- jQuery library -->
 		<script src="js/libs/jquery/2.0.2/jquery.min.js"></script>
 		<script>
+			$('a').on('click', function(){
+			    $('a').removeClass('selected');
+			    $(this).addClass('selected');
+			});
+
+			<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
 			$(document).ready(function() {
 				var win = $(window);
 				var lastPostId = "<?php echo $lastPostId; ?>";
@@ -368,8 +374,9 @@ include 'php/jodel-web.php';
 					}
 				});
 			});	
-		</script>
 		<?php } ?>
+		</script>
+
 	</body>
 </html>
 
