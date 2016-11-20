@@ -1,4 +1,5 @@
-# jodel-web #
+# jodel-web [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/mmainstreet/jodel-web/issues)
+
 
 ## Setting up jodel-web ##
 1. Create MySql Database
