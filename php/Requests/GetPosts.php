@@ -3,25 +3,37 @@
 
 class GetPosts extends AbstractRequest
 {
-		public $lastPostId;
+	public $lastPostId;
+
+    public $url;
+        
+    function setUrl ($url)
+    {
+            $this->url = $url;
+    }
+    
+    function getUrl ()
+    {
+        return $this->url;
+    }
 		
     function setLastPostId ($lastPostId)
     {
 			$this->lastPostId = $lastPostId;
-		}
-		
-		function getlastPostId ()
-		{
-			return $this->lastPostId;
-		}
+	}
+	
+	function getlastPostId ()
+	{
+		return $this->lastPostId;
+	}
     
     function getApiEndPoint()
     {
-        $apiEndPoint = '/v2/posts';
+        $apiEndPoint = $this->getUrl();
         //echo $GLOBALS['lastPostId'];
         if ($this->getLastPostId() != "") {
-					$apiEndPoint = '/v2/posts/location/?after=' . $this->getLastPostId();
-				}
+			$apiEndPoint = $this->getUrl() . '/location/?after=' . $this->getLastPostId();
+		}
         return $apiEndPoint;
     }
     function getPayload()

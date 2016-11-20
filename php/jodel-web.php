@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(-1);
 include 'php/DatabaseConnect.php';
 include 'php/Requests/AbstractRequest.php';
 include 'php/Requests/CreateUser.php';
@@ -116,11 +116,12 @@ function registerAccount(Location $location) {
 	return $success;
 }
 
-function getPosts($lastPostId, $accessToken)
+function getPosts($lastPostId, $accessToken, $url)
 {	
 	$accountCreator = new GetPosts();
 	$accountCreator->setLastPostId($lastPostId);
 	$accountCreator->setAccessToken($accessToken);
+	$accountCreator->setUrl($url);
 	$data = $accountCreator->execute();
 	
 	return $data;

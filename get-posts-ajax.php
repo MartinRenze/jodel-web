@@ -3,7 +3,7 @@ error_reporting(-1);
 
 include 'php/DatabaseConnect.php';
 include 'php/Requests/AbstractRequest.php';
-include 'php/Requests/CreateUserRequest.php';
+include 'php/Requests/CreateUser.php';
 include 'php/AccountData.php';
 include 'php/Location.php';
 include 'php/Requests/GetPosts.php';
@@ -17,14 +17,14 @@ include 'php/Requests/SendJodel.php';
 require_once 'php/Requests/libary/Requests.php';
 Requests::register_autoloader();
 
-function getPosts($lastPostId) {
+function getPosts($lastPostId, $url) {
 	$db = new DatabaseConnect();
 	if ($db->connect_errno) {
 		echo 'Sorry, die Verbindung zu unserem superfetten endgeilen 
-					Server ist hops gegangen. Wegen '.$db -> connect_error;
+					Server ist hops gegangen. Wegen '. $db -> connect_error;
 	}
 	
-	$result = $db->query("SELECT * FROM accounts WHERE id='51'");
+	$result = $db->query("SELECT * FROM accounts WHERE id='1'");
 	
 	$access_token;
 	
@@ -39,6 +39,7 @@ function getPosts($lastPostId) {
 	
 	$accountCreator = new GetPosts();
 	$accountCreator->setLastPostID($lastPostId);
+	$accountCreator->setUrl($url);
 	$accountCreator->setAccessToken($access_token);
 	$data = $accountCreator->execute();
 
@@ -46,11 +47,30 @@ function getPosts($lastPostId) {
 }
 	$posts;
 
+	if(isset($_GET['commentView']))
+	{
+		$commentView = true;
+		$url = "/posts/location/discussed/";
+	}
+	else
+	{
+		if(isset($_GET['upVoteView']))
+		{
+			$upVoteView = true;
+			$url = "/posts/location/popular/";
+		}
+		else
+		{
+			$timeView = true;
+			$url = "/v2/posts";
+		}
+	}
+
 	if(isset($_GET['lastPostId'])) {
 	
 		$lastPostId = $_GET['lastPostId'];
 		
-		$posts = getPosts($lastPostId)['posts'];
+		$posts = getPosts($lastPostId, $url)['posts'];
 		$loops = 29;
 		$showCommentIcon = TRUE;
 		?>

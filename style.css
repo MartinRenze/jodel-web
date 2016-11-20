@@ -82,7 +82,26 @@ a:link, a:visited {
 }
 
 a:hover, a:active {
-	color: #000;
+	color: #666;
+}
+#sortJodelBy {
+	position: fixed;
+	bottom: 0px;
+	width: 1200px;
+	background-color: #fff;
+}
+#sortJodelBy a {
+	border-right: solid 1px #666;
+	width: 396px;
+	display: inline-block;
+	text-align: center;
+}
+#sortJodelBy a:last-child {
+		border-right: none;
+}
+
+#sortJodelBy .active {
+	color: #FF9908;
 }
 
 .jodel a {
@@ -123,7 +142,7 @@ a:hover, a:active {
 }
 
 .mainContent {
-	line-height: 25px;
+	line-height: 30px;
 	border-radius: 5px;
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;

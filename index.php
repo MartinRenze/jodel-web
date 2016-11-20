@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(-1);
 include 'php/jodel-web.php';
 
 	$location = new Location();
@@ -126,7 +126,7 @@ include 'php/jodel-web.php';
 					<content id="posts">
 						<?php
 							$posts;
-							
+
 							//Get Post Details
 							if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) {
 								//Header Nav in Comment View
@@ -157,7 +157,26 @@ include 'php/jodel-web.php';
 							}
 							//Get Posts
 							else {
-								$posts = getPosts($lastPostId, $accessToken)['posts'];
+								if(isset($_GET['commentView']))
+								{
+									$commentView = true;
+									$url = "/v2/posts/location/discussed/";
+								}
+								else
+								{
+									if(isset($_GET['upVoteView']))
+									{
+										$upVoteView = true;
+										$url = "/v2/posts/location/popular/";
+									}
+									else
+									{
+										$timeView = true;
+										$url = "/v2/posts";
+									}
+								}
+
+								$posts = getPosts($lastPostId, $accessToken, $url)['posts'];
 								$loops = 29;
 								$showCommentIcon = TRUE;
 							}
@@ -278,6 +297,11 @@ include 'php/jodel-web.php';
 					<img src="images/loading.gif" alt="Loading…" />
 				</p>
 				<?php } ?>
+				<nav id="sortJodelBy">
+					<a href="index.php" <?php if(isset($timeView)) echo 'class="active"';?>><i class="fa fa-clock-o fa-3x"></i></a>
+					<a href="index.php?commentView=true" <?php if(isset($commentView)) echo 'class="active"';?>><i class="fa fa-commenting-o fa-3x"></i></a>
+					<a href="index.php?upVoteView=true" <?php if(isset($upVoteView)) echo 'class="active"';?>><i class="fa fa-angle-up fa-3x"></i></a>
+				</nav>
 			</div>
 			
 			<aside class="topSidebar">
