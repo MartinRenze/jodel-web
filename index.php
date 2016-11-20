@@ -111,7 +111,10 @@ include 'php/jodel-web.php';
 		
 		<header class="mainHeader">
 			<a href="index.php">
-				<h1>Jodel WebClient</h1>
+				<h1>
+					Jodel WebClient
+					<i class="fa fa-refresh fa-1x"></i>	
+				</h1>					
 			</a>
 			<div class="clear"></div>
 		</header>
@@ -128,8 +131,12 @@ include 'php/jodel-web.php';
 							if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) {
 								//Header Nav in Comment View
 								?>
-								<a href="index.php?postID=<?php echo $posts[$i]["post_id"];?>">
-									<i class="fa fa-up-left fa-3x"></i>Test
+								<a id="comment-back" href="index.php#postId-<?php echo $_GET['postID'];?>">
+									<i class="fa fa-angle-left fa-3x"></i>
+								</a>
+
+								<a id="comment-refresh" href="index.php?getPostDetails=<?php echo $_GET['getPostDetails'];?>&postID=<?php echo $_GET['postID'];?>">
+									<i class="fa fa-refresh fa-2x"></i>
 								</a>
 								<?php
 
@@ -283,19 +290,12 @@ include 'php/jodel-web.php';
 					</form>
 					
 				</article>
-				
 
-			</aside>
-				
-
-			<aside class="topSidebar">
 				<article>
 					<h2>Karma</h2>
 					<?php echo getKarma($accessToken); ?>
 				</article>
-			</aside>
-			
-			<aside class="topSidebar">
+
 				<article>
 					<?php if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) { ?>
 					<h2>Comment on Jodel</h2>

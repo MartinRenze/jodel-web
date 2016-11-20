@@ -13,8 +13,12 @@ body {
 h1 {
 	float: right;
 	margin-right: 33%;
-	margin-top: 50px;
+	margin-top: 1em;
 	color: #666;
+}
+
+h1 i{
+	padding: 0 0.5em;
 }
 
 h2 {
@@ -114,18 +118,22 @@ a:hover, a:active {
 }
 
 .topContent {
-		padding: 0;
+	padding: 0;
 }
 
-.topSidebar, .middleSidebar, .bottomSidebar {
+.topSidebar, .middleSidebar, .bottomSidebar {	
+	width: 400px;
+	position: fixed;
+	margin-left: 800px;
+}
+
+.topSidebar article {
 	background-color: #fff;
-	float: right;	
-	width: 330px;
+	margin: 0 0 1em 1em;
 	border-radius: 5px;
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;
-	margin: 0 0 2% 0;
-	padding: 2%;
+	padding:  0.1em 2em 1em 2em;
 }
 
 
@@ -157,7 +165,13 @@ a:hover, a:active {
 }
 
 /* Changes for Jodel */
-
+#comment-back {
+	padding: 0.5em 1em;
+}
+#comment-refresh {
+	float: right;
+	padding: 0.5em 1em;
+}
 .jodel {
 	padding: 1em;
 	color: #fff;
@@ -204,7 +218,7 @@ a:hover, a:active {
 	float: right;
 }
 #city {
-	width: 100%;
+	width: 95%;
 	margin-bottom: 5px;
 }
 #message {
