@@ -1,0 +1,290 @@
+body {
+	background-image: url('img/bg.png');
+	color: #000305;
+	font-size: 87.5%;
+	font-family: Arial, 'Lucida Sans Unicode';
+	line-height: 1.5;
+	text-align: left;
+	margin: 0 auto;
+	width: 1200px;
+	clear: both;
+}
+
+h1 {
+	float: right;
+	margin-right: 33%;
+	margin-top: 50px;
+	color: #666;
+}
+
+h2 {
+	margin-bottom: 0.5em;
+}
+
+
+#logo {
+	float: left;
+	width: 500px;
+}
+
+header {
+	font-size: 90%;
+	font-weight: bold;
+}
+
+.clear {
+	clear: both;
+}
+
+a {
+	text-decoration: none;
+	color: #666;
+}
+
+a:link, a:visited {
+	color: #666;
+}
+
+a:hover, a:active {
+	color: #000;
+}
+
+.jodel a {
+	text-decoration: none;
+	color: #fff;
+}
+
+.jodel a:visited {
+	color: #404040;
+}
+
+.jodel a:hover, a:active {
+	color:  #404040;
+}
+
+.jodel .comments a:visited {
+	color: #fff;
+}
+
+.jodel .comments a:hover, a:active {
+	color:  #fff;
+}
+
+.bildUnterschrift {
+	font-style: italic;
+	float: right;
+}
+
+.middleSidebar input, .middleSidebar textarea, .middleSidebar label {
+	width: 96%;
+	display: inline-block;
+}
+
+.mainHeader img {
+	width: 70%;
+	height: auto;
+	margin: 2% 0;
+}
+
+.mainContent {
+	line-height: 25px;
+	border-radius: 5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	overflow: hidden;	
+}
+.content {
+	width: 800px;
+	float: left;
+	border-radius: 5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	background-color: #fff;
+	margin-bottom: 15px;
+}
+
+.middleContent {
+	width: 800px;
+	float: left;
+	border-radius: 5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	background-color: #fff;
+	margin-bottom: 15px;
+}
+
+.topContent {
+		padding: 0;
+}
+
+.topSidebar, .middleSidebar, .bottomSidebar {
+	background-color: #fff;
+	float: right;	
+	width: 330px;
+	border-radius: 5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	margin: 0 0 2% 0;
+	padding: 2%;
+}
+
+
+
+.mainFooter {
+	width: 100%;
+	background-color: #ccc;
+	border-radius: 5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	float: left;
+}
+
+.mainFooter p {
+	margin: 15px;
+	padding: 10px;
+}
+
+.mainFooter p span{
+	color: #666;
+}
+	
+.float-right {
+	float: right;
+}
+
+.float-right-footer {
+	float: right;
+}
+
+/* Changes for Jodel */
+
+.jodel {
+	padding: 1em;
+	color: #fff;
+	border-bottom: solid 5px #fff;
+}
+
+.jodel content {
+	float: left;
+	width: 90%;
+	margin-bottom: 0.5em;
+}
+
+.jodel aside {
+	float: right;
+	width: 7%;
+	font-size: 200%;
+	text-align: center;
+}
+
+.jodel footer table {
+	width: 100%;
+	table-layout: fixed;
+}
+
+.jodel footer table .comments{
+	text-align: center;
+}
+
+.jodel content {
+	font-size: 200%;
+}
+
+.jodel .time {
+	font-size: 150%;
+	float: left;
+}
+
+.jodel .comments {
+	font-size: 150%;
+	margin: 0 auto;
+}
+.jodel .distance {
+	font-size: 150%;
+	float: right;
+}
+#city {
+	width: 100%;
+	margin-bottom: 5px;
+}
+#message {
+	width: 100%;
+	height: 8em;
+}
+
+@media only screen and (min-width: 150px) and (max-width: 980px)
+{
+	body  {
+		width: 90%;
+		font-size: 90%;
+	}
+	
+	.mainHeader img {
+		width: 100%;
+	}
+	
+	.mainFooter p {
+		margin: 3px;
+		padding: 3px;
+	}
+	
+	h2 {
+		float: none;
+		margin-right: 33%;
+		margin-top: 50px;
+	}
+
+	#logo {
+		float: none;
+	}
+	
+	.content {
+	width: 100%;
+	float: none;
+	border-radius: 5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius: 5px;
+	background-color: #fff;
+	margin-bottom: 15px;
+	}
+
+	.middleContent {
+		width: 100%;
+		float: none;
+		border-radius: 5px;
+		-moz-border-radius:5px;
+		-webkit-border-radius: 5px;
+		background-color: #fff;
+		margin-bottom: 15px;
+	}
+
+	.topContent {
+			padding: 2%;
+	}
+
+	.topSidebar, .middleSidebar, .bottomSidebar {
+		background-color: #fff;
+		float: none;
+		width: 100%;
+		border-radius: 5px;
+		-moz-border-radius:5px;
+		-webkit-border-radius: 5px;
+		margin: 0 0 2% 0;
+		padding: 2%;
+	}
+
+	.mainFooter {
+		width: 100%;
+		background-color: #ccc;
+		border-radius: 5px;
+		-moz-border-radius:5px;
+		-webkit-border-radius: 5px;
+		float: none;
+	}
+
+	.float-right {
+		float: none;
+	}
+	
+
+}

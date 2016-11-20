@@ -1,0 +1,5 @@
+RewriteEngine on
+
+IndexIgnore *
+
+Deny from all
