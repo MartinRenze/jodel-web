@@ -1,4 +1,4 @@
-# jodel-web [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/mmainstreet/jodel-web/issues)
+# jodel-web [![Build Status](https://scrutinizer-ci.com/g/mmainstreet/jodel-web/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mmainstreet/jodel-web/build-status/master) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/mmainstreet/jodel-web/issues)
 
 
 ## Setting up jodel-web ##
