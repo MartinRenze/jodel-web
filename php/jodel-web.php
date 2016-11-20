@@ -20,7 +20,7 @@ $lastPostId = "";
 
 function isTokenFresh(Location $location) {
 	$db = new DatabaseConnect();  
-	$result = $db->query("SELECT * FROM accounts WHERE id='51'");
+	$result = $db->query("SELECT * FROM accounts WHERE id='1'");
 	
 	$access_token;
 	$expiration_date;

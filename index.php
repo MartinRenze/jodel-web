@@ -1,5 +1,4 @@
 <?php
-error_reporting(-1);
 
 include 'php/jodel-web.php';
 
@@ -10,7 +9,7 @@ include 'php/jodel-web.php';
 
 	isTokenFresh($location);
 
-	$result = $db->query("SELECT * FROM accounts WHERE id='51'");
+	$result = $db->query("SELECT * FROM accounts WHERE id='1'");
 	
 	$accessToken;
 	$newPostionStatus;
@@ -127,6 +126,14 @@ include 'php/jodel-web.php';
 							
 							//Get Post Details
 							if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) {
+								//Header Nav in Comment View
+								?>
+								<a href="index.php?postID=<?php echo $posts[$i]["post_id"];?>">
+									<i class="fa fa-up-left fa-3x"></i>Test
+								</a>
+								<?php
+
+
 								$accountCreator = new GetPostDetails();
 								$accountCreator->setAccessToken($accessToken);
 								$data = $accountCreator->execute();
