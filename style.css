@@ -87,12 +87,12 @@ a:hover, a:active {
 #sortJodelBy {
 	position: fixed;
 	bottom: 0px;
-	width: 1200px;
+	width: 800px;
 	background-color: #fff;
 }
 #sortJodelBy a {
 	border-right: solid 1px #666;
-	width: 396px;
+	width: 32%;
 	display: inline-block;
 	text-align: center;
 }
@@ -101,7 +101,11 @@ a:hover, a:active {
 }
 
 #sortJodelBy .active {
-	color: #FF9908;
+	color: #5682a3;
+}
+
+#sortJodelBy a:hover {
+	color: #5682a3;
 }
 
 .jodel a {
