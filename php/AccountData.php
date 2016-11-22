@@ -25,7 +25,7 @@ class AccountData
     /**
      * @return string
      */
-    public function getAccessToken(): string
+    public function getAccessToken()
     {
         return $this->accessToken;
     }
@@ -39,7 +39,7 @@ class AccountData
     /**
      * @return string
      */
-    public function getExpirationDate(): string
+    public function getExpirationDate()
     {
         return $this->expirationDate;
     }
@@ -53,7 +53,7 @@ class AccountData
     /**
      * @return string
      */
-    public function getRefreshToken(): string
+    public function getRefreshToken()
     {
         return $this->refreshToken;
     }
@@ -67,7 +67,7 @@ class AccountData
     /**
      * @return string
      */
-    public function getDistinctId(): string
+    public function getDistinctId()
     {
         return $this->distinctId;
     }
@@ -81,7 +81,7 @@ class AccountData
     /**
      * @return string
      */
-    public function getDeviceUid(): string
+    public function getDeviceUid()
     {
         return $this->deviceUid;
     }
