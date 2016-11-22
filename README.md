@@ -19,7 +19,7 @@ on index.php
 
 ## Requirements ##
 + Web server (tested on Apache/2.4.18 (Ubuntu))
-+ PHP (tested on 7.0.8-3)
++ PHP 7.0 (tested on 7.0.8-3)
  * for random_int()
 + MySQL (tested on 5.7.16-0)
 + jQuery (tested on 2.0.2 (already included)) 
