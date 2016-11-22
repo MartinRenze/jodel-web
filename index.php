@@ -28,7 +28,7 @@ include 'php/jodel-web.php';
 	}
 	
 	
-	createAccount();
+	//createAccount();
 	
 	//Set Location
 	if(isset($_GET['city'])) {
@@ -99,12 +99,10 @@ include 'php/jodel-web.php';
 		<meta name="keywords" content=""/>
 		
 		<link rel="stylesheet" href="css/font-awesome.min.css">
-		<link href="css/least.min.css" rel="stylesheet" />
-		<link rel="stylesheet" href="style.css" type="text/css" />	
+		<link rel="stylesheet" href="style.css" type="text/css">
 		
 		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
-		<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
-		
+		<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">	
 	</head>
 	
 	<body>
@@ -294,7 +292,7 @@ include 'php/jodel-web.php';
 				</article>
 				<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
 				<p id="loading">
-					<img src="images/loading.gif" alt="Loading…" />
+					Loading…
 				</p>
 				<?php } ?>
 				<nav id="sortJodelBy">
