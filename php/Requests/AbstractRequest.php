@@ -143,7 +143,7 @@ abstract class AbstractRequest
     /**
      * @param string $accessToken
      */
-    public function setAccessToken(string $accessToken)
+    public function setAccessToken($accessToken)
     {
         $this->accessToken = $accessToken;
     }

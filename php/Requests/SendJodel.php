@@ -15,7 +15,7 @@ class SendJodel extends AbstractRequest {
     /**
      * @param Location $location
      */
-    public function setLocation(Location $location)
+    public function setLocation($location)
     {
         $this->location = $location;
     }

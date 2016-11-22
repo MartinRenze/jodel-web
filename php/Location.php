@@ -13,7 +13,7 @@ class Location{
         return $this->cityName;
     }
 
-    public function setCityName(string $cityName)
+    public function setCityName($cityName)
     {
         $this->cityName = $cityName;
     }
@@ -23,7 +23,7 @@ class Location{
         return $this->lat;
     }
 
-    public function setLat(string $lat)
+    public function setLat($lat)
     {
         $this->lat = $lat;
     }
@@ -33,7 +33,7 @@ class Location{
         return $this->lng;
     }
 
-    public function setLng(string $lng)
+    public function setLng($lng)
     {
         $this->lng = $lng;
     }
