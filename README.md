@@ -24,6 +24,8 @@ on index.php
 + MySQL (tested on 5.7.16-0)
 + jQuery (tested on 2.0.2 (already included)) 
 
+### Optional ###
++ HTTPS (deactivate by deleting .htaccess)
 
 ## Current Keys ##
 + SECRET = VwJHzYUbPjGiXWauoVNaHoCWsaacTmnkGwNtHhjy
