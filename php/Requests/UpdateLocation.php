@@ -9,7 +9,7 @@ class UpdateLocation extends AbstractRequest {
     /**
      * @return Location
      */
-    public function getLocation(): Location
+    public function getLocation()
     {
         return $this->location;
     }
