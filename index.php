@@ -337,15 +337,15 @@ include 'php/jodel-web.php';
 					<?php } ?>
 
 				</article>
+
+				<article>
+					<p>
+						<a href="./impressum.html">Impressum</a> | <a href="./datenschutz.html">Datenschutz</a>
+					</p>
+				</article>
 			</aside>
 			
 		</div>
-		
-		<footer class="mainFooter">
-			<p>
-				<span class="float-right-footer"><a href="./impressum.html">Impressum</a></span>
-			</p>
-		</footer>
 		
 		
 		<!-- jQuery library -->
