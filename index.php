@@ -28,7 +28,7 @@ include 'php/jodel-web.php';
 	}
 	
 	
-	//createAccount();
+	createAccount();
 	
 	//Set Location
 	if(isset($_GET['city'])) {
