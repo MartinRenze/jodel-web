@@ -11,7 +11,7 @@ abstract class AbstractRequest
     /**
      * @var string
      */
-    public $accessToken = null;
+    private $accessToken = null;
     private $payLoad;
     public function execute()
     {
@@ -33,9 +33,9 @@ abstract class AbstractRequest
         }
         //Comment out to debug the Request:
         /*
-        var_dump($url);
-        var_dump($header);
-        var_dump($this->payLoad);
+        *var_dump($url);
+        *var_dump($header);
+        *var_dump($this->payLoad);
         */
         
 
@@ -87,9 +87,8 @@ abstract class AbstractRequest
      * Gets Sign headers
      * @return array headers
      */
-    public function getSignHeaders()
+    private function getSignHeaders()
     {
-			$payload_accessToken;
 			if($this->getAccessToken() == null) {
 				$payload_accessToken = "";
 			}
@@ -128,7 +127,7 @@ abstract class AbstractRequest
         $headers['X-Api-Version'] = '0.2';
         return $headers;
     }
-    public function getFullUrl()
+    private function getFullUrl()
     {
         return self::APIURL . $this->getApiEndPoint();
     }
@@ -137,7 +136,7 @@ abstract class AbstractRequest
     /**
      * @return string
      */
-    public function getAccessToken()
+    private function getAccessToken()
     {
         return $this->accessToken;
     }

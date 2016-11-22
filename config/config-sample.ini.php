@@ -7,4 +7,3 @@ username 	= root
 password 	= password
 dbname 		= jodel-web
 ;*/
-

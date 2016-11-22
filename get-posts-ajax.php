@@ -26,15 +26,15 @@ function getPosts($lastPostId, $url) {
 	
 	$result = $db->query("SELECT * FROM accounts WHERE id='1'");
 	
-	$access_token;
-	
 	if ($result->num_rows > 0) {
-			// output data of each row
-			while($row = $result->fetch_assoc()) {
-					$access_token = $row["access_token"];
-			}
-	} else {
-			echo "0 results";
+		// output data of each row
+		while($row = $result->fetch_assoc()) {
+			$access_token = $row["access_token"];
+		}
+	}
+	else
+	{
+		echo "0 results";
 	}
 	
 	$accountCreator = new GetPosts();

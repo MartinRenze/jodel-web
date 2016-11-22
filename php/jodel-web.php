@@ -16,15 +16,11 @@ include 'php/Requests/SendJodel.php';
 require_once 'php/Requests/libary/Requests.php';
 Requests::register_autoloader();
 
-$lastPostId = "";
+$lastPostId = '';
 
 function isTokenFresh(Location $location) {
 	$db = new DatabaseConnect();  
 	$result = $db->query("SELECT * FROM accounts WHERE id='1'");
-	
-	$access_token;
-	$expiration_date;
-	$deviceUid;
 	
 	if ($result->num_rows > 0)
 	{
@@ -38,7 +34,7 @@ function isTokenFresh(Location $location) {
 	}
 	else
 	{
-			echo "0 results";
+			echo '0 results';
 	}
 
 	if($expiration_date <= time()) {
@@ -49,11 +45,7 @@ function isTokenFresh(Location $location) {
 		$data = $accountCreator->execute();
 
 		$access_token = (string)$data[0]['access_token'];
-		$refresh_token = (string)$data[0]['refresh_token'];
-		$token_type = (string)$data[0]['token_type'];
-		$expires_in = $data[0]['expires_in'];
 		$expiration_date = $data[0]['expiration_date'];
-		$distinct_id = (string)$data[0]['distinct_id'];
 		$device_uid = (string)$data[1];
 		
 		$db = new DatabaseConnect();  
@@ -62,10 +54,8 @@ function isTokenFresh(Location $location) {
 									expiration_date='" . $expiration_date . "'
 								WHERE device_uid='" . $device_uid . "'");
 
-		$success = TRUE;
 		if($result === false){
 				echo "Adding account failed: (" . $db->errno . ") " . $db->error;
-				$success = FALSE;
 		}	
 	
 
