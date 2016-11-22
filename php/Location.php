@@ -8,7 +8,7 @@ class Location{
 
     public $lng;
 
-    public function getCityName(): string
+    public function getCityName()
     {
         return $this->cityName;
     }
@@ -18,7 +18,7 @@ class Location{
         $this->cityName = $cityName;
     }
 
-    public function getLat(): string
+    public function getLat()
     {
         return $this->lat;
     }
@@ -28,7 +28,7 @@ class Location{
         $this->lat = $lat;
     }
 
-    public function getLng(): string
+    public function getLng()
     {
         return $this->lng;
     }
