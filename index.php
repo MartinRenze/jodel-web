@@ -93,11 +93,13 @@ include 'php/jodel-web.php';
 		<title>JodelBlue WebClient - </title>
 		
 		<meta charset="utf8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		
 		<meta name="description" content=""/>
 		<meta name="keywords" content=""/>
 		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 		<link rel="stylesheet" href="css/font-awesome.min.css">
 		<link rel="stylesheet" href="style.css" type="text/css">
 		
@@ -107,19 +109,20 @@ include 'php/jodel-web.php';
 	
 	<body>
 		
-		<header class="mainHeader">
-			<a href="index.php">
-				<h1>
-					JodelBlue
-					<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) echo '<i class="fa fa-refresh fa-1x"></i>';?>
-				</h1>					
-			</a>
-			<div class="clear"></div>
-		</header>
+		<div class="mainContent container">
+
+			<header class="mainHeader">
+				<a href="index.php">
+					<h1>
+						JodelBlue
+						<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) echo '<i class="fa fa-refresh fa-1x"></i>';?>
+					</h1>					
+				</a>
+				<div class="clear"></div>
+			</header>
 		
-		<div class="mainContent">
-			<div class="content">
-				<article class="topContent">
+			<div class="content row">
+				<article class="topContent col-sm-8">
 
 					<content id="posts">
 						<?php
@@ -287,69 +290,85 @@ include 'php/jodel-web.php';
 						
 						<?php }
 						} ?>
+
 					</content>
-							
-				</article>
-				<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
-				<p id="loading">
-					Loading…
-				</p>
-				<?php } ?>
-				<nav id="sortJodelBy">
-					<a href="index.php" <?php if(isset($timeView)) echo 'class="active"';?>><i class="fa fa-clock-o fa-3x"></i></a>
-					<a href="index.php?commentView=true" <?php if(isset($commentView)) echo 'class="active"';?>><i class="fa fa-commenting-o fa-3x"></i></a>
-					<a href="index.php?upVoteView=true" <?php if(isset($upVoteView)) echo 'class="active"';?>><i class="fa fa-angle-up fa-3x"></i></a>
-				</nav>
-			</div>
-			
-			<aside class="topSidebar">
-				<article>
-					<h3>Position</h3>
-					<form method="get">
-						<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; else echo $posts[0]["location"]["name"]; ?>" required>
-
-						<input type="submit" value="Set Location" /> 
-					</form>
 					
-				</article>
-
-				<article>
-					<h2>Karma</h2>
-					<?php echo getKarma($accessToken); ?>
-				</article>
-
-				<article>
-					<?php if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) { ?>
-					<h2>Comment on Jodel</h2>
-					<form method="POST">				
-							<input type="hidden" name="ancestor" value="<?php echo $_GET['postID'];?>" />
-							<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
-						<br />
-						<input type="submit" value="SEND" /> 
-					</form>
-						<?php } else { ?>
-					<h2>New Jodel</h2>
-					<form method="POST">
-						<textarea id="message" name="message" placeholder="Send a Jodel to all students within 10km" required></textarea> 
-						<br />
-						<input type="submit" value="SEND" /> 
-					</form>
+					<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
+						<p id="loading">
+							Loading…
+						</p>
 					<?php } ?>
-
 				</article>
-
-				<article>
-					<p>
-						<a href="./impressum.html">Impressum</a> | <a href="./datenschutz.html">Datenschutz</a>
-					</p>
-				</article>
-			</aside>
 			
+				<aside class="topSidebar col-sm-4 sidebar-outer">
+					<article>
+						<h2>Position</h2>
+						<form method="get">
+							<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; else echo $posts[0]["location"]["name"]; ?>" required>
+
+							<input type="submit" value="Set Location" /> 
+						</form>
+						
+					</article>
+
+					<article>
+						<h2>Karma</h2>
+						<?php echo getKarma($accessToken); ?>
+					</article>
+
+					<article>
+						<?php if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) { ?>
+						<h2>Comment on Jodel</h2>
+						<form method="POST">				
+								<input type="hidden" name="ancestor" value="<?php echo $_GET['postID'];?>" />
+								<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
+							<br />
+							<input type="submit" value="SEND" /> 
+						</form>
+							<?php } else { ?>
+						<h2>New Jodel</h2>
+						<form method="POST">
+							<textarea id="message" name="message" placeholder="Send a Jodel to all students within 10km" required></textarea> 
+							<br />
+							<input type="submit" value="SEND" /> 
+						</form>
+						<?php } ?>
+
+					</article>
+						
+					<article>
+						<h2>Login</h2>
+					</article>
+				</aside>
+			</div>
+			<div id="sortJodelBy" class="row">
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-3">
+							<a href="index.php" <?php if(isset($timeView)) echo 'class="active"';?>><i class="fa fa-clock-o fa-3x"></i></a>
+						</div>
+						<div class="col-sm-3">
+							<a href="index.php?commentView=true" <?php if(isset($commentView)) echo 'class="active"';?>><i class="fa fa-commenting-o fa-3x"></i></a>
+						</div>
+						<div class="col-sm-3">
+							<a href="index.php?upVoteView=true" <?php if(isset($upVoteView)) echo 'class="active"';?>><i class="fa fa-angle-up fa-3x"></i></a>
+						</div>
+						<div class="col-sm-3">
+							<nav>
+								<a href="./impressum.html">Impressum</a> | <a href="./datenschutz.html">Datenschutz</a>
+							</nav>
+						</div>
+					</div>
+				</div>	
+			</div>
 		</div>
 		
 		
-		<!-- jQuery library -->
-		<script src="js/libs/jquery/2.0.2/jquery.min.js"></script>
+		<!-- jQuery, Tether and Bootstrap JS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8" crossorigin="anonymous"></script>
+    	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+
 		<script>
 			$('a').on('click', function(){
 			    $('a').removeClass('selected');
