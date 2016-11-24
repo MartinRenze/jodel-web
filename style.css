@@ -1,74 +1,16 @@
+/*
+ * General
+ */
+
 body {
 	background-image: url('img/bg.png');
 	color: #000305;
-	font-size: 87.5%;
+	font-size: 100%;
 	font-family: Arial, 'Lucida Sans Unicode';
 	line-height: 1.5;
 	text-align: left;
 	margin: 0 auto;
 	width: 1200px;
-	clear: both;
-}
-
-h1 {
-	float: right;
-	margin-right: 33%;
-	margin-top: 1em;
-	color: #666;
-}
-
-h1 i{
-	padding: 0 0.5em;
-}
-a.selected h1 i{
-	-webkit-animation: fa-spin 2s infinite linear;
- 	animation: fa-spin 2s infinite linear;
-}
-#comment-refresh:active {
-	color: #666;
-}
-#comment-refresh.selected i {
-	-webkit-animation: fa-spin 2s infinite linear;
- 	animation: fa-spin 2s infinite linear;
-}
-
-@-webkit-keyframes fa-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-    transform: rotate(359deg);
-  }
-}
-@keyframes fa-spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-    transform: rotate(359deg);
-  }
-}
-
-h2 {
-	margin-bottom: 0.5em;
-}
-
-
-#logo {
-	float: left;
-	width: 500px;
-}
-
-header {
-	font-size: 90%;
-	font-weight: bold;
-}
-
-.clear {
 	clear: both;
 }
 
@@ -84,54 +26,13 @@ a:link, a:visited {
 a:hover, a:active {
 	color: #666;
 }
-#sortJodelBy {
-	position: fixed;
-	bottom: 0px;
-	width: 800px;
-	background-color: #fff;
-}
-#sortJodelBy a {
-	border-right: solid 1px #666;
-	width: 32%;
-	display: inline-block;
-	text-align: center;
-}
-#sortJodelBy a:last-child {
-		border-right: none;
-}
 
-#sortJodelBy .active {
-	color: #5682a3;
-}
-
-#sortJodelBy a:hover {
-	color: #5682a3;
-}
-
-.jodel a {
-	text-decoration: none;
-	color: #fff;
-}
-
-.jodel a:visited {
-	color: #404040;
-}
-
-.jodel a:hover, a:active {
-	color:  #404040;
-}
-
-.jodel .comments a:visited {
-	color: #fff;
-}
-
-.jodel .comments a:hover, .jodel .comments a:active {
-	color:  #fff;
-}
-
-.bildUnterschrift {
-	font-style: italic;
+.float-right {
 	float: right;
+}
+
+.clear {
+	clear: both;
 }
 
 .middleSidebar input, .middleSidebar textarea, .middleSidebar label {
@@ -150,7 +51,8 @@ a:hover, a:active {
 	border-radius: 5px;
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;
-	overflow: hidden;	
+	overflow: hidden;
+	margin-bottom: 5em;
 }
 .content {
 	width: 800px;
@@ -158,7 +60,6 @@ a:hover, a:active {
 	border-radius: 5px;
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;
-	background-color: #fff;
 	margin-bottom: 15px;
 }
 
@@ -191,35 +92,85 @@ a:hover, a:active {
 	padding:  0.1em 2em 1em 2em;
 }
 
-
-
-.mainFooter {
-	width: 100%;
-	background-color: #ccc;
-	border-radius: 5px;
-	-moz-border-radius:5px;
-	-webkit-border-radius: 5px;
-	float: left;
+/* Spinning Refresh Button */
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
 }
 
-.mainFooter p {
-	margin: 15px;
-	padding: 10px;
+/*
+ * Header
+ */
+
+h1 {
+	float: right;
+	margin-right: 33%;
+	margin-top: 0.5em;
+	color: #5682a3;
 }
 
-.mainFooter p span{
+h1 i{
+	padding: 0 0.5em;
+}
+
+a.selected h1 i{
+	-webkit-animation: fa-spin 2s infinite linear;
+ 	animation: fa-spin 2s infinite linear;
+}
+
+header {
+	font-size: 90%;
+	font-weight: bold;
+}
+
+/* Jodels */
+
+.jodel a {
+	text-decoration: none;
+	color: #fff;
+}
+
+.jodel a:visited {
+	color: #404040;
+}
+
+.jodel a:hover, a:active {
+	color:  #404040;
+}
+
+.jodel .comments a:visited {
+	color: #fff;
+}
+
+.jodel .comments a:hover, .jodel .comments a:active {
+	color:  #fff;
+}
+
+#comment-refresh:active {
 	color: #666;
 }
-	
-.float-right {
-	float: right;
+
+#comment-refresh.selected i {
+	-webkit-animation: fa-spin 2s infinite linear;
+ 	animation: fa-spin 2s infinite linear;
 }
 
-.float-right-footer {
-	float: right;
-}
-
-/* Changes for Jodel */
 #comment-back {
 	padding: 0.5em 1em;
 }
@@ -230,20 +181,22 @@ a:hover, a:active {
 .jodel {
 	padding: 1em;
 	color: #fff;
-	border-bottom: solid 5px #fff;
+	margin-bottom: 0.5em;
 }
 
 .jodel content {
 	float: left;
 	width: 90%;
 	margin-bottom: 0.5em;
+	font-size: 1.8em;
 }
 
 .jodel aside {
 	float: right;
 	width: 7%;
-	font-size: 200%;
+	font-size: 1.8em;
 	text-align: center;
+	line-height: 15px;
 }
 
 .jodel footer table {
@@ -253,10 +206,6 @@ a:hover, a:active {
 
 .jodel footer table .comments{
 	text-align: center;
-}
-
-.jodel content {
-	font-size: 200%;
 }
 
 .jodel .time {
@@ -272,6 +221,15 @@ a:hover, a:active {
 	font-size: 150%;
 	float: right;
 }
+
+/*
+ * Sidebar
+ */
+
+h2 {
+	margin-bottom: 0.5em;
+}
+
 #city {
 	width: 95%;
 	margin-bottom: 5px;
@@ -283,6 +241,33 @@ a:hover, a:active {
 
 #impressumText, #datenschutzText {
 	margin: 3em;
+}
+
+/* Footer Nav */
+
+#sortJodelBy {
+	position: fixed;
+	bottom: 0px;
+	width: 800px;
+	background-color: #fff;
+	box-shadow: 0px -15px 10px 2px #5682a3;
+}
+#sortJodelBy a {
+	border-right: solid 1px #666;
+	width: 32%;
+	display: inline-block;
+	text-align: center;
+}
+#sortJodelBy a:last-child {
+		border-right: none;
+}
+
+#sortJodelBy .active {
+	color: #5682a3;
+}
+
+#sortJodelBy a:hover {
+	color: #5682a3;
 }
 
 @media only screen and (min-width: 150px) and (max-width: 980px)
@@ -317,7 +302,6 @@ a:hover, a:active {
 	border-radius: 5px;
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;
-	background-color: #fff;
 	margin-bottom: 15px;
 	}
 
@@ -358,6 +342,4 @@ a:hover, a:active {
 	.float-right {
 		float: none;
 	}
-	
-
 }

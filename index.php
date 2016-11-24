@@ -90,7 +90,7 @@ include 'php/jodel-web.php';
 <!DOCTYPE html>
 <html lang="de">
 	<head>
-		<title>Jodel WebClient - </title>
+		<title>JodelBlue WebClient - </title>
 		
 		<meta charset="utf8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -110,7 +110,7 @@ include 'php/jodel-web.php';
 		<header class="mainHeader">
 			<a href="index.php">
 				<h1>
-					Jodel WebClient
+					JodelBlue
 					<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) echo '<i class="fa fa-refresh fa-1x"></i>';?>
 				</h1>					
 			</a>
