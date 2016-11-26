@@ -68,7 +68,7 @@ function getPosts($lastPostId, $url) {
 
 	if(isset($_GET['lastPostId'])) {
 	
-		$lastPostId = $_GET['lastPostId'];
+		$lastPostId = htmlspecialchars($_GET['lastPostId']);
 		
 		$posts = getPosts($lastPostId, $url)['posts'];
 		$loops = 29;
@@ -131,7 +131,7 @@ function getPosts($lastPostId, $url) {
 							echo '<img src="' . $posts[$i]["image_url"] . '">';
 						}
 						else {
-							echo nl2br($posts[$i]["message"]);
+							echo nl2br(htmlspecialchars($posts[$i]["message"]));
 						}
 						?>
 					</content>

@@ -9,14 +9,14 @@ class SetLocation extends AbstractRequest {
     /**
      * @return Location
      */
-    public function getLocation(): Location
+    public function getLocation()
     {
         return $this->location;
     }
     /**
      * @param Location $location
      */
-    public function setLocation(Location $location)
+    public function setLocation($location)
     {
         $this->location = $location;
     }

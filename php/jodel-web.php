@@ -57,11 +57,7 @@ function isTokenFresh(Location $location) {
 		if($result === false){
 				echo "Adding account failed: (" . $db->errno . ") " . $db->error;
 		}	
-	
-
-
 	}
-
 	
 	return TRUE;
 }

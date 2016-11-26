@@ -111,11 +111,11 @@ a.selected h1 i{
 }
 
 .jodel a:visited {
-	color: #404040;
+	color: #5682a3;
 }
 
 .jodel a:hover, a:active {
-	color:  #404040;
+	color:  #5682a3;
 }
 
 .jodel .comments a:visited {
@@ -127,7 +127,7 @@ a.selected h1 i{
 }
 
 #comment-refresh:active {
-	color: #666;
+	color: #5682a3;
 }
 
 #comment-refresh.selected i {
@@ -137,11 +137,13 @@ a.selected h1 i{
 
 #comment-back {
 	padding: 0.5rem 1rem;
+	color: #5682a3;
 }
 
 #comment-refresh {
 	float: right;
 	padding: 0.5rem 1rem;
+	color: #5682a3;
 }
 
 .jodel {

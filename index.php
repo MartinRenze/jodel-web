@@ -12,7 +12,7 @@ include 'php/jodel-web.php';
 	$result = $db->query("SELECT * FROM accounts WHERE id='1'");
 	
 	$accessToken;
-	$newPostionStatus;
+	$newPositionStatus;
 	
 	if ($result->num_rows > 0)
 	{
@@ -32,19 +32,18 @@ include 'php/jodel-web.php';
 	
 	//Set Location
 	if(isset($_GET['city'])) {
-		
-		$url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $_GET['city'] . '&key=AIzaSyCwhnja-or07012HqrhPW7prHEDuSvFT4w';
+		$url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($_GET['city']) . '&key=AIzaSyCwhnja-or07012HqrhPW7prHEDuSvFT4w';
 		$result = Requests::post($url);
-		if(json_decode($result->body, true)['status'] == 'ZERO_RESULTS')
+		if(json_decode($result->body, true)['status'] == 'ZERO_RESULTS' || json_decode($result->body, true)['status'] == 'INVALID_REQUEST')
 		{
-			$newPostionStatus = "0 results";
+			$newPositionStatus = "0 results";
 		}
 		else
 		{
 			$location = new Location();
 			$location->setLat(json_decode($result->body, true)['results']['0']['geometry']['location']['lat']);
 			$location->setLng(json_decode($result->body, true)['results']['0']['geometry']['location']['lng']);
-			$location->setCityName($_GET['city']);
+			$location->setCityName(htmlspecialchars($_GET['city']));
 			$accountCreator = new UpdateLocation();
 			$accountCreator->setLocation($location);
 			$accountCreator->setAccessToken($accessToken);
@@ -63,7 +62,7 @@ include 'php/jodel-web.php';
 		$accountCreator->setAccessToken($accessToken);
 		$data = $accountCreator->execute();
 
-		header("Location: index.php#postId-" . $_GET['postID']);
+		header("Location: index.php#postId-" . htmlspecialchars($_GET['postID']));
 		die();
 	}
 	
@@ -132,11 +131,11 @@ include 'php/jodel-web.php';
 							if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) {
 								//Header Nav in Comment View
 								?>
-								<a id="comment-back" href="index.php#postId-<?php echo $_GET['postID'];?>">
+								<a id="comment-back" href="index.php#postId-<?php echo htmlspecialchars($_GET['postID']);?>">
 									<i class="fa fa-angle-left fa-3x"></i>
 								</a>
 
-								<a id="comment-refresh" href="index.php?getPostDetails=<?php echo $_GET['getPostDetails'];?>&postID=<?php echo $_GET['postID'];?>">
+								<a id="comment-refresh" href="index.php?getPostDetails=<?php echo htmlspecialchars($_GET['getPostDetails']);?>&postID=<?php echo htmlspecialchars($_GET['postID']);?>">
 									<i class="fa fa-refresh fa-2x"></i>
 								</a>
 								<?php
@@ -238,7 +237,7 @@ include 'php/jodel-web.php';
 									echo '<img src="' . $posts[$i]["image_url"] . '">';
 								}
 								else {
-									echo nl2br($posts[$i]["message"]);
+									echo nl2br(htmlspecialchars($posts[$i]["message"]));
 								}
 								?>
 							</content>
@@ -304,7 +303,7 @@ include 'php/jodel-web.php';
 					<article>
 						<h2>Position</h2>
 						<form method="get">
-							<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; else echo $posts[0]["location"]["name"]; ?>" required>
+							<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; else echo htmlspecialchars($posts[0]["location"]["name"]); ?>" required>
 
 							<input type="submit" value="Set Location" /> 
 						</form>
@@ -320,7 +319,7 @@ include 'php/jodel-web.php';
 						<?php if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) { ?>
 						<h2>Comment on Jodel</h2>
 						<form method="POST">				
-								<input type="hidden" name="ancestor" value="<?php echo $_GET['postID'];?>" />
+								<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postID']);?>" />
 								<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
 							<br />
 							<input type="submit" value="SEND" /> 
