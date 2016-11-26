@@ -61,10 +61,10 @@ abstract class AbstractRequest
 				throw new \Exception('Unauthorized');
                 break;
             case 404:
-                echo "Es wurde bereits gevoted";
+                //echo "Es wurde bereits gevoted";
 			case 477:
-                echo "Es wurde bereits gevoted";
-                throw  new \Exception('Signing failed!');
+                //echo "Es wurde bereits gevoted";
+                //throw  new \Exception('Signing failed!');
                 break;
             default:
                 throw  new \Exception('Unknown Error: '.$result->status_code);
