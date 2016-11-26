@@ -127,11 +127,33 @@ include 'php/jodel-web.php';
 						<?php
 							$posts;
 
+							//Set View
+							if(isset($_GET['view']))
+							{
+								switch ($_GET['view']) {
+									case 'comment':
+										$view = 'comment';
+										break;
+									
+									case 'upVote':
+										$view = 'upVote';
+										break;
+
+									default:
+										$view = 'time';
+										break;
+								}
+							}
+							else
+							{
+								$view = 'time';
+							}
+
 							//Get Post Details
 							if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) {
 								//Header Nav in Comment View
 								?>
-								<a id="comment-back" href="index.php#postId-<?php echo htmlspecialchars($_GET['postID']);?>">
+								<a id="comment-back" href="index.php?view=<?php echo $view;?>#postId-<?php echo htmlspecialchars($_GET['postID']);?>">
 									<i class="fa fa-angle-left fa-3x"></i>
 								</a>
 
@@ -156,23 +178,21 @@ include 'php/jodel-web.php';
 								$showCommentIcon = FALSE;
 							}
 							//Get Posts
-							else {
-								if(isset($_GET['commentView']))
+							else
+							{
+								if($view=='comment')
 								{
-									$commentView = true;
 									$url = "/v2/posts/location/discussed/";
 								}
 								else
 								{
-									if(isset($_GET['upVoteView']))
+									if($view=='upVote')
 									{
-										$upVoteView = true;
 										$url = "/v2/posts/location/popular/";
 									}
 									else
 									{
-										$timeView = true;
-										$url = "/v2/posts";
+										$url = "/v2/posts/location/";
 									}
 								}
 
@@ -264,7 +284,7 @@ include 'php/jodel-web.php';
 										<td class="comments">
 											<?php if($showCommentIcon) {?>
 											<span data-tooltip="Comments">
-												<a href="index.php?getPostDetails=true&postID=<?php echo $posts[$i]["post_id"];?>">
+												<a href="index.php?getPostDetails=true&view=<?php echo $view;?>&postID=<?php echo $posts[$i]["post_id"];?>">
 													<i class="fa fa-commenting-o"></i>
 													<?php if(array_key_exists("child_count", $posts[$i])) {
 																echo $posts[$i]["child_count"];
@@ -344,13 +364,13 @@ include 'php/jodel-web.php';
 				<div class="col-sm-12">
 					<div class="row">
 						<div class="col-sm-3">
-							<a href="index.php" <?php if(isset($timeView)) echo 'class="active"';?>><i class="fa fa-clock-o fa-3x"></i></a>
+							<a href="index.php" <?php if($view=='time') echo 'class="active"';?>><i class="fa fa-clock-o fa-3x"></i></a>
 						</div>
 						<div class="col-sm-3">
-							<a href="index.php?commentView=true" <?php if(isset($commentView)) echo 'class="active"';?>><i class="fa fa-commenting-o fa-3x"></i></a>
+							<a href="index.php?view=comment" <?php if($view=='comment') echo 'class="active"';?>><i class="fa fa-commenting-o fa-3x"></i></a>
 						</div>
 						<div class="col-sm-3">
-							<a href="index.php?upVoteView=true" <?php if(isset($upVoteView)) echo 'class="active"';?>><i class="fa fa-angle-up fa-3x"></i></a>
+							<a href="index.php?view=upVote" <?php if($view=='upVote') echo 'class="active"';?>><i class="fa fa-angle-up fa-3x"></i></a>
 						</div>
 						<div class="col-sm-3">
 							<nav>
@@ -378,6 +398,7 @@ include 'php/jodel-web.php';
 			$(document).ready(function() {
 				var win = $(window);
 				var lastPostId = "<?php echo $lastPostId; ?>";
+				var view = "<?php echo $view; ?>"
 				var old_lastPostId = "";
 				var morePostsAvailable = true;
 				// Each time the user scrolls
@@ -389,7 +410,7 @@ include 'php/jodel-web.php';
 						
 						
 						$.ajax({
-							url: 'get-posts-ajax.php?lastPostId=' + lastPostId,
+							url: 'get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view,
 							dataType: 'html',
 							async: true,
 							success: function(html) {

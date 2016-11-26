@@ -47,22 +47,40 @@ function getPosts($lastPostId, $url) {
 }
 	$posts;
 
-	if(isset($_GET['commentView']))
+	if(isset($_GET['view']))
 	{
-		$commentView = true;
-		$url = "/posts/location/discussed/";
+		switch ($_GET['view']) {
+			case 'comment':
+				$view = 'comment';
+				break;
+			
+			case 'upVote':
+				$view = 'upVote';
+				break;
+
+			default:
+				$view = 'time';
+				break;
+		}
 	}
 	else
 	{
-		if(isset($_GET['upVoteView']))
+		$view = 'time';
+	}
+
+	if($view=='comment')
+	{
+		$url = "/v2/posts/location/discussed/";
+	}
+	else
+	{
+		if($view=='upVote')
 		{
-			$upVoteView = true;
-			$url = "/posts/location/popular/";
+			$url = "/v2/posts/location/popular/";
 		}
 		else
 		{
-			$timeView = true;
-			$url = "/v2/posts";
+			$url = "/v2/posts/location/";
 		}
 	}
 
@@ -158,7 +176,7 @@ function getPosts($lastPostId, $url) {
 								<td class="comments">
 									<?php if($showCommentIcon) {?>
 									<span data-tooltip="Comments">
-										<a href="index.php?getPostDetails=true&postID=<?php echo $posts[$i]["post_id"];?>">
+										<a href="index.php?getPostDetails=true&view=<?php echo $view;?>&postID=<?php echo $posts[$i]["post_id"];?>">
 											<i class="fa fa-commenting-o"></i>
 											<?php if(array_key_exists("child_count", $posts[$i])) {
 														echo $posts[$i]["child_count"];

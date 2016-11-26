@@ -30,9 +30,9 @@ class GetPosts extends AbstractRequest
     function getApiEndPoint()
     {
         $apiEndPoint = $this->getUrl();
-        //echo $GLOBALS['lastPostId'];
+
         if ($this->getLastPostId() != "") {
-			$apiEndPoint = $this->getUrl() . '/location/?after=' . $this->getLastPostId();
+			$apiEndPoint = $this->getUrl() . '?after=' . $this->getLastPostId();
 		}
         return $apiEndPoint;
     }
