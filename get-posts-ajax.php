@@ -131,7 +131,7 @@ function getPosts($lastPostId, $url) {
 							echo '<img src="' . $posts[$i]["image_url"] . '">';
 						}
 						else {
-							echo nl2br(htmlspecialchars($posts[$i]["message"]));
+							echo str_replace('  ', ' &nbsp;', nl2br(htmlspecialchars($posts[$i]["message"])));
 						}
 						?>
 					</content>
