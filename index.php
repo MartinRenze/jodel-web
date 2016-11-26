@@ -107,19 +107,20 @@ include 'php/jodel-web.php';
 	</head>
 	
 	<body>
+		<header>
+			<nav class="navbar navbar-full navbar-dark navbar-fixed-top">
+				<div class="container">
+		  			<a href="index.php">
+						<h1>
+							JodelBlue
+							<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) echo '<i class="fa fa-refresh fa-1x"></i>';?>
+						</h1>					
+					</a>
+				</div>
+			</nav>
+		</header>
 		
-		<div class="mainContent container">
-
-			<header class="mainHeader">
-				<a href="index.php">
-					<h1>
-						JodelBlue
-						<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) echo '<i class="fa fa-refresh fa-1x"></i>';?>
-					</h1>					
-				</a>
-				<div class="clear"></div>
-			</header>
-		
+		<div class="mainContent container">		
 			<div class="content row">
 				<article class="topContent col-sm-8">
 
@@ -320,44 +321,46 @@ include 'php/jodel-web.php';
 				</article>
 			
 				<aside class="topSidebar col-sm-4 sidebar-outer">
-					<article>
-						<h2>Position</h2>
-						<form method="get">
-							<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; else echo htmlspecialchars($posts[0]["location"]["name"]); ?>" required>
+					<div class="fixed">
+						<article>
+							<h2>Position</h2>
+							<form method="get">
+								<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; else echo htmlspecialchars($posts[0]["location"]["name"]); ?>" required>
 
-							<input type="submit" value="Set Location" /> 
-						</form>
-						
-					</article>
+								<input type="submit" value="Set Location" /> 
+							</form>
+							
+						</article>
 
-					<article>
-						<h2>Karma</h2>
-						<?php echo getKarma($accessToken); ?>
-					</article>
+						<article>
+							<h2>Karma</h2>
+							<?php echo getKarma($accessToken); ?>
+						</article>
 
-					<article>
-						<?php if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) { ?>
-						<h2>Comment on Jodel</h2>
-						<form method="POST">				
-								<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postID']);?>" />
-								<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
-							<br />
-							<input type="submit" value="SEND" /> 
-						</form>
-							<?php } else { ?>
-						<h2>New Jodel</h2>
-						<form method="POST">
-							<textarea id="message" name="message" placeholder="Send a Jodel to all students within 10km" required></textarea> 
-							<br />
-							<input type="submit" value="SEND" /> 
-						</form>
-						<?php } ?>
+						<article>
+							<?php if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) { ?>
+							<h2>Comment on Jodel</h2>
+							<form method="POST">				
+									<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postID']);?>" />
+									<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
+								<br />
+								<input type="submit" value="SEND" /> 
+							</form>
+								<?php } else { ?>
+							<h2>New Jodel</h2>
+							<form method="POST">
+								<textarea id="message" name="message" placeholder="Send a Jodel to all students within 10km" required></textarea> 
+								<br />
+								<input type="submit" value="SEND" /> 
+							</form>
+							<?php } ?>
 
-					</article>
-						
-					<article>
-						<h2>Login</h2>
-					</article>
+						</article>
+							
+						<article>
+							<h2>Login</h2>
+						</article>
+					</div>
 				</aside>
 			</div>
 			<div id="sortJodelBy" class="row">

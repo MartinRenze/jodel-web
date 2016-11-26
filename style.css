@@ -39,6 +39,7 @@ a:hover, a:active {
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;
 	margin-bottom: 5rem;
+	margin-top: 4.3rem;
 }
 .content {
 	border-radius: 5px;
@@ -90,8 +91,8 @@ h1 {
 	float: right;
 	margin-right: 33%;
 	margin-top: 0.5rem;
-	color: #5682a3;
-	font-size: 2.4rem;
+	color: #fff;
+	font-size: 1.3rem;
 }
 
 h1 i{
@@ -101,6 +102,10 @@ h1 i{
 a.selected h1 i{
 	-webkit-animation: fa-spin 2s infinite linear;
  	animation: fa-spin 2s infinite linear;
+}
+
+header nav {
+	background-color: #5682a3;
 }
 
 /* Jodels */
@@ -203,6 +208,9 @@ a.selected h1 i{
 h2 {
 	font-size: 1.2rem;
 	margin-bottom: 1rem;
+}
+.topSidebar .fixed{
+	position: fixed;
 }
 
 .topSidebar article {
