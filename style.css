@@ -212,6 +212,8 @@ h2 {
 .topSidebar .fixed{
 	position: fixed;
 	width: 365px;
+	height: 82%;
+	overflow-y: auto;
 }
 
 .topSidebar article {
