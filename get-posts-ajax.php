@@ -142,7 +142,7 @@ function getPosts($lastPostId, $url) {
 							}
 						?>
 
-				<article class="jodel" style="background-color: #<?php echo $posts[$i]["color"];?>;">
+				<article id ="postId-<?php echo $posts[$i]["post_id"]; ?>" class="jodel" style="background-color: #<?php echo $posts[$i]["color"];?>;">
 					<content>
 						<?php 
 						if(isset($posts[$i]["image_url"])) {

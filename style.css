@@ -132,6 +132,10 @@ header nav {
 	color:  #fff;
 }
 
+.jodel:target {
+	padding-top: 90px;
+}
+
 #comment-refresh:active {
 	color: #5682a3;
 }
@@ -256,6 +260,10 @@ h2 {
 
 #sortJodelBy .active {
 	color: #5682a3;
+}
+
+#sortJodelBy > div > div > div > a {
+	display: block;
 }
 
 #sortJodelBy a:hover {

@@ -398,10 +398,18 @@ include 'php/jodel-web.php';
     	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
 
 		<script>
+
+
 			$('a').on('click', function(){
 			    $('a').removeClass('selected');
 			    $(this).addClass('selected');
 			});
+
+			function scrollToAnchor(aid){
+			    var aTag = $("article[id='"+ aid +"']");
+			    $('html,body').animate({scrollTop: aTag.offset().top-90},'slow');
+			}
+
 
 			<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
 			$(document).ready(function() {
@@ -410,6 +418,49 @@ include 'php/jodel-web.php';
 				var view = "<?php echo $view; ?>"
 				var old_lastPostId = "";
 				var morePostsAvailable = true;
+
+				if(window.location.hash)
+				{
+					var hash = window.location.hash.slice(1);
+
+					if(!$("article[id='"+ hash +"']").length)
+					{
+						for (var i = 5; i >= 0; i--)
+						{
+							if(!$("article[id='"+ hash +"']").length)
+							{
+								$.ajax({
+									url: 'get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view,
+									dataType: 'html',
+									async: false,
+									success: function(html) {
+										var div = document.createElement('div');
+										div.innerHTML = html;
+										var elements = div.childNodes;
+										old_lastPostId = lastPostId;
+										lastPostId = elements[3].textContent;
+										lastPostId = lastPostId.replace(/\s+/g, '');
+										//alert('Neu: ' + lastPostId + " Alt: " + old_lastPostId);
+										if(lastPostId == old_lastPostId) {
+											
+											//morePostsAvailable = false;
+										}
+										else {
+											//alert(elements[3].textContent);
+											$('#posts').append(elements[1].innerHTML);
+											$('#posts').hide().show(0);
+										}
+										$('#loading').hide();
+									}
+								});
+							}
+							
+						}
+						scrollToAnchor(hash);
+
+					}						
+				}
+
 				// Each time the user scrolls
 				win.scroll(function() {
 					// End of the document reached?
