@@ -211,15 +211,16 @@ h2 {
 }
 .topSidebar .fixed{
 	position: fixed;
+	width: 365px;
 }
 
 .topSidebar article {
 	background-color: #fff;
-	margin: 0 0 1rem 0;
 	border-radius: 5px;
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;
-	padding:  1rem 2rem 1rem 2rem;
+	padding: 1rem 1rem 2rem 1rem;
+	margin-bottom: 1rem;
 }
 
 #city {
@@ -256,4 +257,32 @@ h2 {
 
 #sortJodelBy a:hover {
 	color: #5682a3;
+}
+
+@media  (min-width: 576px) {
+	.topSidebar .fixed{
+		position: fixed;
+		width: 165px;
+	}
+}
+
+@media  (min-width: 768px) {
+	.topSidebar .fixed{
+		position: fixed;
+		width: 225px;
+	}
+}
+
+@media  (min-width: 992px) {
+	.topSidebar .fixed{
+		position: fixed;
+		width: 305px;
+	}
+}
+
+@media  (min-width: 1200px) {
+	.topSidebar .fixed{
+		position: fixed;
+		width: 365px;
+	}
 }

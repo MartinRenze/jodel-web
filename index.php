@@ -323,42 +323,48 @@ include 'php/jodel-web.php';
 				<aside class="topSidebar col-sm-4 sidebar-outer">
 					<div class="fixed">
 						<article>
-							<h2>Position</h2>
-							<form method="get">
-								<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; else echo htmlspecialchars($posts[0]["location"]["name"]); ?>" required>
+							<div>
+								<h2>Position</h2>
+								<form method="get">
+									<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; else echo htmlspecialchars($posts[0]["location"]["name"]); ?>" required>
 
-								<input type="submit" value="Set Location" /> 
-							</form>
+									<input type="submit" value="Set Location" /> 
+								</form>
+							</div>
+						</article>
+
+						<article>
+							<div>
+								<h2>Karma</h2>
+								<?php echo getKarma($accessToken); ?>
+							</div>
+						</article>
+
+						<article>
+							<div>
+								<?php if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) { ?>
+								<h2>Comment on Jodel</h2>
+								<form method="POST">				
+										<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postID']);?>" />
+										<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
+									<br />
+									<input type="submit" value="SEND" /> 
+								</form>
+									<?php } else { ?>
+								<h2>New Jodel</h2>
+								<form method="POST">
+									<textarea id="message" name="message" placeholder="Send a Jodel to all students within 10km" required></textarea> 
+									<br />
+									<input type="submit" value="SEND" /> 
+								</form>
+								<?php } ?>
+							</div>
+						</article>
 							
-						</article>
-
 						<article>
-							<h2>Karma</h2>
-							<?php echo getKarma($accessToken); ?>
-						</article>
-
-						<article>
-							<?php if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) { ?>
-							<h2>Comment on Jodel</h2>
-							<form method="POST">				
-									<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postID']);?>" />
-									<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
-								<br />
-								<input type="submit" value="SEND" /> 
-							</form>
-								<?php } else { ?>
-							<h2>New Jodel</h2>
-							<form method="POST">
-								<textarea id="message" name="message" placeholder="Send a Jodel to all students within 10km" required></textarea> 
-								<br />
-								<input type="submit" value="SEND" /> 
-							</form>
-							<?php } ?>
-
-						</article>
-							
-						<article>
-							<h2>Login</h2>
+							<div>
+								<h2>Login</h2>
+							</div>
 						</article>
 					</div>
 				</aside>
