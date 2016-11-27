@@ -19,10 +19,13 @@ a {
 
 a:link, a:visited {
 	color: #000305;
+	text-decoration: none;
+}
 }
 
 a:hover, a:active {
 	color: #000305;
+	text-decoration: none;
 }
 
 .float-right {
@@ -88,8 +91,6 @@ a:hover, a:active {
  */
 
 h1 {
-	float: right;
-	margin-right: 33%;
 	margin-top: 0.5rem;
 	color: #fff;
 	font-size: 1.3rem;
