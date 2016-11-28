@@ -69,19 +69,51 @@ include 'php/jodel-web.php';
 	
 	//SendJodel
 	if(isset($_POST['message'])) {
-		$ancestor;
+		$accountCreator = new SendJodel();
+
 		if(isset($_POST['ancestor']))
 		{
 			$ancestor = $_POST['ancestor'];
+			$accountCreator->ancestor = $ancestor;
+		}
+		if(isset($_POST['color']))
+		{
+			$color = $_POST['color'];
+			switch ($color) {
+				case '8ABDB0':
+					$color = '8ABDB0';
+					break;
+				case '9EC41C':
+					$color = '9EC41C';
+					break;
+				case '06A3CB':
+					$color = '06A3CB';
+					break;
+				case 'FFBA00':
+					$color = 'FFBA00';
+					break;
+				case 'DD5F5F':
+					$color = 'DD5F5F';
+					break;
+				case 'FF9908':
+					$color = 'FF9908';
+					break;
+				
+				default:
+					$color = '8ABDB0';
+					break;
+			}
+			$accountCreator->color = $color;
+			echo "Setting color:" . $color;
 		}
 		
 		$location = new Location();
 		$location->setLat('0.1');
 		$location->setLng('0.1');
 		$location->setCityName('Munich');
-		$accountCreator = new SendJodel();
-		$accountCreator->setLocation($location);
-		$accountCreator->setAncestor($ancestor);
+		
+		$accountCreator->location = $location;
+		
 		$accountCreator->setAccessToken($accessToken);
 		$data = $accountCreator->execute();
 	}
@@ -109,13 +141,24 @@ include 'php/jodel-web.php';
 	<body>
 		<header>
 			<nav class="navbar navbar-full navbar-dark navbar-fixed-top">
-				<div class="container">
-		  			<a href="index.php">
-						<h1>
-							JodelBlue
-							<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) echo '<i class="fa fa-refresh fa-1x"></i>';?>
-						</h1>					
-					</a>
+				<div class="container">					
+						<?php
+							if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
+							{
+								echo '<a id="comment-back" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postID']) . '">';
+								echo '<i class="fa fa-angle-left fa-3x"></i>';
+								echo '</a>';
+								echo '<h1>';
+								echo '<a href="index.php?getPostDetails=' . htmlspecialchars($_GET['getPostDetails']) . '&postID=' . htmlspecialchars($_GET['postID']) . '" class="spinnable">';
+							}
+							else
+							{
+								echo '<h1>';	
+								echo '<a href="index.php" class="spinnable">';
+							}
+						?>
+						JodelBlue <i class="fa fa-refresh fa-1x"></i></a>
+					</h1>					
 				</div>
 			</nav>
 		</header>
@@ -151,19 +194,8 @@ include 'php/jodel-web.php';
 							}
 
 							//Get Post Details
-							if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) {
-								//Header Nav in Comment View
-								?>
-								<a id="comment-back" href="index.php?view=<?php echo $view;?>#postId-<?php echo htmlspecialchars($_GET['postID']);?>">
-									<i class="fa fa-angle-left fa-3x"></i>
-								</a>
-
-								<a id="comment-refresh" href="index.php?getPostDetails=<?php echo htmlspecialchars($_GET['getPostDetails']);?>&postID=<?php echo htmlspecialchars($_GET['postID']);?>">
-									<i class="fa fa-refresh fa-2x"></i>
-								</a>
-								<?php
-
-
+							if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
+							{
 								$accountCreator = new GetPostDetails();
 								$accountCreator->setAccessToken($accessToken);
 								$data = $accountCreator->execute();
@@ -354,6 +386,15 @@ include 'php/jodel-web.php';
 								<h2>New Jodel</h2>
 								<form method="POST">
 									<textarea id="message" name="message" placeholder="Send a Jodel to all students within 10km" required></textarea> 
+									<br />
+									<select id="postColorPicker" name="color">
+										<option value="06A3CB">Blue</option>
+										<option value="8ABDB0">Teal</option>
+										<option value="9EC41C">Green</option>
+										<option value="FFBA00">Yellow</option>
+										<option value="DD5F5F">Red</option>
+										<option value="FF9908">Orange</option>
+									</select> 
 									<br />
 									<input type="submit" value="SEND" /> 
 								</form>

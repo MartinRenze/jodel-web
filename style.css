@@ -94,19 +94,41 @@ h1 {
 	margin-top: 0.5rem;
 	color: #fff;
 	font-size: 1.3rem;
+	float: left;
 }
 
 h1 i{
 	padding: 0 0.5rem;
 }
 
-a.selected h1 i{
+h1 a:link, h1 a:visited {
+	color: #fff;
+	line-height: 2rem;
+}
+
+.spinnable.selected i {
 	-webkit-animation: fa-spin 2s infinite linear;
  	animation: fa-spin 2s infinite linear;
 }
 
-header nav {
+#comment-refresh:active {
+	color: #fff;
+}
+
+#comment-refresh.selected i {
+	-webkit-animation: fa-spin 2s infinite linear;
+ 	animation: fa-spin 2s infinite linear;
+}
+
+#comment-back {
+	color: #fff;
+	float: left;
+	margin-right: 2rem;
+}
+
+header .navbar {
 	background-color: #5682a3;
+	padding: 0px;
 }
 
 /* Jodels */
@@ -134,26 +156,6 @@ header nav {
 
 .jodel:target {
 	padding-top: 90px;
-}
-
-#comment-refresh:active {
-	color: #5682a3;
-}
-
-#comment-refresh.selected i {
-	-webkit-animation: fa-spin 2s infinite linear;
- 	animation: fa-spin 2s infinite linear;
-}
-
-#comment-back {
-	padding: 0.5rem 1rem;
-	color: #5682a3;
-}
-
-#comment-refresh {
-	float: right;
-	padding: 0.5rem 1rem;
-	color: #5682a3;
 }
 
 .jodel {
@@ -217,7 +219,7 @@ h2 {
 .topSidebar .fixed{
 	position: fixed;
 	width: 365px;
-	height: 82%;
+	height: 80%;
 	overflow-y: auto;
 }
 
@@ -232,11 +234,44 @@ h2 {
 
 #city {
 	width: 100%;
-	margin-bottom: 5px;
+	margin-bottom: 0.5rem;
 }
 #message {
 	width: 100%;
 	height: 8rem;
+}
+
+#postColorPicker {
+	width: 100%;
+	margin-bottom: 0.5rem;
+}
+
+#postColorPicker option[value="8ABDB0"] {
+	background-color: #8ABDB0;
+	height: 2rem;
+}
+
+#postColorPicker option[value="9EC41C"] {
+	background-color: #9EC41C;
+	height: 2rem;
+}
+#postColorPicker option[value="06A3CB"] {
+	background-color: #06A3CB;
+	height: 2rem;
+}
+
+#postColorPicker option[value="FFBA00"] {
+	background-color: #FFBA00;
+	height: 2rem;
+}
+
+#postColorPicker option[value="DD5F5F"] {
+	background-color: #DD5F5F;
+	height: 2rem;
+}
+#postColorPicker option[value="FF9908"] {
+	background-color: #FF9908;
+	height: 2rem;
 }
 
 #impressumText, #datenschutzText {

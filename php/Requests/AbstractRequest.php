@@ -33,9 +33,9 @@ abstract class AbstractRequest
         }
         //Comment out to debug the Request:
         /*
-        *var_dump($url);
-        *var_dump($header);
-        *var_dump($this->payLoad);
+        var_dump($url);
+        var_dump($header);
+        var_dump($this->payLoad);
         */
         
 
