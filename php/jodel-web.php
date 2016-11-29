@@ -83,13 +83,17 @@ function registerAccount(Location $location) {
 	$expiration_date = $data[0]['expiration_date'];
 	$distinct_id = (string)$data[0]['distinct_id'];
 	$device_uid = (string)$data[1];
+
+	$name = $location->cityName;
+	$lat = $location->lat;
+	$lng = $location->lng;
 	
 	$db = new DatabaseConnect();  
 	$result = $db->query("INSERT INTO accounts (access_token, refresh_token, token_type,
-					expires_in, expiration_date, distinct_id, device_uid)
+					expires_in, expiration_date, distinct_id, device_uid, name, lat, lng)
 					VALUES ('" . $access_token . "','" . $refresh_token . "','" . $token_type .
 					"','" .  $expires_in . "','" . $expiration_date . "','" . $distinct_id .
-					"','" . $device_uid . "') ");
+					"','" . $device_uid . "','" . $name . "','" . $lat . "','" . $lng . "') ");
 
 	$success = TRUE;
 	if($result === false){
@@ -115,9 +119,9 @@ function getPosts($lastPostId, $accessToken, $url)
 
 function createAccount() {
 	$location = new Location();
-	$location->setLat(50.690399);
-	$location->setLng(10.918175);
-	$location->setCityName('Ilmenau');
+	$location->setLat(52.520006);
+	$location->setLng(13.404954);
+	$location->setCityName('Berlin');
 
 	$account = registerAccount($location);
 }
