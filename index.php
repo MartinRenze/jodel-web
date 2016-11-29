@@ -20,6 +20,7 @@ include 'php/jodel-web.php';
 		while($row = $result->fetch_assoc())
 		{
 			$accessToken = $row["access_token"];
+			$newPositionStatus = $row['name'];
 		}
 	}
 	else
@@ -40,14 +41,37 @@ include 'php/jodel-web.php';
 		}
 		else
 		{
+			$name = json_decode($result->body, true)['results']['0']['address_components']['0']['long_name'];
+			$lat = json_decode($result->body, true)['results']['0']['geometry']['location']['lat'];
+			$lng = json_decode($result->body, true)['results']['0']['geometry']['location']['lng'];
+
 			$location = new Location();
-			$location->setLat(json_decode($result->body, true)['results']['0']['geometry']['location']['lat']);
-			$location->setLng(json_decode($result->body, true)['results']['0']['geometry']['location']['lng']);
-			$location->setCityName(htmlspecialchars($_GET['city']));
+			$location->setLat($lat);
+			$location->setLng($lng);
+			$location->setCityName($name);
 			$accountCreator = new UpdateLocation();
 			$accountCreator->setLocation($location);
 			$accountCreator->setAccessToken($accessToken);
 			$data = $accountCreator->execute();
+
+			//safe location to db
+			if($data == "Success")
+			{
+				$result = $db->query("UPDATE accounts 
+						SET name='" . $name . "',
+							lat='" . $lat . "',
+							lng='" . $lng . "'
+						WHERE id='1'");
+
+				if($result === false)
+				{
+						echo "Updating location failed: (" . $db->errno . ") " . $db->error;
+				}
+				else
+				{
+					$newPositionStatus = $name;
+				}
+			}
 		}
 	}
 	
@@ -358,7 +382,7 @@ include 'php/jodel-web.php';
 							<div>
 								<h2>Position</h2>
 								<form method="get">
-									<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; else echo htmlspecialchars($posts[0]["location"]["name"]); ?>" required>
+									<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
 
 									<input type="submit" value="Set Location" /> 
 								</form>
