@@ -117,11 +117,144 @@ function getPosts($lastPostId, $accessToken, $url)
 	return $data;
 }
 
-function createAccount() {
+function createAccount()
+{
 	$location = new Location();
 	$location->setLat(52.520006);
 	$location->setLng(13.404954);
 	$location->setCityName('Berlin');
 
 	$account = registerAccount($location);
+}
+
+function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
+{	//ToDO
+	//Replace # with link
+	//preg_replace('~(\#)([^\s!,. /()"\'?]+)~', '<a href="tag/$2">#$2</a>', $text);
+
+
+	//Time to time difference
+	$now = new DateTime();
+	$d = new DateTime($post["created_at"]);
+	$timediff = $now->diff($d);
+
+	$timediff_inSeconds = (string)$timediff->format('%s');
+	$timediff_inMinutes = (string)$timediff->format('%i');
+	$timediff_inHours = (string)$timediff->format('%h');
+	$timediff_inDays = (string)$timediff->format('%d');
+	$timediff_inMonth = (string)$timediff->format('%m');
+
+	if($timediff_inMonth!=0)
+	{
+			$timediff = $timediff_inMonth . "m";
+	}
+	else
+	{
+		if($timediff_inDays!=0)
+		{
+			$timediff = $timediff_inDays . "d";
+		}
+		else
+		{
+			if($timediff_inHours!=0)
+			{
+				$timediff = $timediff_inHours . "h";
+			}
+			else
+			{
+				if($timediff_inMinutes!=0)
+				{
+					$timediff = $timediff_inMinutes . "m";
+				}
+				else
+				{
+					$timediff = $timediff_inSeconds . "s";
+				}
+			}
+		}
+	}
+
+
+	?>
+	<article id ="postId-<?php echo $post["post_id"]; ?>" class="jodel" style="background-color: #<?php echo $post["color"];?>;">
+		<content>
+			<?php 
+			if(isset($post["image_url"])) {
+				echo '<img src="' . $post["image_url"] . '">';
+			}
+			else {
+				echo str_replace('  ', ' &nbsp;', nl2br(htmlspecialchars($post["message"])));
+			}
+			?>
+		</content>
+		<aside>
+			<a href="index.php?vote=up&postID=<?php echo $post["post_id"];?>">
+				<i class="fa fa-angle-up fa-3x"></i>
+			</a>	
+				<br />
+			<?php echo $post["vote_count"];?><br />
+			<a href="index.php?vote=down&postID=<?php echo $post["post_id"];?>">
+				<i class="fa fa-angle-down fa-3x"></i>
+			</a>
+		</aside>
+
+		<footer>
+			<table>
+				<tr>
+					<td class="time">
+						<span data-tooltip="Time">
+							<i class="fa fa-clock-o"></i>
+							<?php echo $timediff;?>
+						</span> 
+					</td>
+					<td class="comments">
+						<?php if(!$isDetailedView) {?>
+						<span data-tooltip="Comments">
+							<a href="index.php?getPostDetails=true&view=<?php echo $view;?>&postID=<?php echo $post["post_id"];?>">
+								<i class="fa fa-commenting-o"></i>
+								<?php if(array_key_exists("child_count", $post)) {
+											echo $post["child_count"];
+										} else echo "0";
+								?>
+								</a>
+						</span>
+						<?php } ?>
+					</td>
+					<td class="distance">
+						<?php
+							if($isDetailedView)
+							{
+								if(isset($post["parent_creator"]) && $post["parent_creator"] == 1)
+								{
+									?>
+									<span data-tooltip="Author">
+										<i class="fa fa-user-o"></i> OJ |
+									</span>
+									<?php 
+						  		}
+						  		else
+						  		{
+						  			//Is not parent Jodel in detailed View
+									if(!array_key_exists('child_count', $post) && array_key_exists('parent_creator', $post))
+									{
+							  			?>
+							  			<span data-tooltip="Author">
+											<i class="fa fa-user-o"></i> #<?php echo $post["user_handle"];?> |
+										</span>
+										<?php
+									}
+						  		}
+						  	}
+					  		?>
+
+						<span data-tooltip="Distance">
+							<i class="fa fa-map-marker"></i>
+							<?php echo $post["distance"];?> km
+						</span>
+					</td>
+				</tr>
+			</table>
+		</footer>
+	</article>
+<?php
 }

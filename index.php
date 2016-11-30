@@ -30,6 +30,29 @@ include 'php/jodel-web.php';
 	
 	
 	//createAccount();
+
+
+	//Set View
+	if(isset($_GET['view']))
+	{
+		switch ($_GET['view']) {
+			case 'comment':
+				$view = 'comment';
+				break;
+			
+			case 'upVote':
+				$view = 'upVote';
+				break;
+
+			default:
+				$view = 'time';
+				break;
+		}
+	}
+	else
+	{
+		$view = 'time';
+	}
 	
 	//Set Location
 	if(isset($_GET['city'])) {
@@ -195,44 +218,40 @@ include 'php/jodel-web.php';
 						<?php
 							$posts;
 
-							//Set View
-							if(isset($_GET['view']))
-							{
-								switch ($_GET['view']) {
-									case 'comment':
-										$view = 'comment';
-										break;
-									
-									case 'upVote':
-										$view = 'upVote';
-										break;
-
-									default:
-										$view = 'time';
-										break;
-								}
-							}
-							else
-							{
-								$view = 'time';
-							}
-
 							//Get Post Details
 							if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
 							{
+								$userHandleBuffer = [];
+
 								$accountCreator = new GetPostDetails();
 								$accountCreator->setAccessToken($accessToken);
 								$data = $accountCreator->execute();
 								
 								$posts[0] = $data;
 								if(isset($data['children'])) {
-									foreach($data['children'] as $child) {
-										array_push($posts, $child);
+									foreach($data['children'] as $key => $child)
+									{
+										
+										if(!$child["parent_creator"] == 1)
+										{
+											$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
+											if($numberForUser === FALSE)
+											{
+												array_push($userHandleBuffer, $child['user_handle']);
+												$data['children'][$key]['user_handle'] = count($userHandleBuffer);
+											}
+											else
+											{
+												$data['children'][$key]['user_handle'] = $numberForUser + 1;
+											}
+										}
+
+										array_push($posts, $data['children'][$key]);
 									}
 									$loops = $data['child_count'] + 1;
 								}
 								else $loops = 1;
-								$showCommentIcon = FALSE;
+								$isDetailedView = TRUE;
 							}
 							//Get Posts
 							else
@@ -255,116 +274,19 @@ include 'php/jodel-web.php';
 
 								$posts = getPosts($lastPostId, $accessToken, $url)['posts'];
 								$loops = 29;
-								$showCommentIcon = TRUE;
+								$isDetailedView = FALSE;
 							}
 							
 
-							for($i = 0; $i<$loops; $i++) {
-							
-							if(isset($posts[$i])) {
-							$lastPostId = $posts[$i]['post_id'];
-
-							
-							$now = new DateTime();
-							$d = new DateTime($posts[$i]["created_at"]);
-							
-							
-							//Time to time difference
-							$timediff = $now->diff($d);
-
-							$timediff_inSeconds = (string)$timediff->format('%s');
-							$timediff_inMinutes = (string)$timediff->format('%i');
-							$timediff_inHours = (string)$timediff->format('%h');
-							$timediff_inDays = (string)$timediff->format('%d');
-							$timediff_inMonth = (string)$timediff->format('%m');
-							if($timediff_inMonth!=0) {
-									$timediff = $timediff_inMonth . "m";
-							}
-							else
+							for($i = 0; $i<$loops; $i++)
 							{
-								if($timediff_inDays!=0)
-								{
-									$timediff = $timediff_inDays . "d";
-								}
-								else
-								{
-									if($timediff_inHours!=0)
-									{
-										$timediff = $timediff_inHours . "h";
-									}
-									else
-									{
-										if($timediff_inMinutes!=0)
-										{
-											$timediff = $timediff_inMinutes . "m";
-										}
-										else
-										{
-											$timediff = $timediff_inSeconds . "s";
-										}
-									}
-								}
-							}
-						?>
-						
-						<article id ="postId-<?php echo $posts[$i]["post_id"]; ?>" class="jodel" style="background-color: #<?php echo $posts[$i]["color"];?>;">
-							<content>
-								<?php 
-								if(isset($posts[$i]["image_url"])) {
-									echo '<img src="' . $posts[$i]["image_url"] . '">';
-								}
-								else {
-									echo str_replace('  ', ' &nbsp;', nl2br(htmlspecialchars($posts[$i]["message"])));
-								}
-								?>
-							</content>
-							<aside>
-								<a href="index.php?vote=up&postID=<?php echo $posts[$i]["post_id"];?>">
-									<i class="fa fa-angle-up fa-3x"></i>
-								</a>	
-									<br />
-								<?php echo $posts[$i]["vote_count"];?><br />
-								<a href="index.php?vote=down&postID=<?php echo $posts[$i]["post_id"];?>">
-									<i class="fa fa-angle-down fa-3x"></i>
-								</a>
-							</aside>
-						
-							<footer>
-								<table>
-									<tr>
-										<td class="time">
-											<span data-tooltip="Time">
-												<i class="fa fa-clock-o"></i>
-												<?php echo $timediff;?>
-											</span> 
-										</td>
-										<td class="comments">
-											<?php if($showCommentIcon) {?>
-											<span data-tooltip="Comments">
-												<a href="index.php?getPostDetails=true&view=<?php echo $view;?>&postID=<?php echo $posts[$i]["post_id"];?>">
-													<i class="fa fa-commenting-o"></i>
-													<?php if(array_key_exists("child_count", $posts[$i])) {
-																echo $posts[$i]["child_count"];
-															} else echo "0";
-													?>
-													</a>
-											</span>
-											<?php } ?>
-										</td>
-										<td class="distance">
-											<span data-tooltip="Distance">
-												<i class="fa fa-map-marker"></i>
-												<?php echo $posts[$i]["distance"];?> km
-											</span>
-										</td>
-									</tr>
-								</table>
-							</footer>
-						</article>
-						
+							
+							if(isset($posts[$i]))
+							{
+								$lastPostId = $posts[$i]['post_id'];
 
-						
-						<?php }
+								jodelToHtml($posts[$i], $view, $isDetailedView);
+							}
 						} ?>
 
 					</content>
