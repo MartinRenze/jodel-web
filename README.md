@@ -27,10 +27,6 @@ on index.php
 ### Optional ###
 + HTTPS (deactivate by deleting .htaccess)
 
-## Current Keys ##
-+ SECRET = aPLFAjyUusVPHgcgvlAxihthmRaiuqCjBsRCPLan
-+ CLIENT_TYPE = android_4.28.1
-
 ### Tanks to [LauretBernd](https://github.com/LauertBernd) and [Christian Fibich](https://bitbucket.org/cfib90/)###
 
 ### [![HitCount](https://hitt.herokuapp.com/mmainstreet/jodel-web.svg)](https://github.com/mmainstreet/jodel-web)
