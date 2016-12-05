@@ -106,12 +106,19 @@ function registerAccount(Location $location) {
 	return $success;
 }
 
-function getPosts($lastPostId, $accessToken, $url)
+function getPosts($lastPostId, $accessToken, $url, $version = 'v2')
 {	
 	$accountCreator = new GetPosts();
 	$accountCreator->setLastPostId($lastPostId);
 	$accountCreator->setAccessToken($accessToken);
 	$accountCreator->setUrl($url);
+	$accountCreator->version = $version;
+
+	$location = new Location();
+	$location->setLat(52.520006);
+	$location->setLng(13.404954);
+	$location->setCityName('Berlin');
+	$accountCreator->location = $location;
 	$data = $accountCreator->execute();
 	
 	return $data;

@@ -1,11 +1,15 @@
 <?php
 
-
 class GetPosts extends AbstractRequest
 {
 	public $lastPostId;
 
+    /**
+     * @var Location
+     */
+    public $location;
     public $url;
+
         
     function setUrl ($url)
     {
@@ -38,8 +42,24 @@ class GetPosts extends AbstractRequest
     }
     function getPayload()
     {
-        return array(
-        );
+        if($this->version == 'v3')
+        {
+            $this->location = new Location();
+            $this->location->setLat(52.520006);
+            $this->location->setLng(13.404954);
+            $this->location->setCityName('Berlin');
+
+
+            return array(
+                "location" => $this->location->toArray(),
+                "stickies" => 'false',
+            );
+        }
+        else
+        {
+            return array(
+            );
+        }
     }
     function getMethod()
     {

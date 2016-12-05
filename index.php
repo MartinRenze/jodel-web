@@ -256,6 +256,7 @@ include 'php/jodel-web.php';
 							//Get Posts
 							else
 							{
+								$version = 'v2';
 								if($view=='comment')
 								{
 									$url = "/v2/posts/location/discussed/";
@@ -268,11 +269,19 @@ include 'php/jodel-web.php';
 									}
 									else
 									{
-										$url = "/v2/posts/location/";
+										$url = "/v3/posts/location/combo/";
+										$version = 'v3';
 									}
 								}
 
-								$posts = getPosts($lastPostId, $accessToken, $url)['posts'];
+								if($version == 'v3')
+								{
+									$posts = getPosts($lastPostId, $accessToken, $url, $version)['recent'];
+								}
+								else
+								{
+									$posts = getPosts($lastPostId, $accessToken, $url, $version)['posts'];
+								}
 								$loops = 29;
 								$isDetailedView = FALSE;
 							}
