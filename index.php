@@ -386,24 +386,27 @@ include 'php/jodel-web.php';
     	<script src="js/jQueryEmoji.js"></script>
 
 		<script>
-			//Transform UTF-8 Emoji to img
-			$(function(){
-			    $('content').Emoji();
-			});
 
-			$('a').on('click', function(){
-			    $('a').removeClass('selected');
-			    $(this).addClass('selected');
-			});
-
-			function scrollToAnchor(aid){
-			    var aTag = $("article[id='"+ aid +"']");
-			    $('html,body').animate({scrollTop: aTag.offset().top-90},'slow');
-			}
-
-
-			<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
 			$(document).ready(function() {
+				//Transform UTF-8 Emoji to img
+				$('.jodel > content').Emoji();
+
+				$('a').on('click', function(){
+				    $('a').removeClass('selected');
+				    $(this).addClass('selected');
+				});
+
+				function scrollToAnchor(aid){
+				    var aTag = $("article[id='"+ aid +"']");
+				    $('html,body').animate({scrollTop: aTag.offset().top-90},'slow');
+				}
+
+				<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
+
+				
+
+
+
 				var win = $(window);
 				var lastPostId = "<?php echo $lastPostId; ?>";
 				var view = "<?php echo $view; ?>"
@@ -444,6 +447,8 @@ include 'php/jodel-web.php';
 										$('#loading').hide();
 									}
 								});
+
+								$('.jodel > content').Emoji();
 							}
 							
 						}
@@ -454,6 +459,8 @@ include 'php/jodel-web.php';
 
 				// Each time the user scrolls
 				win.scroll(function() {
+
+
 					// End of the document reached?
 					if (($(document).height() - win.height() == win.scrollTop()) && morePostsAvailable) {
 						$('#loading').show();
@@ -463,7 +470,7 @@ include 'php/jodel-web.php';
 						$.ajax({
 							url: 'get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view,
 							dataType: 'html',
-							async: true,
+							async: false,
 							success: function(html) {
 								var div = document.createElement('div');
 								div.innerHTML = html;
@@ -472,21 +479,26 @@ include 'php/jodel-web.php';
 								lastPostId = elements[3].textContent;
 								lastPostId = lastPostId.replace(/\s+/g, '');
 								//alert('Neu: ' + lastPostId + " Alt: " + old_lastPostId);
-								if(lastPostId == old_lastPostId) {
+								if(lastPostId == old_lastPostId)
+								{
 									
 									//morePostsAvailable = false;
 								}
-								else {
+								else
+								{
 									//alert(elements[3].textContent);
 									$('#posts').append(elements[1].innerHTML);
 								}
 								$('#loading').hide();
 							}
 						});
+
+						$('.jodel > content').Emoji();
 					}
 				});
+			<?php } ?>
 			});	
-		<?php } ?>
+
 		</script>
 
 	</body>
