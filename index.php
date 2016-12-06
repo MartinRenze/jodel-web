@@ -168,14 +168,14 @@ include 'php/jodel-web.php';
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>JodelBlue WebClient - </title>
+		<title>JodelBlue WebClient</title>
 		
-		<meta charset="utf8" />
+		<meta charset="utf8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		
-		<meta name="description" content=""/>
-		<meta name="keywords" content=""/>
+		<meta name="description" content="JodelBlue is a WebClient for the Jodel App. No registration required! Browse Jodels all over the world. Send your own Jodels or upvote others.">
+		<meta name="keywords" content="jodelblue, jodel, blue, webclient, web, client">
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 		<link rel="stylesheet" href="css/font-awesome.min.css">
@@ -214,8 +214,6 @@ include 'php/jodel-web.php';
 		<meta name="msapplication-square150x150logo" content="./img/favicon/win8-tile-150x150.png"> 
 		<meta name="msapplication-wide310x150logo" content="./img/favicon/win8-tile-310x150.png"> 
 		<meta name="msapplication-square310x310logo" content="./img/favicon/win8-tile-310x310.png"> 
-		
-
 	</head>
 	
 	<body>
