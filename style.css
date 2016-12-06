@@ -130,7 +130,8 @@ h1 a:link, h1 a:visited {
 #comment-back {
 	color: #fff;
 	float: left;
-	margin-right: 2rem;
+	padding-right: 1rem;
+	margin-right: 1rem;
 }
 
 header .navbar {
