@@ -166,7 +166,7 @@ include 'php/jodel-web.php';
 	}
 ?>
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 	<head>
 		<title>JodelBlue WebClient - </title>
 		
@@ -201,7 +201,7 @@ include 'php/jodel-web.php';
 							else
 							{
 								echo '<h1>';	
-								echo '<a href="index.php" class="spinnable">';
+								echo '<a href="./" class="spinnable">';
 							}
 						?>
 						JodelBlue <i class="fa fa-refresh fa-1x"></i></a>
@@ -379,7 +379,7 @@ include 'php/jodel-web.php';
 						</div>
 						<div class="col-sm-3">
 							<nav>
-								<a href="./impressum.html">Impressum</a> | <a href="./datenschutz.html">Datenschutz</a>
+								<a href="./about-us.html">about us</a>
 							</nav>
 						</div>
 					</div>
