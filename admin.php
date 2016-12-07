@@ -161,7 +161,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 						<article>
 							<div>
 								<h2>Karma</h2>
-								<?php echo getKarma($accessToken); ?>
+								<?php //echo getKarma($accessToken); ?>
 							</div>
 						</article>
 
