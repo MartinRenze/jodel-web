@@ -3,15 +3,22 @@ error_reporting(-1);
 include 'php/jodel-web.php';
 
 	$location = new Location();
-	$location->setLat('0.1');
-	$location->setLng('0.1');
-	$location->setCityName('Munich');
+	$location->setLat('52.5134288');
+	$location->setLng('13.2746394');
+	$location->setCityName('Berlin');
 
-	isTokenFresh($location);
-
-	$result = $db->query("SELECT * FROM accounts WHERE id='1'");
-	
 	$accessToken;
+
+	if(!isset($_COOKIE["JodelId"]))
+	{
+		$accessToken = createAccount();
+		setcookie("JodelId", $accessToken);
+	}
+
+	isTokenFreshByAccessToken($location, $db->real_escape_string($_COOKIE["JodelId"]));
+
+	$result = $db->query("SELECT * FROM accounts WHERE access_token='" . $db->real_escape_string($_COOKIE["JodelId"])  . "'");
+	
 	$newPositionStatus;
 	
 	if ($result->num_rows > 0)
@@ -107,6 +114,7 @@ include 'php/jodel-web.php';
 			$accountCreator = new Downvote();
 		}
 		$accountCreator->setAccessToken($accessToken);
+		$accountCreator->postId = $_GET['postID'];
 		$data = $accountCreator->execute();
 
 		header("Location: index.php#postId-" . htmlspecialchars($_GET['postID']));
@@ -163,6 +171,7 @@ include 'php/jodel-web.php';
 		
 		$accountCreator->setAccessToken($accessToken);
 		$data = $accountCreator->execute();
+		http_redirect();
 	}
 ?>
 <!DOCTYPE html>
@@ -223,7 +232,7 @@ include 'php/jodel-web.php';
 						<?php
 							if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
 							{
-								echo '<a id="comment-back" onclick="goBack()" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postID']) . '">';
+								echo '<a id="comment-back" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postID']) . '">';
 								echo '<i class="fa fa-angle-left fa-3x"></i>';
 								echo '</a>';
 								echo '<h1>';
@@ -548,7 +557,6 @@ include 'php/jodel-web.php';
 			});	
 
 		</script>
-
 	</body>
 </html>
 

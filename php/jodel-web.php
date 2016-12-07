@@ -149,7 +149,7 @@ function registerAccount(Location $location) {
 			$success = FALSE;
 	}	
 	
-	return $success;
+	return $access_token;
 }
 
 function getPosts($lastPostId, $accessToken, $url, $version = 'v2')
@@ -177,7 +177,9 @@ function createAccount()
 	$location->setLng(13.404954);
 	$location->setCityName('Berlin');
 
-	$account = registerAccount($location);
+	$accessToken = registerAccount($location);
+
+	return $accessToken;
 }
 
 function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
