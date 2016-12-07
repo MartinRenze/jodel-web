@@ -1,11 +1,11 @@
 <?php
-
-
 class Upvote extends AbstractRequest {
 		
+    public $postId;
+
     function getApiEndPoint()
     {
-        return '/v2/posts/' . $_GET['postID'] . '/upvote';
+        return '/v2/posts/' . $this->postId . '/upvote';
     }
     function getPayload()
     {

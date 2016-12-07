@@ -1,11 +1,11 @@
 <?php
-
-
-class Downvote extends AbstractRequest {
+class Downvote extends AbstractRequest
+{
+    public $postId;
 		
     function getApiEndPoint()
     {
-        return '/v2/posts/' . $_GET['postID'] . '/downvote';
+        return '/v2/posts/' . $this->postId . '/downvote';
     }
     function getPayload()
     {

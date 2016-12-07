@@ -18,9 +18,55 @@ Requests::register_autoloader();
 
 $lastPostId = '';
 
-function isTokenFresh(Location $location) {
+function isTokenFresh(Location $location)
+{
 	$db = new DatabaseConnect();  
 	$result = $db->query("SELECT * FROM accounts WHERE id='1'");
+	
+	if ($result->num_rows > 0)
+	{
+			// output data of each row
+			while($row = $result->fetch_assoc()) {
+					//$access_token = $row["access_token"];
+					$expiration_date = $row["expiration_date"];
+					$deviceUid = $row["device_uid"];
+					$access_token = $row["access_token"];
+			}
+	}
+	else
+	{
+			echo '0 results';
+	}
+
+	if($expiration_date <= time()) {
+		$accountCreator = new CreateUser();
+		$accountCreator->setAccessToken($access_token);//$accountData->getAccessToken());
+		$accountCreator->setDeviceUid($deviceUid);
+		$accountCreator->setLocation($location);
+		$data = $accountCreator->execute();
+
+		$access_token = (string)$data[0]['access_token'];
+		$expiration_date = $data[0]['expiration_date'];
+		$device_uid = (string)$data[1];
+		
+		$db = new DatabaseConnect();  
+		$result = $db->query("UPDATE accounts 
+								SET access_token='" . $access_token . "',
+									expiration_date='" . $expiration_date . "'
+								WHERE device_uid='" . $device_uid . "'");
+
+		if($result === false){
+				echo "Adding account failed: (" . $db->errno . ") " . $db->error;
+		}	
+	}
+	
+	return TRUE;
+}
+
+function isTokenFreshByAccessToken(Location $location, $accessToken)
+{
+	$db = new DatabaseConnect();  
+	$result = $db->query("SELECT * FROM accounts WHERE access_token='" . $accessToken . "'");
 	
 	if ($result->num_rows > 0)
 	{
