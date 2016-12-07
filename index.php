@@ -95,7 +95,7 @@ include 'php/jodel-web.php';
 						SET name='" . $name . "',
 							lat='" . $lat . "',
 							lng='" . $lng . "'
-						WHERE id='1'");
+						WHERE access_token='" . $accessToken . "'");
 
 				if($result === false)
 				{
