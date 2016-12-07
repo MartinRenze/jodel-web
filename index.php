@@ -223,7 +223,7 @@ include 'php/jodel-web.php';
 						<?php
 							if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
 							{
-								echo '<a id="comment-back" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postID']) . '">';
+								echo '<a id="comment-back" onclick="goBack()" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postID']) . '">';
 								echo '<i class="fa fa-angle-left fa-3x"></i>';
 								echo '</a>';
 								echo '<h1>';
@@ -426,8 +426,16 @@ include 'php/jodel-web.php';
     	<script src="js/jQueryEmoji.js"></script>
 
 		<script>
+			//BackButton
+			function goBack()
+			{
+				window.history.back();
+			}
 
-			$(document).ready(function() {
+			$(document).ready(function()
+			{
+
+
 				//Transform UTF-8 Emoji to img
 				$('.jodel > content').Emoji();
 
