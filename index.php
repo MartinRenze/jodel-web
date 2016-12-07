@@ -14,10 +14,14 @@ include 'php/jodel-web.php';
 		$accessToken = createAccount();
 		setcookie("JodelId", $accessToken);
 	}
+	else
+	{
+		$accessToken = $db->real_escape_string($_COOKIE["JodelId"]);
+	}
 
-	isTokenFreshByAccessToken($location, $db->real_escape_string($_COOKIE["JodelId"]));
+	isTokenFreshByAccessToken($location, $accessToken);
 
-	$result = $db->query("SELECT * FROM accounts WHERE access_token='" . $db->real_escape_string($_COOKIE["JodelId"])  . "'");
+	$result = $db->query("SELECT * FROM accounts WHERE access_token='" . $accessToken  . "'");
 	
 	$newPositionStatus;
 	
