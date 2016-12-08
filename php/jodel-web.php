@@ -213,10 +213,9 @@ function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 	//Replace # with link
 	//preg_replace('~(\#)([^\s!,. /()"\'?]+)~', '<a href="tag/$2">#$2</a>', $text);
 
-
 	//Time to time difference
 	$now = new DateTime();
-	$d = new DateTime($post["created_at"]);
+	$d = new DateTime($post['created_at']);
 	$timediff = $now->diff($d);
 
 	$timediff_inSeconds = (string)$timediff->format('%s');
@@ -283,9 +282,10 @@ function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 			<table>
 				<tr>
 					<td class="time">
-						<span data-tooltip="Time">
+						<span class="tip" data-tooltip="Time">
 							<i class="fa fa-clock-o"></i>
 							<?php echo $timediff;?>
+							<span class="tiptext"><?php echo $d->format('Y-m-d H:i:s');?></span>
 						</span> 
 					</td>
 					<td class="comments">
@@ -328,9 +328,10 @@ function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 						  	}
 					  		?>
 
-						<span data-tooltip="Distance">
+						<span class="tip" data-tooltip="Distance">
 							<i class="fa fa-map-marker"></i>
-							<?php echo $post["distance"];?> km
+							<?php echo $post['distance'];?> km
+							<span class="tiptext"><?php echo $post['location']['name'];?></span>
 						</span>
 					</td>
 				</tr>
