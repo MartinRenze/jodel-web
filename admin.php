@@ -27,7 +27,9 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 		while(($row = $result->fetch_assoc()) && $i < $_POST['quantity'])
 		{
 			$accessToken = $row['access_token'];
-			var_dump($accessToken);
+			
+			$location = getLocationByAccessToken($accessToken);
+
 			isTokenFreshByAccessToken($location, $accessToken);
 
 			if($_POST['vote'] == "up") {

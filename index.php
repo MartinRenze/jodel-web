@@ -19,6 +19,8 @@ include 'php/jodel-web.php';
 		$accessToken = $db->real_escape_string($_COOKIE["JodelId"]);
 	}
 
+	$location = getLocationByAccessToken($accessToken);
+
 	isTokenFreshByAccessToken($location, $accessToken);
 
 	$result = $db->query("SELECT * FROM accounts WHERE access_token='" . $accessToken  . "'");
@@ -163,19 +165,26 @@ include 'php/jodel-web.php';
 					break;
 			}
 			$accountCreator->color = $color;
-			echo "Setting color:" . $color;
 		}
 		
-		$location = new Location();
-		$location->setLat('0.1');
-		$location->setLng('0.1');
-		$location->setCityName('Munich');
+		$location = getLocationByAccessToken($accessToken);
 		
 		$accountCreator->location = $location;
 		
 		$accountCreator->setAccessToken($accessToken);
 		$data = $accountCreator->execute();
-		http_redirect();
+
+		if(isset($_POST['ancestor']))
+		{
+			$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			header('Location: ' . $actual_link . '#postId-' . htmlspecialchars($data['post_id']));
+			exit;
+		}
+		else
+		{
+			header('Location: ./');
+			exit;
+		}
 	}
 ?>
 <!DOCTYPE html>

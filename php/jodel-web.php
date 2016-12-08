@@ -108,6 +108,32 @@ function isTokenFreshByAccessToken(Location $location, $accessToken)
 	return TRUE;
 }
 
+function getLocationByAccessToken($accessToken)
+{
+	$db = new DatabaseConnect();
+	$result = $db->query("SELECT * FROM accounts WHERE access_token='" . $accessToken  . "'");
+	
+	$location = new Location();
+	
+	if ($result->num_rows > 0)
+	{
+		// output data of each row
+		while($row = $result->fetch_assoc())
+		{
+			$location->setLat($row['lat']);
+			$location->setLng($row['lng']);
+			$location->setCityName($row['name']);
+		}
+	}
+	else
+	{
+		echo "Error: 0 results";
+	}
+
+	return $location;
+}
+
+
 function getKarma($accessToken)
 {
 	$accountCreator = new GetKarma();

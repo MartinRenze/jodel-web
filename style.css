@@ -164,7 +164,8 @@ header .navbar {
 }
 
 .jodel:target {
-	padding-top: 90px;
+	background-clip: padding-box;
+	border-top: 70px solid rgba(0, 0, 0, 0.0);
 }
 
 .jodel {
@@ -178,6 +179,7 @@ header .navbar {
 	width: 90%;
 	margin-bottom: 0.5rem;
 	font-size: 1.8rem;
+	word-wrap: break-word;
 }
 
 .jodel content img {
