@@ -1,32 +1,31 @@
 <?php
 error_reporting(-1);
 
-include 'php/jodel-web.php';/*
-include 'php/DatabaseConnect.php';
-include 'php/Requests/AbstractRequest.php';
-include 'php/Requests/CreateUser.php';
-include 'php/AccountData.php';
-include 'php/Location.php';
-include 'php/Requests/GetPosts.php';
-include 'php/Requests/GetKarma.php';
-include 'php/Requests/UpdateLocation.php';
-include 'php/Requests/Upvote.php';
-include 'php/Requests/Downvote.php';
-include 'php/Requests/GetPostDetails.php';
-include 'php/Requests/SendJodel.php';
+include 'php/jodel-web.php';
 
-require_once 'php/Requests/libary/Requests.php';
-Requests::register_autoloader();*/
 $location = new Location();
-$location->setLat('0.1');
-$location->setLng('0.1');
-$location->setCityName('Munich');
-
-isTokenFresh($location);
-
-$result = $db->query("SELECT * FROM accounts WHERE id='1'");
+$location->setLat('52.5134288');
+$location->setLng('13.2746394');
+$location->setCityName('Berlin');
 
 $accessToken;
+
+if(!isset($_COOKIE["JodelId"]))
+{
+	$accessToken = createAccount();
+	setcookie("JodelId", $accessToken);
+}
+else
+{
+	$accessToken = $db->real_escape_string($_COOKIE["JodelId"]);
+}
+
+$location = getLocationByAccessToken($accessToken);
+
+isTokenFreshByAccessToken($location, $accessToken);
+
+$result = $db->query("SELECT * FROM accounts WHERE access_token='" . $accessToken  . "'");
+
 $newPositionStatus;
 
 if ($result->num_rows > 0)
