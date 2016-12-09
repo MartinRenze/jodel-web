@@ -155,6 +155,11 @@ include 'php/jodel-web.php';
 		}
 		
 		//$location = getLocationByAccessToken($accessToken);
+
+		$accountCreatorLocation = new UpdateLocation();
+		$accountCreatorLocation->setLocation($location);
+		$accountCreatorLocation->setAccessToken($accessToken_forId1);
+		$data = $accountCreatorLocation->execute();
 		
 		$accountCreator->location = $location;
 		
