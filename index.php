@@ -154,7 +154,7 @@ include 'php/jodel-web.php';
 			$accountCreator->color = $color;
 		}
 		
-		$location = getLocationByAccessToken($accessToken);
+		//$location = getLocationByAccessToken($accessToken);
 		
 		$accountCreator->location = $location;
 		
