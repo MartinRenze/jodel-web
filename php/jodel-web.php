@@ -23,6 +23,8 @@ function isTokenFresh(Location $location)
 	$db = new DatabaseConnect();  
 	$result = $db->query("SELECT * FROM accounts WHERE id='1'");
 	
+	$access_token;
+
 	if ($result->num_rows > 0)
 	{
 			// output data of each row
@@ -60,7 +62,7 @@ function isTokenFresh(Location $location)
 		}	
 	}
 	
-	return TRUE;
+	return $access_token;
 }
 
 function isTokenFreshByAccessToken(Location $location, $accessToken)
@@ -108,6 +110,53 @@ function isTokenFreshByAccessToken(Location $location, $accessToken)
 	return TRUE;
 }
 
+function isTokenFreshByDeviceUid(Location $location, $deviceUid)
+{
+	$db = new DatabaseConnect();  
+	$result = $db->query("SELECT * FROM accounts WHERE device_uid='" . $deviceUid . "'");
+
+	$access_token;
+
+	if ($result->num_rows > 0)
+	{
+			// output data of each row
+			while($row = $result->fetch_assoc()) {
+					//$access_token = $row["access_token"];
+					$expiration_date = $row["expiration_date"];
+					$deviceUid = $row["device_uid"];
+					$access_token = $row["access_token"];
+			}
+	}
+	else
+	{
+			echo '0 results';
+	}
+
+	if($expiration_date <= time()) {
+		$accountCreator = new CreateUser();
+		$accountCreator->setAccessToken($access_token);
+		$accountCreator->setDeviceUid($deviceUid);
+		$accountCreator->setLocation($location);
+		$data = $accountCreator->execute();
+
+		$access_token = (string)$data[0]['access_token'];
+		$expiration_date = $data[0]['expiration_date'];
+		$device_uid = (string)$data[1];
+		
+		$db = new DatabaseConnect();  
+		$result = $db->query("UPDATE accounts 
+								SET access_token='" . $access_token . "',
+									expiration_date='" . $expiration_date . "'
+								WHERE device_uid='" . $device_uid . "'");
+
+		if($result === false){
+				echo "Adding account failed: (" . $db->errno . ") " . $db->error;
+		}	
+	}
+	
+	return $access_token;
+}
+
 function getLocationByAccessToken($accessToken)
 {
 	$db = new DatabaseConnect();
@@ -131,6 +180,54 @@ function getLocationByAccessToken($accessToken)
 	}
 
 	return $location;
+}
+
+function getLocationByDeviceUid($deviceUid)
+{
+	$db = new DatabaseConnect();
+	$result = $db->query("SELECT * FROM accounts WHERE device_uid='" . $deviceUid  . "'");
+	
+	$location = new Location();
+	
+	if ($result->num_rows > 0)
+	{
+		// output data of each row
+		while($row = $result->fetch_assoc())
+		{
+			$location->setLat($row['lat']);
+			$location->setLng($row['lng']);
+			$location->setCityName($row['name']);
+		}
+	}
+	else
+	{
+		echo "Error: 0 results";
+	}
+
+	return $location;
+}
+
+function getAccessTokenByDeviceUid($deviceUid)
+{
+	$db = new DatabaseConnect();
+	$result = $db->query("SELECT * FROM accounts WHERE device_uid='" . $deviceUid  . "'");
+	
+	$accessToken;
+	
+	if ($result->num_rows > 0)
+	{
+		// output data of each row
+		while($row = $result->fetch_assoc())
+		{
+			$accessToken = $row['access_token'];
+		}
+	}
+	else
+	{
+		echo "Error: 0 results";
+	}
+
+	return $accessToken;
 }
 
 
@@ -175,7 +272,7 @@ function registerAccount(Location $location) {
 			$success = FALSE;
 	}	
 	
-	return $access_token;
+	return $device_uid;
 }
 
 function getPosts($lastPostId, $accessToken, $url, $version = 'v2')
@@ -203,9 +300,9 @@ function createAccount()
 	$location->setLng(13.404954);
 	$location->setCityName('Berlin');
 
-	$accessToken = registerAccount($location);
+	$device_uid = registerAccount($location);
 
-	return $accessToken;
+	return $device_uid;
 }
 
 function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)

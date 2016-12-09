@@ -8,41 +8,28 @@ include 'php/jodel-web.php';
 	$location->setCityName('Berlin');
 
 	$accessToken;
+	$accessToken_forId1;
+	$deviceUid;
 
-	if(!isset($_COOKIE["JodelId"]))
+	setcookie("JodelId", "", time()-3600);
+
+	if(!isset($_COOKIE["JodelDeviceId"]))
 	{
-		$accessToken = createAccount();
-		setcookie("JodelId", $accessToken, time()+60*60*24*365*10);
+		$deviceUid = createAccount();
+		setcookie("JodelDeviceId", $deviceUid, time()+60*60*24*365*10);
+		
 	}
 	else
 	{
-		$accessToken = $db->real_escape_string($_COOKIE["JodelId"]);
+		$deviceUid = $db->real_escape_string($_COOKIE["JodelDeviceId"]);
 	}
 
-	$location = getLocationByAccessToken($accessToken);
+	$location = getLocationByDeviceUid($deviceUid);
+	$newPositionStatus = $location->getCityName();
+	$accessToken = isTokenFreshByDeviceUid($location, $deviceUid);
+	//Acc is fresh. token and location is set
 
-	isTokenFreshByAccessToken($location, $accessToken);
-
-	$result = $db->query("SELECT * FROM accounts WHERE access_token='" . $accessToken  . "'");
-	
-	$newPositionStatus;
-	
-	if ($result->num_rows > 0)
-	{
-		// output data of each row
-		while($row = $result->fetch_assoc())
-		{
-			$accessToken = $row["access_token"];
-			$newPositionStatus = $row['name'];
-		}
-	}
-	else
-	{
-		echo "Error: 0 results";
-	}
-	
-	
-	//createAccount();
+	$accessToken_forId1 = isTokenFresh($location);
 
 
 	//Set View
@@ -119,7 +106,7 @@ include 'php/jodel-web.php';
 		else if($_GET['vote'] == "down") {
 			$accountCreator = new Downvote();
 		}
-		$accountCreator->setAccessToken($accessToken);
+		$accountCreator->setAccessToken($accessToken_forId1);
 		$accountCreator->postId = $_GET['postID'];
 		$data = $accountCreator->execute();
 
@@ -171,7 +158,7 @@ include 'php/jodel-web.php';
 		
 		$accountCreator->location = $location;
 		
-		$accountCreator->setAccessToken($accessToken);
+		$accountCreator->setAccessToken($accessToken_forId1);
 		$data = $accountCreator->execute();
 
 		if(isset($_POST['ancestor']))
@@ -376,7 +363,7 @@ include 'php/jodel-web.php';
 						<article>
 							<div>
 								<h2>Karma</h2>
-								<?php echo getKarma($accessToken); ?>
+								<?php echo getKarma($accessToken_forId1); ?>
 							</div>
 						</article>
 
