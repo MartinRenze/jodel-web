@@ -9,37 +9,29 @@ $location->setLng('13.2746394');
 $location->setCityName('Berlin');
 
 $accessToken;
+$accessToken_forId1;
+$deviceUid;
 
-if(!isset($_COOKIE["JodelId"]))
+setcookie("JodelId", "", time()-3600);
+
+if(!isset($_COOKIE["JodelDeviceId"]))
 {
-	$accessToken = createAccount();
-	setcookie("JodelId", $accessToken);
+	$deviceUid = createAccount();
+	setcookie("JodelDeviceId", $deviceUid, time()+60*60*24*365*10);
+	
 }
 else
 {
-	$accessToken = $db->real_escape_string($_COOKIE["JodelId"]);
+	$deviceUid = $db->real_escape_string($_COOKIE["JodelDeviceId"]);
 }
 
-$location = getLocationByAccessToken($accessToken);
+$location = getLocationByDeviceUid($deviceUid);
+$newPositionStatus = $location->getCityName();
+$accessToken = isTokenFreshByDeviceUid($location, $deviceUid);
+//Acc is fresh. token and location is set
 
-isTokenFreshByAccessToken($location, $accessToken);
+$accessToken_forId1 = isTokenFresh($location);
 
-$result = $db->query("SELECT * FROM accounts WHERE access_token='" . $accessToken  . "'");
-
-$newPositionStatus;
-
-if ($result->num_rows > 0)
-{
-	// output data of each row
-	while($row = $result->fetch_assoc())
-	{
-		$accessToken = $row["access_token"];
-	}
-}
-else
-{
-	echo "Error: 0 results";
-}
 
 
 	if(isset($_GET['view']))
