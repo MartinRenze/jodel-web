@@ -108,21 +108,9 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 		<header>
 			<nav class="navbar navbar-full navbar-dark navbar-fixed-top">
 				<div class="container">					
-						<?php
-							if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
-							{
-								echo '<a id="comment-back" onclick="goBack()" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postID']) . '">';
-								echo '<i class="fa fa-angle-left fa-3x"></i>';
-								echo '</a>';
-								echo '<h1>';
-								echo '<a href="index.php?getPostDetails=' . htmlspecialchars($_GET['getPostDetails']) . '&postID=' . htmlspecialchars($_GET['postID']) . '" class="spinnable">';
-							}
-							else
-							{
-								echo '<h1>';	
-								echo '<a href="./" class="spinnable">';
-							}
-						?>
+						<h1>
+						<a href="./" class="spinnable">
+						
 						JodelBlue <i class="fa fa-refresh fa-1x"></i></a>
 					</h1>					
 				</div>
@@ -150,57 +138,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 				<aside class="topSidebar col-sm-4 sidebar-outer">
 					<div class="fixed">
 						<article>
-							<div>
-								<h2>Position</h2>
-								<form method="get">
-									<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
-
-									<input type="submit" value="Set Location" /> 
-								</form>
-							</div>
-						</article>
-
-						<article>
-							<div>
-								<h2>Karma</h2>
-								<?php //echo getKarma($accessToken); ?>
-							</div>
-						</article>
-
-						<article>
-							<div>
-								<?php if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) { ?>
-								<h2>Comment on Jodel</h2>
-								<form method="POST">				
-										<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postID']);?>" />
-										<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
-									<br />
-									<input type="submit" value="SEND" /> 
-								</form>
-									<?php } else { ?>
-								<h2>New Jodel</h2>
-								<form method="POST">
-									<textarea id="message" name="message" placeholder="Send a Jodel to all students within 10km" required></textarea> 
-									<br />
-									<select id="postColorPicker" name="color">
-										<option value="06A3CB">Blue</option>
-										<option value="8ABDB0">Teal</option>
-										<option value="9EC41C">Green</option>
-										<option value="FFBA00">Yellow</option>
-										<option value="DD5F5F">Red</option>
-										<option value="FF9908">Orange</option>
-									</select> 
-									<br />
-									<input type="submit" value="SEND" /> 
-								</form>
-								<?php } ?>
-							</div>
-						</article>
 							
-						<article>
-							<div>
-								<h2>Login</h2>
-							</div>
 						</article>
 					</div>
 				</aside>
@@ -244,103 +182,6 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 				    var aTag = $("article[id='"+ aid +"']");
 				    $('html,body').animate({scrollTop: aTag.offset().top-90},'slow');
 				}
-
-				<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
-
-				
-
-
-
-				var win = $(window);
-				var lastPostId = "<?php echo $lastPostId; ?>";
-				var view = "<?php echo $view; ?>"
-				var old_lastPostId = "";
-				var morePostsAvailable = true;
-
-				if(window.location.hash)
-				{
-					var hash = window.location.hash.slice(1);
-
-					if(!$("article[id='"+ hash +"']").length)
-					{
-						for (var i = 5; i >= 0; i--)
-						{
-							if(!$("article[id='"+ hash +"']").length)
-							{
-								$.ajax({
-									url: 'get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view,
-									dataType: 'html',
-									async: false,
-									success: function(html) {
-										var div = document.createElement('div');
-										div.innerHTML = html;
-										var elements = div.childNodes;
-										old_lastPostId = lastPostId;
-										lastPostId = elements[3].textContent;
-										lastPostId = lastPostId.replace(/\s+/g, '');
-										//alert('Neu: ' + lastPostId + " Alt: " + old_lastPostId);
-										if(lastPostId == old_lastPostId) {
-											
-											//morePostsAvailable = false;
-										}
-										else {
-											//alert(elements[3].textContent);
-											$('#posts').append(elements[1].innerHTML);
-											$('#posts').hide().show(0);
-										}
-										$('#loading').hide();
-									}
-								});
-
-								$('.jodel > content').Emoji();
-							}
-							
-						}
-						scrollToAnchor(hash);
-
-					}						
-				}
-
-				// Each time the user scrolls
-				win.scroll(function() {
-
-
-					// End of the document reached?
-					if (($(document).height() - win.height() == win.scrollTop()) && morePostsAvailable) {
-						$('#loading').show();
-
-						
-						
-						$.ajax({
-							url: 'get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view,
-							dataType: 'html',
-							async: false,
-							success: function(html) {
-								var div = document.createElement('div');
-								div.innerHTML = html;
-								var elements = div.childNodes;
-								old_lastPostId = lastPostId;
-								lastPostId = elements[3].textContent;
-								lastPostId = lastPostId.replace(/\s+/g, '');
-								//alert('Neu: ' + lastPostId + " Alt: " + old_lastPostId);
-								if(lastPostId == old_lastPostId)
-								{
-									
-									//morePostsAvailable = false;
-								}
-								else
-								{
-									//alert(elements[3].textContent);
-									$('#posts').append(elements[1].innerHTML);
-								}
-								$('#loading').hide();
-							}
-						});
-
-						$('.jodel > content').Emoji();
-					}
-				});
-			<?php } ?>
 			});	
 
 		</script>

@@ -12,7 +12,7 @@ include 'php/jodel-web.php';
 	if(!isset($_COOKIE["JodelId"]))
 	{
 		$accessToken = createAccount();
-		setcookie("JodelId", $accessToken);
+		setcookie("JodelId", $accessToken, time()+60*60*24*365*10);
 	}
 	else
 	{
