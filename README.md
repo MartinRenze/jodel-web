@@ -13,11 +13,8 @@ https://www.jodelblue.com/
 
 ## How to Use##
 ### Create Jodel account ###
-Run
-``` PHP
-createAccount();
-```
-on index.php
+1. visit ./admin.php
+2. click on 'Create new Account'
 
 
 ## Requirements ##
@@ -30,6 +27,4 @@ on index.php
 ### Optional ###
 + HTTPS (deactivate by deleting .htaccess)
 
-### Tanks to [LauretBernd](https://github.com/LauertBernd) and [Christian Fibich](https://bitbucket.org/cfib90/)###
-
-### [![HitCount](https://hitt.herokuapp.com/mmainstreet/jodel-web.svg)](https://github.com/mmainstreet/jodel-web)
+### Thanks to [LauretBernd](https://github.com/LauertBernd) and [Christian Fibich](https://bitbucket.org/cfib90/)###
