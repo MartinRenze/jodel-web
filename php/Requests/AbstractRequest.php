@@ -33,10 +33,11 @@ abstract class AbstractRequest
         }
         //Comment out to debug the Request:
         
+        /*
         var_dump($url);
         var_dump($header);
         var_dump($this->payLoad);
-        
+        */
         
 
         switch ($this->getMethod()) {
@@ -84,7 +85,7 @@ abstract class AbstractRequest
 		}
 
         
-        var_dump($result);
+        /*var_dump($result);*/
         
 
         return $result;
