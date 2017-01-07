@@ -107,7 +107,7 @@ function isTokenFreshByAccessToken(Location $location, $accessToken)
 		}	
 	}
 	
-	return TRUE;
+	return $access_token;
 }
 
 function isTokenFreshByDeviceUid(Location $location, $deviceUid)

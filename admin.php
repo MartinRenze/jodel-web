@@ -21,7 +21,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 	$i = 0;
 	$result = $db->query("SELECT access_token FROM accounts");
 
-	if ($result->num_rows > 0)
+	if($result->num_rows > 0)
 	{
 		// output data of each row
 		while(($row = $result->fetch_assoc()) && $i < $_POST['quantity'])
@@ -30,7 +30,8 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 			
 			$location = getLocationByAccessToken($accessToken);
 
-			isTokenFreshByAccessToken($location, $accessToken);
+			$accessToken = isTokenFreshByAccessToken($location, $accessToken);
+
 
 			if($_POST['vote'] == "up") {
 				$accountCreator = new Upvote();
