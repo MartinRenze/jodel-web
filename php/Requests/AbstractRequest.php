@@ -2,11 +2,11 @@
 
 abstract class AbstractRequest
 {	
-    CONST CLIENTID = '81e8a76e-1e02-4d17-9ba0-8a7020261b26';
-    CONST APIURL = 'https://api.go-tellm.com/api';
-    const SECRET = "zpwKnTvubiKritHEnjOTcTeHxLJJNTEVumuNZqcE";
-    const USERAGENT = "Jodel/4.30.2 Dalvik/2.1.0 (Linux; U; Android 5.1.1; )";
-    const CLIENT_TYPE = 'android_4.30.2';
+    const CLIENTID = '81e8a76e-1e02-4d17-9ba0-8a7020261b26';
+    const APIURL = 'https://api.go-tellm.com/api';
+    const SECRET = 'plerFToqEdWlzShdZlTywaCHRuzlKIMsNmOJVDGE';
+    const USERAGENT = 'Jodel/4.31.1 Dalvik/2.1.0 (Linux; U; Android 5.1.1; )';
+    const CLIENT_TYPE = 'android_4.31.1';
     
     private $accessToken = null;
     private $payLoad;
@@ -32,11 +32,11 @@ abstract class AbstractRequest
             $header['Authorization'] = "Bearer " . $this->getAccessToken();
         }
         //Comment out to debug the Request:
-        /*
+        
         var_dump($url);
         var_dump($header);
         var_dump($this->payLoad);
-        */
+        
         
 
         switch ($this->getMethod()) {
@@ -65,7 +65,7 @@ abstract class AbstractRequest
                 $result = "Success";
                 break;
             case 401:
-				throw new \Exception('Unauthorized');
+				//throw new \Exception('Unauthorized');
                 break;
             case 404:
                 //echo "Es wurde bereits gevoted";
@@ -83,9 +83,9 @@ abstract class AbstractRequest
 			$result[1] = $device_uid;
 		}
 
-        /*
+        
         var_dump($result);
-        */
+        
 
         return $result;
     }
