@@ -273,7 +273,7 @@ include 'php/jodel-web.php';
 								$data = $accountCreator->execute();
 								
 								$posts[0] = $data;
-								if(property_exists($data, 'children')) {
+								if(array_key_exists('children', $data)) {
 									foreach($data['children'] as $key => $child)
 									{
 										
@@ -295,7 +295,10 @@ include 'php/jodel-web.php';
 									}
 									$loops = $data['child_count'] + 1;
 								}
-								else $loops = 1;
+								else
+								{
+									$loops = 1;
+								}
 								$isDetailedView = TRUE;
 							}
 							//Get Posts
