@@ -43,7 +43,10 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 			$accountCreator->setAccessToken($accessToken);
 			$accountCreator->postId = $_POST['postId'];
 			$data = $accountCreator->execute();
-			$i++;
+			if(array_key_exists('post', $data))
+			{
+				$i++;
+			}
 		}
 	}
 	else

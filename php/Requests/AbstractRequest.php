@@ -74,6 +74,9 @@ abstract class AbstractRequest
                 //echo "Es wurde bereits gevoted";
                 //throw  new \Exception('Signing failed!');
                 break;
+            case 429:
+            	exit("Error 429: Too Many Requests");
+            	break;
             default:
                 throw  new \Exception('Unknown Error: '.$result->status_code);
         }

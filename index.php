@@ -273,7 +273,7 @@ include 'php/jodel-web.php';
 								$data = $accountCreator->execute();
 								
 								$posts[0] = $data;
-								if(isset($data['children'])) {
+								if(property_exists($data, 'children')) {
 									foreach($data['children'] as $key => $child)
 									{
 										
