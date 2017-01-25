@@ -11,12 +11,11 @@ include 'php/jodel-web.php';
 	$accessToken_forId1;
 	$deviceUid;
 
-	setcookie("JodelId", "", time()-3600);
-
 	if(!isset($_COOKIE["JodelDeviceId"]))
 	{
 		$deviceUid = createAccount();
-		setcookie("JodelDeviceId", $deviceUid, time()+60*60*24*365*10);
+		setcookie('JodelDeviceId', $deviceUid, time()+60*60*24*365*10);
+		error_log('Created account with JodelDeviceId:' . $deviceUid .  ' for ' . $_SERVER['REMOTE_ADDR']);
 		
 	}
 	else

@@ -40,7 +40,9 @@ abstract class AbstractRequest
         */
 
         $options = array(
-            'proxy' => '186.103.169.165:8080'
+            'timeout' => 100,
+            'connect_timeout' => 100,
+            'proxy' => '186.103.169.165:8080',
         );
 
         switch ($this->getMethod()) {
