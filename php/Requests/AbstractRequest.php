@@ -77,6 +77,9 @@ abstract class AbstractRequest
             case 429:
             	exit("Error 429: Too Many Requests");
             	break;
+            case 403:
+                exit("Error 403: Access denied");
+                break;
             default:
                 throw  new \Exception('Unknown Error: '.$result->status_code);
         }

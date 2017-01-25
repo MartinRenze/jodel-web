@@ -182,14 +182,14 @@ include 'php/jodel-web.php';
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>JodelBlue WebClient</title>
+		<title>JodelBlue - Web-App and Browser-Client</title>
 		
-		<meta charset="utf8">
+		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		
-		<meta name="description" content="JodelBlue is a WebClient for the Jodel App. No registration required! Browse Jodels all over the world. Send your own Jodels or upvote others.">
-		<meta name="keywords" content="jodelblue, jodel, blue, webclient, web, client">
+		<meta name="description" content="JodelBlue is a Web-App and Browser-Client for the Jodel App. No registration required! Browse Jodels all over the world. Send your own Jodels or upvote others.">
+		<meta name="keywords" content="jodelblue, jodel, blue, webclient, web, client, web-app, browser, app">
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 		<link rel="stylesheet" href="css/font-awesome.min.css">
@@ -337,14 +337,13 @@ include 'php/jodel-web.php';
 
 							for($i = 0; $i<$loops; $i++)
 							{
-							
-							if(isset($posts[$i]))
-							{
-								$lastPostId = $posts[$i]['post_id'];
+								if(array_key_exists($i, $posts))
+								{
+									$lastPostId = $posts[$i]['post_id'];
 
-								jodelToHtml($posts[$i], $view, $isDetailedView);
-							}
-						} ?>
+									jodelToHtml($posts[$i], $view, $isDetailedView);
+								}
+							} ?>
 
 					</content>
 					
