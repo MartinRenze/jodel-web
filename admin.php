@@ -1,7 +1,7 @@
 <?php
 
-$config = parse_ini_file('config/config.ini.php'); 
-if($config['pw'] != $_GET['pw'])
+$config = parse_ini_file('config/config.ini.php');
+if(!isset($_GET['pw']) || $config['pw'] != $_GET['pw'])
 {
 	error_log("Somebody used a wrong password on admin.php");
 	die();

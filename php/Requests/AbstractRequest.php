@@ -38,11 +38,14 @@ abstract class AbstractRequest
         var_dump($header);
         var_dump($this->payLoad);
         */
-        
+
+        $options = array(
+            'proxy' => '186.103.169.165:8080'
+        );
 
         switch ($this->getMethod()) {
             case 'POST':
-                $result = Requests::post($url, $header, $this->payLoad);
+                $result = Requests::post($url, $header, $this->payLoad, $options);
                 break;
             case 'GET':
                 if($this->version == 'v3')
