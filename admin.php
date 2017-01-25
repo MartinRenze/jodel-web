@@ -1,5 +1,11 @@
 <?php
-error_reporting(-1);
+
+$config = parse_ini_file('config/config.ini.php'); 
+if($config['pw'] != $_GET['pw'])
+{
+	die();
+}
+
 include 'php/jodel-web.php';
 
 $location = new Location();
