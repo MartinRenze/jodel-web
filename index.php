@@ -92,7 +92,7 @@ include 'php/jodel-web.php';
 				else
 				{
 					$newPositionStatus = $name;
-					error_log('User with JodelDeviceId:' . $deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT']; . '] changed to Location: ' . $name);
+					error_log('User with JodelDeviceId:' . $deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . '] changed to Location: ' . $name);
 				}
 			}
 		}
