@@ -15,7 +15,7 @@ include 'php/jodel-web.php';
 	{
 		$deviceUid = createAccount();
 		setcookie('JodelDeviceId', $deviceUid, time()+60*60*24*365*10);
-		error_log('Created account with JodelDeviceId:' . $deviceUid .  ' for ' . $_SERVER['REMOTE_ADDR']);
+		error_log('Created account with JodelDeviceId:' . $deviceUid .  ' for [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT']; . ']');
 		
 	}
 	else
@@ -92,6 +92,7 @@ include 'php/jodel-web.php';
 				else
 				{
 					$newPositionStatus = $name;
+					error_log('User with JodelDeviceId:' . $deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT']; . '] changed to Location: ' . $name);
 				}
 			}
 		}
