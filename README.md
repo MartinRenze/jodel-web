@@ -25,6 +25,7 @@ https://www.jodelblue.com/
 - [ ] Options page
 - [ ] Check if jodel is available or redirect home
 - [ ] Rotate img function
+
 ### Backend ###
 - [ ] Check growing DB
 - [ ] implement log system
