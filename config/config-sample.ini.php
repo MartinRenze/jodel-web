@@ -3,10 +3,13 @@
 ;/*
 [database]
 host			= localhost
-username 	= root
-password 	= password
-dbname 		= jodel-web
+username 		= root
+password 		= password
+dbname 			= jodel-web
 
 [admin.php]
-pw			= password
+pw				= password
+
+[SEO]
+botDeviceUid 	= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ;*/

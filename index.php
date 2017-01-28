@@ -11,16 +11,39 @@ include 'php/jodel-web.php';
 	$accessToken_forId1;
 	$deviceUid;
 
-	if(!isset($_COOKIE["JodelDeviceId"]))
+	//What is dude doing with my Server?
+	if($_SERVER['REMOTE_ADDR'] == '94.231.103.52')
 	{
-		$deviceUid = createAccount();
-		setcookie('JodelDeviceId', $deviceUid, time()+60*60*24*365*10);
-		error_log('Created account with JodelDeviceId:' . $deviceUid .  ' for [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . ']');
+		echo('You are flooting my Server! Pls enable Cookies in your script and contact me: info@jodelblue.com');
+		die();
+	}
+
+
+	$config = parse_ini_file('config/config.ini.php');
+
+	//Ceck if it's a Spider or Google Bot
+	if(botDeviceUidIsSet($config) && isUserBot())
+	{
+		error_log('Spider or Bot checked in!');
 		
+		//Change this to a free device_uid listed in your DB
+		$deviceUid = $config['botDeviceUid'];
+		$config = NULL;
 	}
 	else
 	{
-		$deviceUid = $db->real_escape_string($_COOKIE["JodelDeviceId"]);
+		$config = NULL;
+		if(!isset($_COOKIE["JodelDeviceId"]))
+		{
+			$deviceUid = createAccount();
+			setcookie('JodelDeviceId', $deviceUid, time()+60*60*24*365*10);
+			error_log('Created account with JodelDeviceId:' . $deviceUid .  ' for [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . ']');
+			
+		}
+		else
+		{
+			$deviceUid = $db->real_escape_string($_COOKIE["JodelDeviceId"]);
+		}
 	}
 
 	$location = getLocationByDeviceUid($deviceUid);

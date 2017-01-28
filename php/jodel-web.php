@@ -305,6 +305,25 @@ function createAccount()
 	return $device_uid;
 }
 
+function isUserBot()
+{
+	preg_match('/bot|spider|google|twitter^$/i', $_SERVER['HTTP_USER_AGENT'], $matches);
+
+    return (isset($matches[0])) ? false : true;
+}
+
+function botDeviceUidIsSet($config)
+{
+	if(!array_key_exists('botDeviceUid', $config) || !isset($config['botDeviceUid']) || $config['botDeviceUid'] == '' || $config['botDeviceUid'] == 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+	{
+		return FALSE;
+	}
+	else
+	{
+		return TRUE;
+	}
+}
+
 function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 {	//ToDO
 	//Replace # with link
