@@ -307,9 +307,9 @@ function createAccount()
 
 function isUserBot()
 {
-	preg_match('/bot|spider|google|twitter^$/i', $_SERVER['HTTP_USER_AGENT'], $matches);
+	preg_match('/bot|spider|google|twitter/i', $_SERVER['HTTP_USER_AGENT'], $matches);
 
-    return (isset($matches[0])) ? false : true;
+    return (isset($matches[0])) ? true : false;
 }
 
 function botDeviceUidIsSet($config)
