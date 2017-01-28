@@ -33,16 +33,16 @@ include 'php/jodel-web.php';
 	else
 	{
 		$config = NULL;
-		if(!isset($_COOKIE["JodelDeviceId"]))
+		if(!isset($_COOKIE['JodelDeviceId']))
 		{
 			$deviceUid = createAccount();
 			setcookie('JodelDeviceId', $deviceUid, time()+60*60*24*365*10);
-			error_log('Created account with JodelDeviceId:' . $deviceUid .  ' for [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . ']');
+			error_log('Created account with JodelDeviceId:' . $deviceUid .  ' for [' . $_SERVER ['HTTP_USER_AGENT'] . ']');
 			
 		}
 		else
 		{
-			$deviceUid = $db->real_escape_string($_COOKIE["JodelDeviceId"]);
+			$deviceUid = $db->real_escape_string($_COOKIE['JodelDeviceId']);
 		}
 	}
 
@@ -100,7 +100,7 @@ include 'php/jodel-web.php';
 			$data = $accountCreator->execute();
 
 			//safe location to db
-			if($data == "Success")
+			if($data == 'Success')
 			{
 				$result = $db->query("UPDATE accounts 
 						SET name='" . $name . "',
@@ -191,7 +191,7 @@ include 'php/jodel-web.php';
 
 		if(isset($_POST['ancestor']))
 		{
-			$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			$actual_link = 'http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]';
 			header('Location: ' . $actual_link . '#postId-' . htmlspecialchars($data['post_id']));
 			exit;
 		}
@@ -360,7 +360,7 @@ include 'php/jodel-web.php';
 
 							for($i = 0; $i<$loops; $i++)
 							{
-								if(array_key_exists($i, $posts))
+								if(array_key_exists($i, $posts) && array_key_exists('post_id', $posts[$i]) && isset($posts[$i]['post_id']))
 								{
 									$lastPostId = $posts[$i]['post_id'];
 
