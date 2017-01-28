@@ -4,6 +4,34 @@
 ## Demo ##
 https://www.jodelblue.com/
 
+## ToDo-List ##
+### Frontend ###
+- [ ] Fix scroll down bug
+- [ ] change Font
+- [ ] Scan with Minion (https://github.com/mozilla/minion-vm/)
+- [ ] Add hashtag-support
+- [ ] Send img
+- [ ] Add geolocate button
+- [ ] Check with acunetix pro
+- [ ] Add Login
+- [ ] Fix Link upvote marker
+- [ ] Add loading icon
+- [ ] Html cache
+- [ ] Flag jodel
+- [ ] Account views
+- [ ] Error handling
+- [ ] Share buttons
+- [ ] Fix: Vote has wrong view
+- [ ] Options page
+- [ ] Check if jodel is available or redirect home
+- [ ] Rotate img function
+### Backend ###
+- [ ] Check growing DB
+- [ ] implement log system
+- [ ] fix errorlog
+- [ ] Get Key from APK automatically
+- [ ] Update Setup in README.md
+
 ## Setting up jodel-web ##
 1. Create MySql Database
 2. Edit config/config-sample.ini.php and insert MySQL login credentials
