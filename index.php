@@ -285,9 +285,9 @@ include 'php/jodel-web.php';
 
 					<div id="location_mobile" class="hidden-sm-up">
 						<form method="get">
-							<input type="text" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
+							<input type="text" id="city_mobile" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
 
-							<input type="submit" id="submit_mobile" value="Set Location" />
+							<input type="submit" id="submit_mobile" value="&#128526;" />
 						</form>
 					</div>
 				</div>

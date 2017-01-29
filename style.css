@@ -287,9 +287,13 @@ h2 {
 	float: right;
 }
 
+#city_mobile {
+	float: right;
+}
 
 #submit_mobile {
 	display: none;
+	visibility: hidden;
 }
 
 #city {
