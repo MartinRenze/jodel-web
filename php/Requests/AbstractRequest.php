@@ -91,7 +91,7 @@ abstract class AbstractRequest
                 exit("Error 403: Access denied");
                 break;
             default:
-                error_log('Error '.$result->status_code).' - Unauthorized - JodelDeviceId:' . $deviceUid);
+                error_log('Error '.$result->status_code.' - Unauthorized - JodelDeviceId:' . $deviceUid);
                 throw  new \Exception('Unknown Error: '.$result->status_code);
         }
 
