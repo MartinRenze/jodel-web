@@ -282,6 +282,16 @@ h2 {
 	margin-bottom: 1rem;
 }
 
+#location_mobile {
+	padding: .67em 0;
+	float: right;
+}
+
+
+#submit_mobile {
+	display: none;
+}
+
 #city {
 	width: 100%;
 	margin-bottom: 0.5rem;

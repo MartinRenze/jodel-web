@@ -281,7 +281,15 @@ include 'php/jodel-web.php';
 							}
 						?>
 						JodelBlue <i class="fa fa-refresh fa-1x"></i></a>
-					</h1>					
+					</h1>
+
+					<div id="location_mobile" class="hidden-sm-up">
+						<form method="get">
+							<input type="text" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
+
+							<input type="submit" id="submit_mobile" value="Set Location" />
+						</form>
+					</div>
 				</div>
 			</nav>
 		</header>
@@ -444,18 +452,18 @@ include 'php/jodel-web.php';
 				</aside>
 			</div>
 			<div id="sortJodelBy" class="row">
-				<div class="col-sm-12">
+				<div class="col-xs-12">
 					<div class="row">
-						<div class="col-sm-3">
+						<div class="col-xs-3">
 							<a href="index.php" <?php if($view=='time') echo 'class="active"';?>><i class="fa fa-clock-o fa-3x"></i></a>
 						</div>
-						<div class="col-sm-3">
+						<div class="col-xs-3">
 							<a href="index.php?view=comment" <?php if($view=='comment') echo 'class="active"';?>><i class="fa fa-commenting-o fa-3x"></i></a>
 						</div>
-						<div class="col-sm-3">
+						<div class="col-xs-3">
 							<a href="index.php?view=upVote" <?php if($view=='upVote') echo 'class="active"';?>><i class="fa fa-angle-up fa-3x"></i></a>
 						</div>
-						<div class="col-sm-3">
+						<div class="col-xs-3">
 							<nav>
 								<a href="./about-us.html">about us</a>
 							</nav>
@@ -560,8 +568,6 @@ include 'php/jodel-web.php';
 					if (($(document).height() - win.height() == win.scrollTop()) && morePostsAvailable) {
 						$('#loading').show();
 
-						
-						
 						$.ajax({
 							url: 'get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view,
 							dataType: 'html',
