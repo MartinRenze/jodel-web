@@ -21,7 +21,7 @@ include 'php/jodel-web.php';
 
 	$config = parse_ini_file('config/config.ini.php');
 
-	//Ceck if it's a Spider or Google Bot
+	//Check if it's a Spider or Google Bot
 	if(botDeviceUidIsSet($config) && isUserBot())
 	{
 		error_log('Spider or Bot checked in!');
@@ -133,13 +133,21 @@ include 'php/jodel-web.php';
 		$accountCreator->postId = $_GET['postID'];
 		$data = $accountCreator->execute();
 
-		header("Location: index.php#postId-" . htmlspecialchars($_GET['postID']));
+		if(isset($_GET['getPostDetails']) && $_GET['getPostDetails'])
+		{
+			header('Location: index.php?getPostDetails=true&postID=' . htmlspecialchars($_GET['postID_parent']) . '#postId-' . htmlspecialchars($_GET['postID']));
+		}
+		else
+		{
+			header("Location: index.php#postId-" . htmlspecialchars($_GET['postID']));
+		}	
 		die();
 	}
 	
 	
 	//SendJodel
-	if(isset($_POST['message'])) {
+	if(isset($_POST['message']))
+	{
 		$accountCreator = new SendJodel();
 
 		if(isset($_POST['ancestor']))
@@ -191,7 +199,7 @@ include 'php/jodel-web.php';
 
 		if(isset($_POST['ancestor']))
 		{
-			$actual_link = 'http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]';
+			$actual_link = 'http://' . $_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI];
 			header('Location: ' . $actual_link . '#postId-' . htmlspecialchars($data['post_id']));
 			exit;
 		}

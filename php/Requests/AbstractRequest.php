@@ -10,7 +10,7 @@ abstract class AbstractRequest
     
     private $accessToken = null;
     private $payLoad;
-    public $expects = "";
+    public $expects = '';
     public $version = 'v2';
 
     public function execute()
@@ -18,9 +18,9 @@ abstract class AbstractRequest
 		$result = new \stdClass();
 		        
 		$this->payLoad = $this->getPayload();
-		$device_uid = "";
-		if(isset($this->payLoad["device_uid"])) {
-			$device_uid = $this->payLoad["device_uid"];
+		$device_uid = '';
+		if(isset($this->payLoad['device_uid'])) {
+			$device_uid = $this->payLoad['device_uid'];
 		}
 				
 				
