@@ -287,7 +287,7 @@ include 'php/jodel-web.php';
 						<form method="get">
 							<input type="text" id="city_mobile" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
 
-							<input type="submit" id="submit_mobile" value="&#xf0ac;" />
+							<input type="submit" id="submit_mobile" class="fa" value="&#xf0ac;" />
 						</form>
 					</div>
 				</div>
