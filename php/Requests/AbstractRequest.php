@@ -72,20 +72,26 @@ abstract class AbstractRequest
                 break;
             case 401:
 				//throw new \Exception('Unauthorized');
+                error_log('Error 401 - Unauthorized - JodelDeviceId:' . $deviceUid);
                 break;
             case 404:
                 //echo "Es wurde bereits gevoted";
+                error_log('Error 404 - Es wurde bereits gevoted - JodelDeviceId:' . $deviceUid);
 			case 477:
                 //echo "Es wurde bereits gevoted";
                 //throw  new \Exception('Signing failed!');
+                error_log('Error 477 - Signing failed - JodelDeviceId:' . $deviceUid);
                 break;
             case 429:
+                error_log('Error 429 - Too Many Requests - JodelDeviceId:' . $deviceUid);
             	exit("Error 429: Too Many Requests");
             	break;
             case 403:
+                error_log('Error 403 - Access denied - JodelDeviceId:' . $deviceUid);
                 exit("Error 403: Access denied");
                 break;
             default:
+                error_log('Error '.$result->status_code).' - Unauthorized - JodelDeviceId:' . $deviceUid);
                 throw  new \Exception('Unknown Error: '.$result->status_code);
         }
 
