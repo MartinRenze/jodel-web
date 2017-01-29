@@ -283,7 +283,7 @@ h2 {
 }
 
 #location_mobile {
-	padding: .67em 0;
+	padding: .67em 0em;
 	float: right;
 }
 
@@ -294,6 +294,7 @@ h2 {
 #submit_mobile {
 	display: none;
 	visibility: hidden;
+	font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 #city {
@@ -367,6 +368,12 @@ h2 {
 
 #sortJodelBy a:hover {
 	color: #5682a3;
+}
+
+@media (max-width : 576px) {
+    #sortJodelBy {
+        width: 100%;
+    }
 }
 
 @media  (min-width: 576px) {
