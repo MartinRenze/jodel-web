@@ -199,7 +199,7 @@ include 'php/jodel-web.php';
 
 		if(isset($_POST['ancestor']))
 		{
-			$actual_link = 'http://' . $_SERVER[HTTP_HOST] . $_SERVER[REQUEST_URI];
+			$actual_link = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 			header('Location: ' . $actual_link . '#postId-' . htmlspecialchars($data['post_id']));
 			exit;
 		}
