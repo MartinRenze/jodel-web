@@ -283,10 +283,11 @@ function getPosts($lastPostId, $accessToken, $url, $version = 'v2')
 	$accountCreator->setUrl($url);
 	$accountCreator->version = $version;
 
+	$config = parse_ini_file('config/config.ini.php');
 	$location = new Location();
-	$location->setLat(52.520006);
-	$location->setLng(13.404954);
-	$location->setCityName('Berlin');
+	$location->setLat($config['default_lat']);
+	$location->setLng($config['default_lng']);
+	$location->setCityName($config['default_location']);
 	$accountCreator->location = $location;
 	$data = $accountCreator->execute();
 	
@@ -295,10 +296,11 @@ function getPosts($lastPostId, $accessToken, $url, $version = 'v2')
 
 function createAccount()
 {
+	$config = parse_ini_file('config/config.ini.php');
 	$location = new Location();
-	$location->setLat(52.520006);
-	$location->setLng(13.404954);
-	$location->setCityName('Berlin');
+	$location->setLat($config['default_lat']);
+	$location->setLng($config['default_lng']);
+	$location->setCityName($config['default_location']);
 
 	$device_uid = registerAccount($location);
 
