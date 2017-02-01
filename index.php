@@ -14,6 +14,7 @@ include 'php/jodel-web.php';
 	$accessToken;
 	$accessToken_forId1;
 	$deviceUid;
+	$isSpider = FALSE;
 
 	//What is dude doing with my Server?
 	if($_SERVER['REMOTE_ADDR'] == '94.231.103.52')
@@ -26,6 +27,7 @@ include 'php/jodel-web.php';
 	//Check if it's a Spider or Google Bot
 	if(botDeviceUidIsSet($config) && isUserBot())
 	{
+		$isSpider = TRUE;
 		error_log('Spider or Bot checked in!');
 		
 		//Change this to a free device_uid listed in your DB
@@ -124,11 +126,14 @@ include 'php/jodel-web.php';
 	}
 	
 	//Vote
-	if(isset($_GET['vote']) && isset($_GET['postID'])) {
-		if($_GET['vote'] == "up") {
+	if(isset($_GET['vote']) && isset($_GET['postID']))
+	{
+		if($_GET['vote'] == "up")
+		{
 			$accountCreator = new Upvote();
 		}
-		else if($_GET['vote'] == "down") {
+		else if($_GET['vote'] == "down")
+		{
 			$accountCreator = new Downvote();
 		}
 		$accountCreator->setAccessToken($accessToken_forId1);
@@ -567,7 +572,8 @@ include 'php/jodel-web.php';
 
 
 					// End of the document reached?
-					if (($(document).height() - win.height() == win.scrollTop()) && morePostsAvailable) {
+					if ($(window).scrollTop() + $(window).height() > $(document).height() - 100 && morePostsAvailable)
+					{
 						$('#loading').show();
 
 						$.ajax({
