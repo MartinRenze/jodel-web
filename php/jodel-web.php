@@ -240,6 +240,20 @@ function getKarma($accessToken)
 	return $data["karma"];
 }
 
+function addVoteWithPostIdToDeviceUid($postId, $device_uid) {
+	
+	$db = new DatabaseConnect();  
+	$result = $db->query("INSERT INTO votes (device_uid, postId)
+					VALUES ('" . $device_uid . "','" . $postId . "') ");
+	
+	if($result === false){
+			$error = db_error();
+			echo $error;
+			echo "Adding Vote failed: (" . $result->errno . ") " . $result->error;
+	}	
+	
+}
+
 function registerAccount(Location $location) {
 	$accountCreator = new CreateUser();
 	$accountCreator->setLocation($location);
