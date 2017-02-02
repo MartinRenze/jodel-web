@@ -2,14 +2,46 @@
  * General
  */
 
+/*
+ * Font Gotham-Book
+ */
+
+@font-face {
+	font-family: "Gotham";
+	font-style: normal;
+	src: url("./fonts/Gotham-Book.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Gotham";
+	font-style: italic;
+	src: url("./fonts/Gotham-BookItalic.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Gotham";
+	font-style: normal;
+	font-weight: bold;
+	src: url("./fonts/Gotham-Bold.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Gotham";
+	font-style: italic;
+	font-weight: bold;
+	src: url("./fonts/Gotham-BoldItalic.otf") format("opentype");
+}
+
+
 body {
 	background-image: url('img/bg.png');
 	color: #000305;
-	font-family: Arial, 'Lucida Sans Unicode';
+	font-family: "Gotham", 'Avenir', 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
 	line-height: 1.5;
 	text-align: left;
 	margin: 0 auto;
 	clear: both;
+	font-size: 1em;
 }
 
 a {
@@ -217,7 +249,7 @@ header .navbar {
 	float: left;
 	width: 90%;
 	margin-bottom: 0.5rem;
-	font-size: 1.8rem;
+	font-size: 1.7rem;
 	word-wrap: break-word;
 }
 
@@ -229,7 +261,7 @@ header .navbar {
 	float: right;
 	width: 7%;
 	min-width: 55px;
-	font-size: 1.8rem;
+	font-size: 1.7rem;
 	text-align: center;
 	line-height: 15px;
 	margin-top: -2rem;
@@ -280,6 +312,21 @@ h2 {
 	-webkit-border-radius: 5px;
 	padding: 1rem 1rem 2rem 1rem;
 	margin-bottom: 1rem;
+}
+
+#location_mobile {
+	padding: .67em 0em;
+	float: right;
+}
+
+#city_mobile {
+	float: right;
+}
+
+#submit_mobile {
+	display: none;
+	visibility: hidden;
+	font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 #city {
@@ -355,11 +402,54 @@ h2 {
 	color: #5682a3;
 }
 
+@media (max-width : 576px) {
+    #sortJodelBy {
+        width: 100%;
+    }
+
+    .jodel aside {
+    	font-size: 1.3em;
+    	min-width: 40px;
+    	margin-top: -1rem;
+    }
+
+    .jodel content {
+    	font-size: 1.3em;
+    }
+
+    .jodel .distance {
+    	font-size: 1.3em;
+    }
+
+    .jodel .time {
+    	font-size: 1.3em;
+    }
+}
+
 @media  (min-width: 576px) {
 	.topSidebar .fixed{
 		position: fixed;
 		width: 165px;
 	}
+
+	.jodel aside {
+    	font-size: 1.3em;
+    	min-width: 40px;
+    	margin-top: -1rem;
+    }
+
+    .jodel content {
+    	font-size: 1.3em;
+    	width: 87%;
+    }
+
+    .jodel .distance {
+    	font-size: 1.3em;
+    }
+
+    .jodel .time {
+    	font-size: 1.3em;
+    }
 }
 
 @media  (min-width: 768px) {
@@ -367,6 +457,11 @@ h2 {
 		position: fixed;
 		width: 225px;
 	}
+
+	.jodel content {
+    	font-size: 1.3em;
+    	width: 90%;
+    }
 }
 
 @media  (min-width: 992px) {
@@ -374,6 +469,29 @@ h2 {
 		position: fixed;
 		width: 305px;
 	}
+
+	.jodel aside {
+    	font-size: 1.7em;
+    	min-width: 55px;
+    	margin-top: -1.5rem;
+    }
+
+    .jodel content {
+    	font-size: 1.7em;
+    	width: 90%;
+    }
+
+    .jodel .distance {
+    	font-size: 1.5em;
+    }
+
+    .jodel .time {
+    	font-size: 1.5em;
+    }
+
+    .jodel .comments {
+    	font-size: 1.5em;
+    }
 }
 
 @media  (min-width: 1200px) {

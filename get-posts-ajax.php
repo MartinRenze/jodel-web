@@ -3,16 +3,17 @@ error_reporting(-1);
 
 include 'php/jodel-web.php';
 
+$config = parse_ini_file('config/config.ini.php');
+
 $location = new Location();
-$location->setLat('52.5134288');
-$location->setLng('13.2746394');
-$location->setCityName('Berlin');
+$location->setLat($config['default_lat']);
+$location->setLng($config['default_lng']);
+$location->setCityName($config['default_location']);
 
 $accessToken;
 $accessToken_forId1;
 $deviceUid;
 
-setcookie("JodelId", "", time()-3600);
 
 if(!isset($_COOKIE["JodelDeviceId"]))
 {

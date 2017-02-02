@@ -4,13 +4,13 @@ abstract class AbstractRequest
 {	
     const CLIENTID = '81e8a76e-1e02-4d17-9ba0-8a7020261b26';
     const APIURL = 'https://api.go-tellm.com/api';
-    const SECRET = 'plerFToqEdWlzShdZlTywaCHRuzlKIMsNmOJVDGE';
-    const USERAGENT = 'Jodel/4.31.1 Dalvik/2.1.0 (Linux; U; Android 5.1.1; )';
-    const CLIENT_TYPE = 'android_4.31.1';
+    const SECRET = 'OFIqFvBgkccPNTVbIzkYaSmrwMlbVzRoOBBjXUIG';
+    const USERAGENT = 'Jodel/4.32.2 Dalvik/2.1.0 (Linux; U; Android 5.1.1; )';
+    const CLIENT_TYPE = 'android_4.32.2';
     
     private $accessToken = null;
     private $payLoad;
-    public $expects = "";
+    public $expects = '';
     public $version = 'v2';
 
     public function execute()
@@ -18,9 +18,9 @@ abstract class AbstractRequest
 		$result = new \stdClass();
 		        
 		$this->payLoad = $this->getPayload();
-		$device_uid = "";
-		if(isset($this->payLoad["device_uid"])) {
-			$device_uid = $this->payLoad["device_uid"];
+		$device_uid = '';
+		if(isset($this->payLoad['device_uid'])) {
+			$device_uid = $this->payLoad['device_uid'];
 		}
 				
 				
@@ -72,28 +72,34 @@ abstract class AbstractRequest
                 break;
             case 401:
 				//throw new \Exception('Unauthorized');
+                error_log('Error 401 - Unauthorized'); // - JodelDeviceId:' . $deviceUid);
                 break;
             case 404:
                 //echo "Es wurde bereits gevoted";
+                error_log('Error 404 - Es wurde bereits gevoted'); // - JodelDeviceId:' . $deviceUid);
 			case 477:
                 //echo "Es wurde bereits gevoted";
                 //throw  new \Exception('Signing failed!');
+                error_log('Error 477 - Signing failed'); // - JodelDeviceId:' . $deviceUid);
                 break;
             case 429:
+                error_log('Error 429 - Too Many Requests'); // - JodelDeviceId:' . $deviceUid);
             	exit("Error 429: Too Many Requests");
             	break;
             case 403:
+                error_log('Error 403 - Access denied'); // - JodelDeviceId:' . $deviceUid);
                 exit("Error 403: Access denied");
                 break;
             default:
+                error_log('Error '.$result->status_code.' - Unauthorized'); // - JodelDeviceId:' . $deviceUid);
                 throw  new \Exception('Unknown Error: '.$result->status_code);
         }
 
-        if($device_uid != "")
+        if($device_uid != '')
         {
 			$result[0] = $result;
 			$result[1] = $device_uid;
-		}
+	}
 
         
         /*var_dump($result);*/

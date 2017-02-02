@@ -1,15 +1,20 @@
 <?php
 error_reporting(-1);
+
 include 'php/jodel-web.php';
 
+	$config = parse_ini_file('config/config.ini.php');
+
+
 	$location = new Location();
-	$location->setLat('52.5134288');
-	$location->setLng('13.2746394');
-	$location->setCityName('Berlin');
+	$location->setLat($config['default_lat']);
+	$location->setLng($config['default_lng']);
+	$location->setCityName($config['default_location']);
 
 	$accessToken;
 	$accessToken_forId1;
 	$deviceUid;
+	$isSpider = FALSE;
 
 	//What is dude doing with my Server?
 	if($_SERVER['REMOTE_ADDR'] == '94.231.103.52')
@@ -19,11 +24,10 @@ include 'php/jodel-web.php';
 	}
 
 
-	$config = parse_ini_file('config/config.ini.php');
-
-	//Ceck if it's a Spider or Google Bot
+	//Check if it's a Spider or Google Bot
 	if(botDeviceUidIsSet($config) && isUserBot())
 	{
+		$isSpider = TRUE;
 		error_log('Spider or Bot checked in!');
 		
 		//Change this to a free device_uid listed in your DB
@@ -122,24 +126,35 @@ include 'php/jodel-web.php';
 	}
 	
 	//Vote
-	if(isset($_GET['vote']) && isset($_GET['postID'])) {
-		if($_GET['vote'] == "up") {
+	if(isset($_GET['vote']) && isset($_GET['postID']))
+	{
+		if($_GET['vote'] == "up")
+		{
 			$accountCreator = new Upvote();
 		}
-		else if($_GET['vote'] == "down") {
+		else if($_GET['vote'] == "down")
+		{
 			$accountCreator = new Downvote();
 		}
 		$accountCreator->setAccessToken($accessToken_forId1);
 		$accountCreator->postId = $_GET['postID'];
 		$data = $accountCreator->execute();
 
-		header("Location: index.php#postId-" . htmlspecialchars($_GET['postID']));
+		if(isset($_GET['getPostDetails']) && $_GET['getPostDetails'])
+		{
+			header('Location: index.php?getPostDetails=true&postID=' . htmlspecialchars($_GET['postID_parent']) . '#postId-' . htmlspecialchars($_GET['postID']));
+		}
+		else
+		{
+			header("Location: index.php#postId-" . htmlspecialchars($_GET['postID']));
+		}	
 		die();
 	}
 	
 	
 	//SendJodel
-	if(isset($_POST['message'])) {
+	if(isset($_POST['message']))
+	{
 		$accountCreator = new SendJodel();
 
 		if(isset($_POST['ancestor']))
@@ -191,7 +206,7 @@ include 'php/jodel-web.php';
 
 		if(isset($_POST['ancestor']))
 		{
-			$actual_link = 'http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]';
+			$actual_link = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 			header('Location: ' . $actual_link . '#postId-' . htmlspecialchars($data['post_id']));
 			exit;
 		}
@@ -273,7 +288,15 @@ include 'php/jodel-web.php';
 							}
 						?>
 						JodelBlue <i class="fa fa-refresh fa-1x"></i></a>
-					</h1>					
+					</h1>
+
+					<div id="location_mobile" class="hidden-sm-up">
+						<form method="get">
+							<input type="text" id="city_mobile" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
+
+							<input type="submit" id="submit_mobile" class="fa" value="&#xf0ac;" />
+						</form>
+					</div>
 				</div>
 			</nav>
 		</header>
@@ -436,18 +459,18 @@ include 'php/jodel-web.php';
 				</aside>
 			</div>
 			<div id="sortJodelBy" class="row">
-				<div class="col-sm-12">
+				<div class="col-xs-12">
 					<div class="row">
-						<div class="col-sm-3">
+						<div class="col-xs-3">
 							<a href="index.php" <?php if($view=='time') echo 'class="active"';?>><i class="fa fa-clock-o fa-3x"></i></a>
 						</div>
-						<div class="col-sm-3">
+						<div class="col-xs-3">
 							<a href="index.php?view=comment" <?php if($view=='comment') echo 'class="active"';?>><i class="fa fa-commenting-o fa-3x"></i></a>
 						</div>
-						<div class="col-sm-3">
+						<div class="col-xs-3">
 							<a href="index.php?view=upVote" <?php if($view=='upVote') echo 'class="active"';?>><i class="fa fa-angle-up fa-3x"></i></a>
 						</div>
-						<div class="col-sm-3">
+						<div class="col-xs-3">
 							<nav>
 								<a href="./about-us.html">about us</a>
 							</nav>
@@ -549,11 +572,10 @@ include 'php/jodel-web.php';
 
 
 					// End of the document reached?
-					if (($(document).height() - win.height() == win.scrollTop()) && morePostsAvailable) {
+					if ($(window).scrollTop() + $(window).height() > $(document).height() - 100 && morePostsAvailable)
+					{
 						$('#loading').show();
 
-						
-						
 						$.ajax({
 							url: 'get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view,
 							dataType: 'html',

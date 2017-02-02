@@ -12,8 +12,13 @@ dbname 			= jodel-web
 [admin.php]
 pw				= password
 
+[Core]
 ;Set a deviceUid to use for bots. Otherwise every visit from google-bot will create a new jodel-account
 ;just pick a free device_uid from your db
-[SEO]
-botDeviceUid 	= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+botDeviceUid 		= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+;You can find the coordinates with Google Maps
+default_location 	= Berlin
+default_lat         = 52.520006
+default_lng			= 13.404954
 ;*/

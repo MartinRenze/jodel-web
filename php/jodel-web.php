@@ -283,10 +283,11 @@ function getPosts($lastPostId, $accessToken, $url, $version = 'v2')
 	$accountCreator->setUrl($url);
 	$accountCreator->version = $version;
 
+	$config = parse_ini_file('config/config.ini.php');
 	$location = new Location();
-	$location->setLat(52.520006);
-	$location->setLng(13.404954);
-	$location->setCityName('Berlin');
+	$location->setLat($config['default_lat']);
+	$location->setLng($config['default_lng']);
+	$location->setCityName($config['default_location']);
 	$accountCreator->location = $location;
 	$data = $accountCreator->execute();
 	
@@ -295,10 +296,11 @@ function getPosts($lastPostId, $accessToken, $url, $version = 'v2')
 
 function createAccount()
 {
+	$config = parse_ini_file('config/config.ini.php');
 	$location = new Location();
-	$location->setLat(52.520006);
-	$location->setLng(13.404954);
-	$location->setCityName('Berlin');
+	$location->setLat($config['default_lat']);
+	$location->setLng($config['default_lng']);
+	$location->setCityName($config['default_location']);
 
 	$device_uid = registerAccount($location);
 
@@ -384,14 +386,30 @@ function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 			?>
 		</content>
 		<aside>
-			<a href="index.php?vote=up&postID=<?php echo $post["post_id"];?>">
-				<i class="fa fa-angle-up fa-3x"></i>
-			</a>	
-				<br />
-			<?php echo $post["vote_count"];?><br />
-			<a href="index.php?vote=down&postID=<?php echo $post["post_id"];?>">
-				<i class="fa fa-angle-down fa-3x"></i>
-			</a>
+			<?php
+				if($isDetailedView)
+				{?>
+					<a href="index.php?vote=up&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>">
+		  <?php }
+				else
+				{?>
+					<a href="index.php?vote=up&postID=<?php echo $post['post_id'];?>">
+		  <?php } ?>
+						<i class="fa fa-angle-up fa-3x"></i>
+					</a>	
+						<br />
+					<?php echo $post["vote_count"];?><br />
+			<?php
+				if($isDetailedView)
+				{?>
+					<a href="index.php?vote=down&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>">
+		  <?php }
+				else
+				{?>
+					<a href="index.php?vote=down&postID=<?php echo $post['post_id'];?>">
+		  <?php } ?>
+						<i class="fa fa-angle-down fa-3x"></i>
+					</a>
 		</aside>
 
 		<footer>

@@ -31,13 +31,13 @@ https://www.jodelblue.com/
 - [ ] implement log system
 - [ ] fix errorlog
 - [ ] Get Key from APK automatically
-- [ ] Update Setup in README.md
 
 ## Setting up jodel-web ##
 1. Create MySql Database
 2. Edit config/config-sample.ini.php and insert MySQL login credentials
-3. Create Jodel account (see below)
-4. Done
+3. Rename config-sample.ini.php to config.ini.php
+4. Create Jodel account (see below)
+5. Done
 
 
 ## How to Use##
@@ -48,8 +48,7 @@ https://www.jodelblue.com/
 
 ## Requirements ##
 + Web server (tested on Apache/2.4.18 (Ubuntu))
-+ PHP 7.0 (tested on 7.0.8-3)
- * for random_int()
++ PHP 6 or PHP 7.0 (tested on 7.0.8-3)
 + MySQL (tested on 5.7.16-0)
 + jQuery (tested on 2.0.2 (already included)) 
 
