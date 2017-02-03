@@ -309,6 +309,7 @@ function addVoteWithPostIdAndTypeToDeviceUid($postId, $voteType, $device_uid)
 {
 	
 	$postId = $db->real_escape_string($postId);
+	$voteType = $db->real_escape_string($voteType);
 	
 	if(deviceUidHasVotedThisPostId($device_uid, $postId))
 	{
