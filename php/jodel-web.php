@@ -224,6 +224,29 @@ function getLocationByDeviceUid($deviceUid)
 	return $location;
 }
 
+function getDeviceUidByAccessToken($accesstoken)
+{
+	$db = new DatabaseConnect();
+	$result = $db->query("SELECT device_uid FROM accounts WHERE access_token='" . $accesstoken  . "'");
+	
+	$deviceUid;
+	
+	if ($result->num_rows > 0)
+	{
+		// output data of each row
+		while($row = $result->fetch_assoc())
+		{
+			$deviceUid = $row['device_uid'];
+		}
+	}
+	else
+	{
+		echo "Error: 0 results";
+	}
+
+	return $deviceUid;
+}
+
 function getAccessTokenByDeviceUid($deviceUid)
 {
 	$db = new DatabaseConnect();
