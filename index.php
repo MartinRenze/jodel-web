@@ -37,7 +37,7 @@ include 'php/jodel-web.php';
 	else
 	{
 		$config = NULL;
-		if(!isset($_COOKIE['JodelDeviceId']))
+		if(!isset($_COOKIE['JodelDeviceId']) || !isDeviceUidInDatabase($db->real_escape_string($_COOKIE['JodelDeviceId'])))
 		{
 			$deviceUid = createAccount();
 			setcookie('JodelDeviceId', $deviceUid, time()+60*60*24*365*10);

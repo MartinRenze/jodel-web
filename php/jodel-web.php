@@ -18,6 +18,23 @@ Requests::register_autoloader();
 
 $lastPostId = '';
 
+function isDeviceUidInDatabase($deviceUid)
+{
+	$db = new DatabaseConnect();  
+	$result = $db->query("SELECT * FROM accounts WHERE device_uid='" . $deviceUid  . "'");
+	
+	$access_token;
+
+	if ($result->num_rows > 0)
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
 function isTokenFresh(Location $location)
 {
 	$db = new DatabaseConnect();  
