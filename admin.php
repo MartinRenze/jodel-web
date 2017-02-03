@@ -26,7 +26,7 @@ if(isset($_POST['createAccount']) && $_POST['createAccount'])
 if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity']))
 {
 	$i = 0;
-	$result = $db->query("SELECT access_token, device_uid FROM accounts WHERE device_uid NOT IN (SELECT device_uid FROM votes WHERE postId = " . $_POST['postId'] . ")");
+	$result = $db->query("SELECT access_token, device_uid FROM accounts WHERE device_uid NOT IN (SELECT device_uid FROM votes WHERE postId = '" . $_POST['postId'] . "')");
 
 	if($result->num_rows > 0)
 	{

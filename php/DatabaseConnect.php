@@ -37,14 +37,15 @@ $query = "CREATE TABLE IF NOT EXISTS `accounts` (
 			 `User-Agent` varchar(150) NOT NULL default 'Jodel/4.4.9 Dalvik/2.1.0 (Linux; U; Android 5.1.1; )',
 			 `X-Api-Version` varchar(10) NOT NULL default '0.2',
 			 PRIMARY KEY  (`id`)
-			 ) DEFAULT CHARSET=utf8;
-		 
-		 CREATE TABLE IF NOT EXISTS `votes` (
-			 `id` int(11) UNSIGNED NOT NULL,
+			 ) DEFAULT CHARSET=utf8";
+$query2 = "CREATE TABLE IF NOT EXISTS `votes` (
+			 `id` int(11) unsigned NOT NULL auto_increment,
 			 `device_uid` varchar(255) NOT NULL,
-			 `postId` varchar(255) NOT NULL
-			 ) DEFAULT CHARSET=utf8;";
-  if(!$db->query($query))
+			 `postId` varchar(255) NOT NULL,
+			 PRIMARY KEY  (`id`)
+			 ) DEFAULT CHARSET=utf8";		 
+		 
+  if(!$db->query($query) || !$db->query($query2))
   {
     throw new Exception($db->error($mysqli));
   }
