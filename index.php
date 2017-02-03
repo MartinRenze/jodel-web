@@ -129,22 +129,26 @@ include 'php/jodel-web.php';
 	//Vote
 	if(isset($_GET['vote']) && isset($_GET['postID']))
 	{
-		if($_GET['vote'] == "up")
+		if(!deviceUidHasVotedThisPostId($deviceUid_forId1, mysqli_real_escape_string($_GET['postID'])))
 		{
-			$accountCreator = new Upvote();
+			if($_GET['vote'] == "up")
+			{
+				$accountCreator = new Upvote();
+			}
+			else if($_GET['vote'] == "down")
+			{
+				$accountCreator = new Downvote();
+			}
+			$accountCreator->setAccessToken($accessToken_forId1);
+			$accountCreator->postId = htmlspecialchars($_GET['postID']);
+			$data = $accountCreator->execute();
+
+
+			addVoteWithPostIdToDeviceUid($_GET['postID'], $deviceUid_forId1);
 		}
-		else if($_GET['vote'] == "down")
-		{
-			$accountCreator = new Downvote();
-		}
-		$accountCreator->setAccessToken($accessToken_forId1);
-		$accountCreator->postId = $_GET['postID'];
-		$data = $accountCreator->execute();
 
 		
-		addVoteWithPostIdToDeviceUid($_GET['postID'], $deviceUid_forId1);
-		
-		if(isset($_GET['getPostDetails']) && $_GET['getPostDetails'])
+		if(isset($_GET['getPostDetails']) && isset($_GET['getPostDetails']))
 		{
 			header('Location: index.php?getPostDetails=true&postID=' . htmlspecialchars($_GET['postID_parent']) . '#postId-' . htmlspecialchars($_GET['postID']));
 		}

@@ -42,6 +42,7 @@ $query2 = "CREATE TABLE IF NOT EXISTS `votes` (
 			 `id` int(11) unsigned NOT NULL auto_increment,
 			 `device_uid` varchar(255) NOT NULL,
 			 `postId` varchar(255) NOT NULL,
+			 `type` varchar(255) NOT NULL,
 			 PRIMARY KEY  (`id`)
 			 ) DEFAULT CHARSET=utf8";		 
 		 
