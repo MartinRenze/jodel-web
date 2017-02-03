@@ -140,6 +140,8 @@ include 'php/jodel-web.php';
 		$accountCreator->setAccessToken($accessToken_forId1);
 		$accountCreator->postId = $_GET['postID'];
 		$data = $accountCreator->execute();
+
+		
 		addVoteWithPostIdToDeviceUid($_GET['postID'], $deviceUid_forId1);
 		
 		if(isset($_GET['getPostDetails']) && $_GET['getPostDetails'])

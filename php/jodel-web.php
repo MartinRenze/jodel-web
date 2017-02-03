@@ -22,8 +22,6 @@ function isDeviceUidInDatabase($deviceUid)
 {
 	$db = new DatabaseConnect();  
 	$result = $db->query("SELECT * FROM accounts WHERE device_uid='" . $deviceUid  . "'");
-	
-	$access_token;
 
 	if ($result->num_rows > 0)
 	{
@@ -280,8 +278,37 @@ function getKarma($accessToken)
 	return $data["karma"];
 }
 
-function addVoteWithPostIdToDeviceUid($postId, $device_uid) {
+function deviceUidHasVotedThisPostId($deviceUid, $postId)
+{
+	$db = new DatabaseConnect();  
+	$result = $db->query("SELECT id
+						  FROM votes
+						  WHERE (postId = '" . $postId . "' AND device_uid = '" . $deviceUid . "')");
 	
+	if($result === false)
+	{
+		$error = db_error();
+		echo $error;
+		echo "Adding Vote failed: (" . $result->errno . ") " . $result->error;
+	}
+
+	if($result->num_rows == 0)
+	{
+	    return FALSE;
+	}
+	else
+	{
+	    return TRUE;
+	}
+}
+
+function addVoteWithPostIdToDeviceUid($postId, $device_uid)
+{
+	if(deviceUidHasVotedThisPostId($device_uid, $postId))
+	{
+		return "Already voted";
+	}
+
 	$db = new DatabaseConnect();  
 	$result = $db->query("INSERT INTO votes (device_uid, postId)
 					VALUES ('" . $device_uid . "','" . $postId . "') ");
