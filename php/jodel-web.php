@@ -282,7 +282,7 @@ function deviceUidHasVotedThisPostId($deviceUid, $postId)
 {
 	$db = new DatabaseConnect();
 
-	$postId = $db->mysql_real_escape_string($postId);
+	$postId = $db->real_escape_string($postId);
 
 	$result = $db->query("SELECT id
 						  FROM votes
@@ -305,16 +305,19 @@ function deviceUidHasVotedThisPostId($deviceUid, $postId)
 	}
 }
 
-function addVoteWithPostIdToDeviceUid($postId, $device_uid)
+function addVoteWithPostIdAndTypeToDeviceUid($postId, $voteType, $device_uid)
 {
+	
+	$postId = $db->real_escape_string($postId);
+	
 	if(deviceUidHasVotedThisPostId($device_uid, $postId))
 	{
 		return "Already voted";
 	}
 
 	$db = new DatabaseConnect();  
-	$result = $db->query("INSERT INTO votes (device_uid, postId)
-					VALUES ('" . $device_uid . "','" . $postId . "') ");
+	$result = $db->query("INSERT INTO votes (device_uid, postId, type)
+					VALUES ('" . $device_uid . "','" . $postId . "','" . $voteType . "')");
 	
 	if($result === false){
 			$error = db_error();
