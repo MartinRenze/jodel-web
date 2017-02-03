@@ -26,7 +26,7 @@ if(isset($_POST['createAccount']) && $_POST['createAccount'])
 if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity']))
 {
 	$i = 0;
-	$result = $db->query("SELECT access_token FROM accounts");
+	$result = $db->query("SELECT access_token, device_uid FROM accounts WHERE device_uid NOT IN (SELECT device_uid FROM votes WHERE postId = '" . $_POST['postId'] . "')");
 
 	if($result->num_rows > 0)
 	{
@@ -52,6 +52,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 			$data = $accountCreator->execute();
 			if(array_key_exists('post', $data))
 			{
+				addVoteWithPostIdToDeviceUid($_POST['postId'], $row['device_uid']);
 				$i++;
 			}
 		}

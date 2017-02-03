@@ -38,7 +38,14 @@ $query = "CREATE TABLE IF NOT EXISTS `accounts` (
 			 `X-Api-Version` varchar(10) NOT NULL default '0.2',
 			 PRIMARY KEY  (`id`)
 			 ) DEFAULT CHARSET=utf8";
-  if(!$db->query($query))
+$query2 = "CREATE TABLE IF NOT EXISTS `votes` (
+			 `id` int(11) unsigned NOT NULL auto_increment,
+			 `device_uid` varchar(255) NOT NULL,
+			 `postId` varchar(255) NOT NULL,
+			 PRIMARY KEY  (`id`)
+			 ) DEFAULT CHARSET=utf8";		 
+		 
+  if(!$db->query($query) || !$db->query($query2))
   {
     throw new Exception($db->error($mysqli));
   }

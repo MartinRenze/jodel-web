@@ -18,6 +18,23 @@ Requests::register_autoloader();
 
 $lastPostId = '';
 
+function isDeviceUidInDatabase($deviceUid)
+{
+	$db = new DatabaseConnect();  
+	$result = $db->query("SELECT * FROM accounts WHERE device_uid='" . $deviceUid  . "'");
+	
+	$access_token;
+
+	if ($result->num_rows > 0)
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
 function isTokenFresh(Location $location)
 {
 	$db = new DatabaseConnect();  
@@ -207,6 +224,29 @@ function getLocationByDeviceUid($deviceUid)
 	return $location;
 }
 
+function getDeviceUidByAccessToken($accesstoken)
+{
+	$db = new DatabaseConnect();
+	$result = $db->query("SELECT device_uid FROM accounts WHERE access_token='" . $accesstoken  . "'");
+	
+	$deviceUid;
+	
+	if ($result->num_rows > 0)
+	{
+		// output data of each row
+		while($row = $result->fetch_assoc())
+		{
+			$deviceUid = $row['device_uid'];
+		}
+	}
+	else
+	{
+		echo "Error: 0 results";
+	}
+
+	return $deviceUid;
+}
+
 function getAccessTokenByDeviceUid($deviceUid)
 {
 	$db = new DatabaseConnect();
@@ -238,6 +278,20 @@ function getKarma($accessToken)
 	$data = $accountCreator->execute();
 	
 	return $data["karma"];
+}
+
+function addVoteWithPostIdToDeviceUid($postId, $device_uid) {
+	
+	$db = new DatabaseConnect();  
+	$result = $db->query("INSERT INTO votes (device_uid, postId)
+					VALUES ('" . $device_uid . "','" . $postId . "') ");
+	
+	if($result === false){
+			$error = db_error();
+			echo $error;
+			echo "Adding Vote failed: (" . $result->errno . ") " . $result->error;
+	}	
+	
 }
 
 function registerAccount(Location $location) {

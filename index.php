@@ -37,7 +37,7 @@ include 'php/jodel-web.php';
 	else
 	{
 		$config = NULL;
-		if(!isset($_COOKIE['JodelDeviceId']))
+		if(!isset($_COOKIE['JodelDeviceId']) || !isDeviceUidInDatabase($db->real_escape_string($_COOKIE['JodelDeviceId'])))
 		{
 			$deviceUid = createAccount();
 			setcookie('JodelDeviceId', $deviceUid, time()+60*60*24*365*10);
@@ -56,6 +56,7 @@ include 'php/jodel-web.php';
 	//Acc is fresh. token and location is set
 
 	$accessToken_forId1 = isTokenFresh($location);
+	$deviceUid_forId1 = getDeviceUidByAccessToken($accessToken_forId1);
 
 
 	//Set View
@@ -139,7 +140,8 @@ include 'php/jodel-web.php';
 		$accountCreator->setAccessToken($accessToken_forId1);
 		$accountCreator->postId = $_GET['postID'];
 		$data = $accountCreator->execute();
-
+		addVoteWithPostIdToDeviceUid($_GET['postID'], $deviceUid_forId1);
+		
 		if(isset($_GET['getPostDetails']) && $_GET['getPostDetails'])
 		{
 			header('Location: index.php?getPostDetails=true&postID=' . htmlspecialchars($_GET['postID_parent']) . '#postId-' . htmlspecialchars($_GET['postID']));
