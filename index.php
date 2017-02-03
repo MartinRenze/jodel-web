@@ -129,7 +129,7 @@ include 'php/jodel-web.php';
 	//Vote
 	if(isset($_GET['vote']) && isset($_GET['postID']))
 	{
-		if(!deviceUidHasVotedThisPostId($deviceUid_forId1, mysqli_real_escape_string($_GET['postID'])))
+		if(!deviceUidHasVotedThisPostId($deviceUid_forId1, $_GET['postID']))
 		{
 			if($_GET['vote'] == "up")
 			{

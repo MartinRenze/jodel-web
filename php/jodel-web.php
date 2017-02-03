@@ -280,7 +280,10 @@ function getKarma($accessToken)
 
 function deviceUidHasVotedThisPostId($deviceUid, $postId)
 {
-	$db = new DatabaseConnect();  
+	$db = new DatabaseConnect();
+
+	$postId = $db->mysql_real_escape_string($postId);
+
 	$result = $db->query("SELECT id
 						  FROM votes
 						  WHERE (postId = '" . $postId . "' AND device_uid = '" . $deviceUid . "')");
