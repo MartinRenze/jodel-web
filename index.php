@@ -129,6 +129,7 @@ include 'php/jodel-web.php';
 	//Vote
 	if(isset($_GET['vote']) && isset($_GET['postID']))
 	{
+		exit("Voting is not working!");
 		if(!deviceUidHasVotedThisPostId($deviceUid_forId1, $_GET['postID']))
 		{
 			if($_GET['vote'] == "up")

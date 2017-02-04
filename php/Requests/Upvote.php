@@ -10,7 +10,7 @@ class Upvote extends AbstractRequest {
     function getPayload()
     {
         return array(
-					"reason_code" => -1,
+			//		"reason_code" => -1,
         );
     }
     function getMethod()

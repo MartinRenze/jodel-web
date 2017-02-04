@@ -307,7 +307,8 @@ function deviceUidHasVotedThisPostId($deviceUid, $postId)
 
 function addVoteWithPostIdAndTypeToDeviceUid($postId, $voteType, $device_uid)
 {
-	
+	$db = new DatabaseConnect();  
+
 	$postId = $db->real_escape_string($postId);
 	$voteType = $db->real_escape_string($voteType);
 	
@@ -316,7 +317,6 @@ function addVoteWithPostIdAndTypeToDeviceUid($postId, $voteType, $device_uid)
 		return "Already voted";
 	}
 
-	$db = new DatabaseConnect();  
 	$result = $db->query("INSERT INTO votes (device_uid, postId, type)
 					VALUES ('" . $device_uid . "','" . $postId . "','" . $voteType . "')");
 	
@@ -324,8 +324,7 @@ function addVoteWithPostIdAndTypeToDeviceUid($postId, $voteType, $device_uid)
 			$error = db_error();
 			echo $error;
 			echo "Adding Vote failed: (" . $result->errno . ") " . $result->error;
-	}	
-	
+	}		
 }
 
 function registerAccount(Location $location) {
