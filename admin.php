@@ -52,7 +52,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 			$data = $accountCreator->execute();
 			if(array_key_exists('post', $data))
 			{
-				addVoteWithPostIdToDeviceUid($_POST['postId'], $row['device_uid']);
+				addVoteWithPostIdAndTypeToDeviceUid($_POST['postId'], $_POST['vote'], $row['device_uid']);
 				$i++;
 			}
 		}

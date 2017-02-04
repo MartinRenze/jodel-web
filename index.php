@@ -144,7 +144,7 @@ include 'php/jodel-web.php';
 			$data = $accountCreator->execute();
 
 
-			addVoteWithPostIdToDeviceUid($_GET['postID'], $deviceUid_forId1);
+			addVoteWithPostIdAndTypeToDeviceUid($_GET['postID'], $_GET['vote'], $deviceUid_forId1);
 		}
 
 		
