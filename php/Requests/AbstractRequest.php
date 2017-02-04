@@ -32,11 +32,16 @@ abstract class AbstractRequest
             $header['Authorization'] = "Bearer " . $this->getAccessToken();
         }
         //Comment out to debug the Request:
-        
         /*
+        printf("URL: ");
         var_dump($url);
+        echo "<br />";
+        printf("Header: ");
         var_dump($header);
+        echo "<br />";
+        printf("Payload: ");
         var_dump($this->payLoad);
+        echo "<br />";
         */
         /*
         $options = array(
@@ -60,7 +65,7 @@ abstract class AbstractRequest
                 }
                 break;
             case 'PUT':
-                $result = Requests::put($url, $header, $this->payLoad);
+                $result = Requests::put($url, $header);//, $this->payLoad);
                 break;
         }
         switch ($result->status_code) {
@@ -92,7 +97,7 @@ abstract class AbstractRequest
                 break;
             default:
                 error_log('Error '.$result->status_code.' - Unauthorized'); // - JodelDeviceId:' . $deviceUid);
-                throw  new \Exception('Unknown Error: '.$result->status_code);
+                //throw  new \Exception('Unknown Error: '.$result->status_code);
         }
 
         if($device_uid != '')
@@ -101,9 +106,9 @@ abstract class AbstractRequest
 			$result[1] = $device_uid;
 	}
 
-        
-        /*var_dump($result);*/
-        
+        /*
+        var_dump($result);
+        */
 
         return $result;
     }
