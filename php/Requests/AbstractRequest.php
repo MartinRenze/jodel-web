@@ -65,7 +65,7 @@ abstract class AbstractRequest
                 }
                 break;
             case 'PUT':
-                $result = Requests::put($url, $header);//, $this->payLoad);
+                $result = Requests::put($url, $header, $this->payLoad);
                 break;
         }
         switch ($result->status_code) {
