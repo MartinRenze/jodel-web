@@ -133,17 +133,28 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 			<div class="content row">
 				<article class="topContent col-sm-8">
 
-					<content id="posts">
+					<content id="posts" class="adminpanel">
+						<h2>account management</h2>
 						<form method="post">
 							<button type="submit" name="createAccount" value="TRUE">Create new Account</button>
 						</form>
-
+						<hr>
+						<h2>voting</h2>
 						<form method="post">
-							quantity<input type="number" name="quantity">
-							postId<input type="text" name="postId">
-							<button type="submit" name="vote" value="up">Upvote</button>
-							<button type="submit" name="vote" value="down">Downvote</button>
+							<input placeholder="quantity" type="number" name="quantity"><br>
+							<input placeholder="postId" type="text" name="postId"><br>
+							<button type="submit" name="vote" value="up" class="half">Upvote</button>
+							<button type="submit" name="vote" value="down" class="half">Downvote</button>
 						</form>
+						<hr>
+						<h2>delayed voting</h2>
+							<input placeholder="quantity" id="quantityDelay" type="number" name="quantity"><br>
+							<input placeholder="min interval" id="minDelay" type="text" name="min"><br>
+							<input placeholder="max interval" id="maxDelay" type="text" name="max"><br>
+							<input placeholder="postId" id="postIdDelay" type="text" name="postId"><br>
+							<button name="vote" value="up" class="half" onClick="vote('up');">Upvote</button>
+							<button name="vote" value="down" class="half" onClick="vote('down');">Downvote</button><br>
+							<progress id="progressDelay" value="0" max="100"></progress>
 					</content>
 				</article>
 			
@@ -172,6 +183,48 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
     	<script src="js/jQueryEmoji.js"></script>
 
 		<script>
+			//delayed voting
+			function vote(type)
+			{
+				var id = $("#postIdDelay").val();
+				var quantity = parseInt($("#quantityDelay").val());
+				var minTime = parseFloat($("#minDelay").val());
+				var maxTime = parseFloat($("#maxDelay").val());
+								
+				var data = {"vote": type,
+						   "id":id,
+							"i": 0,
+						   "quantity":quantity,
+						   "minTime":minTime,
+						   "maxTime":maxTime};
+				
+				$("#progressDelay").attr("max", quantity);
+				$("#progressDelay").val(0);
+				voteRek(data);
+			}
+			
+			function voteRek(data) {
+				$.ajax({
+				  type: "POST",
+				  url: "admin.php?pw=password",
+				  data: {"vote" : data["vote"],
+						 "postId" : data["id"],
+						 "quantity" : 1},
+				  success: function(){
+					  $("#progressDelay").val(data["i"]);
+					  if (data["i"] < data["quantity"]) {
+						  data["i"] += 1;
+						  setTimeout(function(){voteRek(data)}, getRandomFloat(data["minTime"],data["maxTime"])*1000);
+					  }
+				  }
+				});
+			}
+			
+			function getRandomFloat(min, max)
+			{
+			  return Math.floor(Math.random() * (max - min)) + min;
+			}
+			
 			//BackButton
 			function goBack()
 			{
