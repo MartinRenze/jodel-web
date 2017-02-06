@@ -129,7 +129,6 @@ include 'php/jodel-web.php';
 	//Vote
 	if(isset($_GET['vote']) && isset($_GET['postID']))
 	{
-		exit("Voting is not working!");
 		if(!deviceUidHasVotedThisPostId($deviceUid_forId1, $_GET['postID']))
 		{
 			if($_GET['vote'] == "up")
@@ -200,8 +199,6 @@ include 'php/jodel-web.php';
 			}
 			$accountCreator->color = $color;
 		}
-		
-		//$location = getLocationByAccessToken($accessToken);
 
 		$accountCreatorLocation = new UpdateLocation();
 		$accountCreatorLocation->setLocation($location);
@@ -221,7 +218,7 @@ include 'php/jodel-web.php';
 		}
 		else
 		{
-			header('Location: ./');
+			header('Location: ./#');
 			exit;
 		}
 	}
