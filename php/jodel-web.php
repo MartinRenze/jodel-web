@@ -514,11 +514,11 @@ function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 			<?php
 				if($isDetailedView)
 				{?>
-					<a href="index.php?vote=up&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>">
+					<a href="index.php?vote=up&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>" rel="nofollow">
 		  <?php }
 				else
 				{?>
-					<a href="index.php?vote=up&postID=<?php echo $post['post_id'];?>">
+					<a href="index.php?vote=up&postID=<?php echo $post['post_id'];?>" rel="nofollow">
 		  <?php } ?>
 						<i class="fa fa-angle-up fa-3x"></i>
 					</a>	
@@ -527,11 +527,11 @@ function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 			<?php
 				if($isDetailedView)
 				{?>
-					<a href="index.php?vote=down&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>">
+					<a href="index.php?vote=down&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>" rel="nofollow">
 		  <?php }
 				else
 				{?>
-					<a href="index.php?vote=down&postID=<?php echo $post['post_id'];?>">
+					<a href="index.php?vote=down&postID=<?php echo $post['post_id'];?>" rel="nofollow">
 		  <?php } ?>
 						<i class="fa fa-angle-down fa-3x"></i>
 					</a>
