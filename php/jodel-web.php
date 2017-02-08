@@ -503,7 +503,7 @@ function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 		<content>
 			<?php 
 			if(isset($post["image_url"])) {
-				echo '<img src="' . $post["image_url"] . '">';
+				echo '<img src="' . $post["image_url"] . '" alt="' . htmlspecialchars($post["message"])) . '">';
 			}
 			else {
 				echo str_replace('  ', ' &nbsp;', nl2br(htmlspecialchars($post["message"])));
