@@ -30,7 +30,6 @@ include 'php/jodel-web.php';
 		$isSpider = TRUE;
 		error_log('Spider or Bot checked in!');
 		
-		//Change this to a free device_uid listed in your DB
 		$deviceUid = $config['botDeviceUid'];
 		$config = NULL;
 	}
@@ -222,17 +221,91 @@ include 'php/jodel-web.php';
 			exit;
 		}
 	}
+
+
+	$posts;
+
+	//Get Post Details
+	if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
+	{
+		$userHandleBuffer = [];
+
+		$accountCreator = new GetPostDetails();
+		$accountCreator->setAccessToken($accessToken);
+		$data = $accountCreator->execute();
+		
+		$posts[0] = $data;
+		if(array_key_exists('children', $data)) {
+			foreach($data['children'] as $key => $child)
+			{
+				
+				if(!$child["parent_creator"] == 1)
+				{
+					$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
+					if($numberForUser === FALSE)
+					{
+						array_push($userHandleBuffer, $child['user_handle']);
+						$data['children'][$key]['user_handle'] = count($userHandleBuffer);
+					}
+					else
+					{
+						$data['children'][$key]['user_handle'] = $numberForUser + 1;
+					}
+				}
+
+				array_push($posts, $data['children'][$key]);
+			}
+			$loops = $data['child_count'] + 1;
+		}
+		else
+		{
+			$loops = 1;
+		}
+		$isDetailedView = TRUE;
+	}
+	//Get Posts
+	else
+	{
+		$version = 'v2';
+		if($view=='comment')
+		{
+			$url = "/v2/posts/location/discussed/";
+		}
+		else
+		{
+			if($view=='upVote')
+			{
+				$url = "/v2/posts/location/popular/";
+			}
+			else
+			{
+				$url = "/v3/posts/location/combo/";
+				$version = 'v3';
+			}
+		}
+
+		if($version == 'v3')
+		{
+			$posts = getPosts($lastPostId, $accessToken, $url, $version)['recent'];
+		}
+		else
+		{
+			$posts = getPosts($lastPostId, $accessToken, $url, $version)['posts'];
+		}
+		$loops = 29;
+		$isDetailedView = FALSE;
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>JodelBlue - Web-App and Browser-Client</title>
+		<title><?php echo getTitle($posts[0], $view, $isDetailedView);?></title>
 		
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		
-		<meta name="description" content="JodelBlue is a Web-App and Browser-Client for the Jodel App. No registration required! Browse Jodels all over the world. Send your own Jodels or upvote others.">
+		<meta name="description" content="<?php echo getMetaDescription($posts[0], $view, $isDetailedView);?>">
 		<meta name="keywords" content="jodelblue, jodel, blue, webclient, web, client, web-app, browser, app">
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
@@ -313,80 +386,6 @@ include 'php/jodel-web.php';
 
 					<content id="posts">
 						<?php
-							$posts;
-
-							//Get Post Details
-							if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
-							{
-								$userHandleBuffer = [];
-
-								$accountCreator = new GetPostDetails();
-								$accountCreator->setAccessToken($accessToken);
-								$data = $accountCreator->execute();
-								
-								$posts[0] = $data;
-								if(array_key_exists('children', $data)) {
-									foreach($data['children'] as $key => $child)
-									{
-										
-										if(!$child["parent_creator"] == 1)
-										{
-											$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
-											if($numberForUser === FALSE)
-											{
-												array_push($userHandleBuffer, $child['user_handle']);
-												$data['children'][$key]['user_handle'] = count($userHandleBuffer);
-											}
-											else
-											{
-												$data['children'][$key]['user_handle'] = $numberForUser + 1;
-											}
-										}
-
-										array_push($posts, $data['children'][$key]);
-									}
-									$loops = $data['child_count'] + 1;
-								}
-								else
-								{
-									$loops = 1;
-								}
-								$isDetailedView = TRUE;
-							}
-							//Get Posts
-							else
-							{
-								$version = 'v2';
-								if($view=='comment')
-								{
-									$url = "/v2/posts/location/discussed/";
-								}
-								else
-								{
-									if($view=='upVote')
-									{
-										$url = "/v2/posts/location/popular/";
-									}
-									else
-									{
-										$url = "/v3/posts/location/combo/";
-										$version = 'v3';
-									}
-								}
-
-								if($version == 'v3')
-								{
-									$posts = getPosts($lastPostId, $accessToken, $url, $version)['recent'];
-								}
-								else
-								{
-									$posts = getPosts($lastPostId, $accessToken, $url, $version)['posts'];
-								}
-								$loops = 29;
-								$isDetailedView = FALSE;
-							}
-							
-
 							for($i = 0; $i<$loops; $i++)
 							{
 								if(array_key_exists($i, $posts) && array_key_exists('post_id', $posts[$i]) && isset($posts[$i]['post_id']))

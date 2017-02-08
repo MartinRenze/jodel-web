@@ -413,6 +413,44 @@ function botDeviceUidIsSet($config)
 	}
 }
 
+/**
+ * Compute HTML Code
+ */
+
+/**
+ * Gets the title.
+ *
+ * @return     string  The title.
+ */
+function getTitle($post, $view = 'time', $isDetailedView = FALSE)
+{
+	$title = 'JodelBlue - Web-App and Browser-Client';
+
+	if($isDetailedView)
+	{
+		$title = 'JodelBlue: ' . substr(htmlspecialchars($post['message']), 0, 44);
+	}
+
+	return $title;
+}
+
+/**
+ * Gets the meta description.
+ *
+ * @return     string  The meta description.
+ */
+function getMetaDescription($post, $view = 'time', $isDetailedView = FALSE)
+{
+	$description = 'JodelBlue is a Web-App and Browser-Client for the Jodel App. No registration required! Browse Jodels all over the world. Send your own Jodels or upvote others.';
+
+	if($isDetailedView)
+	{
+		$description = 'On JodelBlue with ' . htmlspecialchars($post['vote_count']) . ' Upvotes: ' . substr(htmlspecialchars($post['message']), 0, 140);
+	}
+
+	return $description;
+}
+
 function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 {	//ToDO
 	//Replace # with link
