@@ -490,7 +490,7 @@ include 'php/jodel-web.php';
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
     	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8" crossorigin="anonymous"></script>
     	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
-    	<script src="js/jQueryEmoji.js"></script>
+    	<script src="js/jQueryEmoji_un.js"></script>
 
 		<script>
 			//BackButton
@@ -501,8 +501,6 @@ include 'php/jodel-web.php';
 
 			$(document).ready(function()
 			{
-
-
 				//Transform UTF-8 Emoji to img
 				$('.jodel > content').Emoji();
 
@@ -614,6 +612,14 @@ include 'php/jodel-web.php';
 			});	
 
 		</script>
+
+		<?php  
+			if(is_file('./piwik-script.html'))
+			{
+			    require_once('./piwik-script.html');
+			}
+		?>
+
 	</body>
 </html>
 
