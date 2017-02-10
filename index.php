@@ -1,10 +1,8 @@
 <?php
-error_reporting(-1);
-
-include 'php/jodel-web.php';
+	error_reporting(-1);
+	include 'php/jodel-web.php';
 
 	$config = parse_ini_file('config/config.ini.php');
-
 
 	$location = new Location();
 	$location->setLat($config['default_lat']);
@@ -23,21 +21,19 @@ include 'php/jodel-web.php';
 		die();
 	}
 
-
 	//Check if it's a Spider or Google Bot
 	if(botDeviceUidIsSet($config) && isUserBot())
 	{
 		$isSpider = TRUE;
 		error_log('Spider or Bot checked in!');
 		
-		//Change this to a free device_uid listed in your DB
 		$deviceUid = $config['botDeviceUid'];
 		$config = NULL;
 	}
 	else
 	{
 		$config = NULL;
-		if(!isset($_COOKIE['JodelDeviceId']) || !isDeviceUidInDatabase($db->real_escape_string($_COOKIE['JodelDeviceId'])))
+		if(!isset($_COOKIE['JodelDeviceId']) || !isDeviceUidInDatabase($_COOKIE['JodelDeviceId']))
 		{
 			$deviceUid = createAccount();
 			setcookie('JodelDeviceId', $deviceUid, time()+60*60*24*365*10);
@@ -46,7 +42,7 @@ include 'php/jodel-web.php';
 		}
 		else
 		{
-			$deviceUid = $db->real_escape_string($_COOKIE['JodelDeviceId']);
+			$deviceUid = $_COOKIE['JodelDeviceId'];
 		}
 	}
 
@@ -57,7 +53,6 @@ include 'php/jodel-web.php';
 
 	$accessToken_forId1 = isTokenFresh($location);
 	$deviceUid_forId1 = getDeviceUidByAccessToken($accessToken_forId1);
-
 
 	//Set View
 	if(isset($_GET['view']))
@@ -81,54 +76,22 @@ include 'php/jodel-web.php';
 		$view = 'time';
 	}
 	
+	//Verify Account
+	if(isset($_GET['solution']) && isset($_GET['key']))
+	{
+		verifyCaptcha($accessToken_forId1);
+	}
+
 	//Set Location
-	if(isset($_GET['city'])) {
-		$url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($_GET['city']) . '&key=AIzaSyCwhnja-or07012HqrhPW7prHEDuSvFT4w';
-		$result = Requests::post($url);
-		if(json_decode($result->body, true)['status'] == 'ZERO_RESULTS' || json_decode($result->body, true)['status'] == 'INVALID_REQUEST')
-		{
-			$newPositionStatus = "0 results";
-		}
-		else
-		{
-			$name = json_decode($result->body, true)['results']['0']['address_components']['0']['long_name'];
-			$lat = json_decode($result->body, true)['results']['0']['geometry']['location']['lat'];
-			$lng = json_decode($result->body, true)['results']['0']['geometry']['location']['lng'];
-
-			$location = new Location();
-			$location->setLat($lat);
-			$location->setLng($lng);
-			$location->setCityName($name);
-			$accountCreator = new UpdateLocation();
-			$accountCreator->setLocation($location);
-			$accountCreator->setAccessToken($accessToken);
-			$data = $accountCreator->execute();
-
-			//safe location to db
-			if($data == 'Success')
-			{
-				$result = $db->query("UPDATE accounts 
-						SET name='" . $name . "',
-							lat='" . $lat . "',
-							lng='" . $lng . "'
-						WHERE access_token='" . $accessToken . "'");
-
-				if($result === false)
-				{
-						echo "Updating location failed: (" . $db->errno . ") " . $db->error;
-				}
-				else
-				{
-					$newPositionStatus = $name;
-					error_log('User with JodelDeviceId:' . $deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . '] changed to Location: ' . $name);
-				}
-			}
-		}
+	if(isset($_GET['city']))
+	{
+		$newPositionStatus = setLocation($accessToken, $deviceUid);
 	}
 	
 	//Vote
 	if(isset($_GET['vote']) && isset($_GET['postID']))
 	{
+<<<<<<< HEAD
 		if(!deviceUidHasVotedThisPostId($deviceUid_forId1, $_GET['postID']))
 		{
 			if($_GET['vote'] == "up")
@@ -142,99 +105,101 @@ include 'php/jodel-web.php';
 			$accountCreator->setAccessToken($accessToken_forId1);
 			$accountCreator->postId = htmlspecialchars($_GET['postID']);
 			$data = $accountCreator->execute();
-
-
-			addVoteWithPostIdAndTypeToDeviceUid($_GET['postID'], $_GET['vote'], $deviceUid_forId1);
-		}
-
-		
-		if(isset($_GET['getPostDetails']) && isset($_GET['getPostDetails']))
-		{
-			header('Location: index.php?getPostDetails=true&postID=' . htmlspecialchars($_GET['postID_parent']) . '#postId-' . htmlspecialchars($_GET['postID']));
-		}
-		else
-		{
-			header("Location: index.php#postId-" . htmlspecialchars($_GET['postID']));
-		}	
-		die();
+=======
+		votePostId($deviceUid_forId1, $accessToken_forId1);
 	}
-	
 	
 	//SendJodel
 	if(isset($_POST['message']))
 	{
-		$accountCreator = new SendJodel();
+		sendJodel($location, $accessToken_forId1);
+	}
+>>>>>>> mmainstreet/master
 
-		if(isset($_POST['ancestor']))
-		{
-			$ancestor = $_POST['ancestor'];
-			$accountCreator->ancestor = $ancestor;
-		}
-		if(isset($_POST['color']))
-		{
-			$color = $_POST['color'];
-			switch ($color) {
-				case '8ABDB0':
-					$color = '8ABDB0';
-					break;
-				case '9EC41C':
-					$color = '9EC41C';
-					break;
-				case '06A3CB':
-					$color = '06A3CB';
-					break;
-				case 'FFBA00':
-					$color = 'FFBA00';
-					break;
-				case 'DD5F5F':
-					$color = 'DD5F5F';
-					break;
-				case 'FF9908':
-					$color = 'FF9908';
-					break;
-				
-				default:
-					$color = '8ABDB0';
-					break;
-			}
-			$accountCreator->color = $color;
-		}
-		
-		//$location = getLocationByAccessToken($accessToken);
 
-		$accountCreatorLocation = new UpdateLocation();
-		$accountCreatorLocation->setLocation($location);
-		$accountCreatorLocation->setAccessToken($accessToken_forId1);
-		$data = $accountCreatorLocation->execute();
-		
-		$accountCreator->location = $location;
-		
-		$accountCreator->setAccessToken($accessToken_forId1);
+	$posts;
+
+	//Get Post Details
+	if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
+	{
+		$userHandleBuffer = [];
+
+		$accountCreator = new GetPostDetails();
+		$accountCreator->setAccessToken($accessToken);
 		$data = $accountCreator->execute();
+		
+		$posts[0] = $data;
+		if(array_key_exists('children', $data)) {
+			foreach($data['children'] as $key => $child)
+			{
+				
+				if(!$child["parent_creator"] == 1)
+				{
+					$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
+					if($numberForUser === FALSE)
+					{
+						array_push($userHandleBuffer, $child['user_handle']);
+						$data['children'][$key]['user_handle'] = count($userHandleBuffer);
+					}
+					else
+					{
+						$data['children'][$key]['user_handle'] = $numberForUser + 1;
+					}
+				}
 
-		if(isset($_POST['ancestor']))
-		{
-			$actual_link = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-			header('Location: ' . $actual_link . '#postId-' . htmlspecialchars($data['post_id']));
-			exit;
+				array_push($posts, $data['children'][$key]);
+			}
+			$loops = $data['child_count'] + 1;
 		}
 		else
 		{
-			header('Location: ./');
-			exit;
+			$loops = 1;
 		}
+		$isDetailedView = TRUE;
+	}
+	//Get Posts
+	else
+	{
+		$version = 'v2';
+		if($view=='comment')
+		{
+			$url = "/v2/posts/location/discussed/";
+		}
+		else
+		{
+			if($view=='upVote')
+			{
+				$url = "/v2/posts/location/popular/";
+			}
+			else
+			{
+				$url = "/v3/posts/location/combo/";
+				$version = 'v3';
+			}
+		}
+
+		if($version == 'v3')
+		{
+			$posts = getPosts($lastPostId, $accessToken, $url, $version)['recent'];
+		}
+		else
+		{
+			$posts = getPosts($lastPostId, $accessToken, $url, $version)['posts'];
+		}
+		$loops = 29;
+		$isDetailedView = FALSE;
 	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>JodelBlue - Web-App and Browser-Client</title>
+		<title><?php echo getTitle($posts[0], $view, $isDetailedView);?></title>
 		
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		
-		<meta name="description" content="JodelBlue is a Web-App and Browser-Client for the Jodel App. No registration required! Browse Jodels all over the world. Send your own Jodels or upvote others.">
+		<meta name="description" content="<?php echo getMetaDescription($posts[0], $view, $isDetailedView);?>">
 		<meta name="keywords" content="jodelblue, jodel, blue, webclient, web, client, web-app, browser, app">
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
@@ -315,80 +280,6 @@ include 'php/jodel-web.php';
 
 					<content id="posts">
 						<?php
-							$posts;
-
-							//Get Post Details
-							if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
-							{
-								$userHandleBuffer = [];
-
-								$accountCreator = new GetPostDetails();
-								$accountCreator->setAccessToken($accessToken);
-								$data = $accountCreator->execute();
-								
-								$posts[0] = $data;
-								if(array_key_exists('children', $data)) {
-									foreach($data['children'] as $key => $child)
-									{
-										
-										if(!$child["parent_creator"] == 1)
-										{
-											$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
-											if($numberForUser === FALSE)
-											{
-												array_push($userHandleBuffer, $child['user_handle']);
-												$data['children'][$key]['user_handle'] = count($userHandleBuffer);
-											}
-											else
-											{
-												$data['children'][$key]['user_handle'] = $numberForUser + 1;
-											}
-										}
-
-										array_push($posts, $data['children'][$key]);
-									}
-									$loops = $data['child_count'] + 1;
-								}
-								else
-								{
-									$loops = 1;
-								}
-								$isDetailedView = TRUE;
-							}
-							//Get Posts
-							else
-							{
-								$version = 'v2';
-								if($view=='comment')
-								{
-									$url = "/v2/posts/location/discussed/";
-								}
-								else
-								{
-									if($view=='upVote')
-									{
-										$url = "/v2/posts/location/popular/";
-									}
-									else
-									{
-										$url = "/v3/posts/location/combo/";
-										$version = 'v3';
-									}
-								}
-
-								if($version == 'v3')
-								{
-									$posts = getPosts($lastPostId, $accessToken, $url, $version)['recent'];
-								}
-								else
-								{
-									$posts = getPosts($lastPostId, $accessToken, $url, $version)['posts'];
-								}
-								$loops = 29;
-								$isDetailedView = FALSE;
-							}
-							
-
 							for($i = 0; $i<$loops; $i++)
 							{
 								if(array_key_exists($i, $posts) && array_key_exists('post_id', $posts[$i]) && isset($posts[$i]['post_id']))
@@ -504,8 +395,6 @@ include 'php/jodel-web.php';
 
 			$(document).ready(function()
 			{
-
-
 				//Transform UTF-8 Emoji to img
 				$('.jodel > content').Emoji();
 
@@ -617,6 +506,14 @@ include 'php/jodel-web.php';
 			});	
 
 		</script>
+
+		<?php  
+			if(is_file('./piwik-script.html'))
+			{
+			    require_once('./piwik-script.html');
+			}
+		?>
+
 	</body>
 </html>
 

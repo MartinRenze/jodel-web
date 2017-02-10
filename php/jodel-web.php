@@ -12,11 +12,211 @@ include 'php/Requests/Upvote.php';
 include 'php/Requests/Downvote.php';
 include 'php/Requests/GetPostDetails.php';
 include 'php/Requests/SendJodel.php';
+include 'php/Requests/GetCaptcha.php';
+include 'php/Requests/PostCaptcha.php';
+include 'php/Requests/GetUserConfig.php';
 
 require_once 'php/Requests/libary/Requests.php';
 Requests::register_autoloader();
 
 $lastPostId = '';
+
+function isAccountVerified($accessToken_forId1)
+{
+	$accountCreator = new GetUserConfig();
+	$accountCreator->setAccessToken($accessToken_forId1);
+	$data = $accountCreator->execute();
+
+	return $data['verified'];
+}
+
+function showCaptcha($accessToken_forId1)
+{
+	$accountCreator = new GetCaptcha();
+	$accountCreator->setAccessToken($accessToken_forId1);
+	$captcha = $accountCreator->execute();
+
+	echo $captcha['image_url'];
+	echo('<br><img width="100%" src="' . $captcha['image_url'] . '">');
+	echo "<br>Key: " . $captcha['key'];
+	echo "<br>";
+
+	//Form
+	
+	echo '<form method="get">';
+	echo	'<p>Enter Key (copy pasta from top): <input type="text" name="key" /></p>';
+	echo	'<p>Find the Coons (example: they are on picture 3, 4 and 5. You enter 2-3-4. Becouse we start counting at 0): <input type="text" name="solution" /></p>';
+	echo	'<p><input type="submit" /></p>';
+	echo '</form>';
+
+	die();
+	
+}
+
+function verifyCaptcha($accessToken_forId1)
+{
+	$solution = $_GET['solution'];
+	$solution = array_map('intval', explode('-', $solution));
+
+	$accountCreator = new PostCaptcha();
+	$accountCreator->setAccessToken($accessToken_forId1);
+	$accountCreator->captchaKey = $_GET['key'];
+	$accountCreator->captchaSolution = $solution;
+	$verified = $accountCreator->execute();
+
+	return $verified['verified'];
+}
+
+function setLocation($accessToken, $deviceUid)
+{
+	$url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($_GET['city']) . '&key=AIzaSyCwhnja-or07012HqrhPW7prHEDuSvFT4w';
+	$result = Requests::post($url);
+	if(json_decode($result->body, true)['status'] == 'ZERO_RESULTS' || json_decode($result->body, true)['status'] == 'INVALID_REQUEST')
+	{
+		return "0 results";
+	}
+	else
+	{
+		$name = json_decode($result->body, true)['results']['0']['address_components']['0']['long_name'];
+		$lat = json_decode($result->body, true)['results']['0']['geometry']['location']['lat'];
+		$lng = json_decode($result->body, true)['results']['0']['geometry']['location']['lng'];
+
+		$location = new Location();
+		$location->setLat($lat);
+		$location->setLng($lng);
+		$location->setCityName($name);
+		$accountCreator = new UpdateLocation();
+		$accountCreator->setLocation($location);
+		$accountCreator->setAccessToken($accessToken);
+		$data = $accountCreator->execute();
+
+		//safe location to db
+		$db = new DatabaseConnect();
+
+		if($data == 'Success')
+		{
+			$result = $db->query("UPDATE accounts 
+					SET name='" . $name . "',
+						lat='" . $lat . "',
+						lng='" . $lng . "'
+					WHERE access_token='" . $accessToken . "'");
+
+			if($result === false)
+			{
+					echo "Updating location failed: (" . $db->errno . ") " . $db->error;
+			}
+			else
+			{
+				error_log('User with JodelDeviceId:' . $deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . '] changed to Location: ' . $name);
+			}
+		}
+
+		return $name;
+	}
+}
+
+function votePostId($deviceUid_forId1, $accessToken_forId1)
+{
+	if(!isAccountVerified($accessToken_forId1))
+	{
+		showCaptcha($accessToken_forId1);
+	}
+
+	if(!deviceUidHasVotedThisPostId($deviceUid_forId1, $_GET['postID']))
+	{
+		if($_GET['vote'] == "up")
+		{
+			$accountCreator = new Upvote();
+		}
+		else if($_GET['vote'] == "down")
+		{
+			$accountCreator = new Downvote();
+		}
+		$accountCreator->setAccessToken($accessToken_forId1);
+		$accountCreator->postId = htmlspecialchars($_GET['postID']);
+		$data = $accountCreator->execute();
+
+
+		addVoteWithPostIdAndTypeToDeviceUid($_GET['postID'], $_GET['vote'], $deviceUid_forId1);
+	}
+
+	
+	if(isset($_GET['getPostDetails']) && isset($_GET['getPostDetails']))
+	{
+		header('Location: index.php?getPostDetails=true&postID=' . htmlspecialchars($_GET['postID_parent']) . '#postId-' . htmlspecialchars($_GET['postID']));
+	}
+	else
+	{
+		header("Location: index.php#postId-" . htmlspecialchars($_GET['postID']));
+	}	
+	die();
+}
+
+function sendJodel($location, $accessToken_forId1)
+{
+	if(!isAccountVerified($accessToken_forId1))
+	{
+		showCaptcha($accessToken_forId1);
+	}
+
+	$accountCreator = new SendJodel();
+
+	if(isset($_POST['ancestor']))
+	{
+		$ancestor = $_POST['ancestor'];
+		$accountCreator->ancestor = $ancestor;
+	}
+	if(isset($_POST['color']))
+	{
+		$color = $_POST['color'];
+		switch ($color) {
+			case '8ABDB0':
+				$color = '8ABDB0';
+				break;
+			case '9EC41C':
+				$color = '9EC41C';
+				break;
+			case '06A3CB':
+				$color = '06A3CB';
+				break;
+			case 'FFBA00':
+				$color = 'FFBA00';
+				break;
+			case 'DD5F5F':
+				$color = 'DD5F5F';
+				break;
+			case 'FF9908':
+				$color = 'FF9908';
+				break;
+			default:
+				$color = '8ABDB0';
+				break;
+		}
+		$accountCreator->color = $color;
+	}
+
+	$accountCreatorLocation = new UpdateLocation();
+	$accountCreatorLocation->setLocation($location);
+	$accountCreatorLocation->setAccessToken($accessToken_forId1);
+	$data = $accountCreatorLocation->execute();
+	
+	$accountCreator->location = $location;
+	
+	$accountCreator->setAccessToken($accessToken_forId1);
+	$data = $accountCreator->execute();
+
+	if(isset($_POST['ancestor']))
+	{
+		$actual_link = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		header('Location: ' . $actual_link . '#postId-' . htmlspecialchars($data['post_id']));
+		exit;
+	}
+	else
+	{
+		header('Location: ./#');
+		exit;
+	}
+}
 
 function isDeviceUidInDatabase($deviceUid)
 {
@@ -413,6 +613,44 @@ function botDeviceUidIsSet($config)
 	}
 }
 
+/**
+ * Compute HTML Code
+ */
+
+/**
+ * Gets the title.
+ *
+ * @return     string  The title.
+ */
+function getTitle($post, $view = 'time', $isDetailedView = FALSE)
+{
+	$title = 'JodelBlue - Web-App and Browser-Client';
+
+	if($isDetailedView)
+	{
+		$title = 'JodelBlue: ' . substr(htmlspecialchars($post['message']), 0, 44);
+	}
+
+	return $title;
+}
+
+/**
+ * Gets the meta description.
+ *
+ * @return     string  The meta description.
+ */
+function getMetaDescription($post, $view = 'time', $isDetailedView = FALSE)
+{
+	$description = 'JodelBlue is a Web-App and Browser-Client for the Jodel App. No registration required! Browse Jodels all over the world. Send your own Jodels or upvote others.';
+
+	if($isDetailedView)
+	{
+		$description = 'On JodelBlue with ' . htmlspecialchars($post['vote_count']) . ' Upvotes: ' . substr(htmlspecialchars($post['message']), 0, 140);
+	}
+
+	return $description;
+}
+
 function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 {	//ToDO
 	//Replace # with link
@@ -461,14 +699,17 @@ function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 
 
 	?>
-	<article id ="postId-<?php echo $post["post_id"]; ?>" class="jodel" style="background-color: #<?php echo $post["color"];?>;">
+	<article id ="postId-<?php echo $post['post_id']; ?>" class="jodel" style="background-color: #<?php echo $post['color'];?>;">
 		<content>
 			<?php 
-			if(isset($post["image_url"])) {
-				echo '<img src="' . $post["image_url"] . '">';
+			if(isset($post['image_url']))
+			{
+			    $regexRest = '/[^\w$ .!?-]+/u';
+
+				echo '<img src="' . $post['image_url'] . '" alt="' . htmlspecialchars(preg_replace($regexRest, '', $post['message'])) . '">';
 			}
 			else {
-				echo str_replace('  ', ' &nbsp;', nl2br(htmlspecialchars($post["message"])));
+				echo str_replace('  ', ' &nbsp;', nl2br(htmlspecialchars($post['message'])));
 			}
 			?>
 		</content>
@@ -476,11 +717,11 @@ function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 			<?php
 				if($isDetailedView)
 				{?>
-					<a href="index.php?vote=up&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>">
+					<a href="index.php?vote=up&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>" rel="nofollow">
 		  <?php }
 				else
 				{?>
-					<a href="index.php?vote=up&postID=<?php echo $post['post_id'];?>">
+					<a href="index.php?vote=up&postID=<?php echo $post['post_id'];?>" rel="nofollow">
 		  <?php } ?>
 						<i class="fa fa-angle-up fa-3x"></i>
 					</a>	
@@ -489,11 +730,11 @@ function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 			<?php
 				if($isDetailedView)
 				{?>
-					<a href="index.php?vote=down&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>">
+					<a href="index.php?vote=down&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>" rel="nofollow">
 		  <?php }
 				else
 				{?>
-					<a href="index.php?vote=down&postID=<?php echo $post['post_id'];?>">
+					<a href="index.php?vote=down&postID=<?php echo $post['post_id'];?>" rel="nofollow">
 		  <?php } ?>
 						<i class="fa fa-angle-down fa-3x"></i>
 					</a>

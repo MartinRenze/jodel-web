@@ -32,7 +32,6 @@
 	src: url("./fonts/Gotham-BoldItalic.otf") format("opentype");
 }
 
-
 body {
 	background-image: url('img/bg.png');
 	color: #000305;
@@ -52,7 +51,6 @@ a {
 a:link, a:visited {
 	color: #000305;
 	text-decoration: none;
-}
 }
 
 a:hover, a:active {
