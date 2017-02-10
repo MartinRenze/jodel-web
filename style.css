@@ -331,6 +331,18 @@ header .navbar {
 	width: 235px;
 }
 
+.captchaWrapper {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+input[type="checkbox"] {
+	height: 30px;
+	width: 30px;
+}
+
 
 /*
  * Sidebar

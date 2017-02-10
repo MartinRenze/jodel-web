@@ -161,7 +161,6 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 							<button name="vote" value="up" class="half" onClick="vote('up');">Upvote</button>
 							<button name="vote" value="down" class="half" onClick="vote('down');">Downvote</button><br>
 							<progress id="progressDelay" value="0" max="100"></progress>
-						
 							<div id="ResponseMessage"></div>
 							<div id="ResponseCaptcha"></div>
 						
@@ -229,7 +228,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 						  $("#ResponseMessage").html(response["message"]);
 						  if (response["captcha"] != null) {
 							  rekData = data;
-							  $("#ResponseCaptcha").append( "<div id='captchaWrapper_" + data["i"] + "'><img src='" + response["captcha"]["image_url"] + "' style='width:100%'><input type='text' id='captcha_"+ data["i"]  +"'><button onClick=\"verifyAccount(" + data["i"] + ", '" + response["captcha"]["key"] + "' , '" + response["accessToken"] + "');\">Verify</button></div>");
+							  $("#ResponseCaptcha").append( "<div id='captchaWrapper_" + data["i"] + "'><img src='" + response["captcha"]["image_url"] + "' style='width:100%'><div class='captchaWrapper'><input id='box_0' type='checkbox'><input id='box_1' type='checkbox'><input id='box_2' type='checkbox'><input id='box_3' type='checkbox'><input id='box_4' type='checkbox'><input id='box_5' type='checkbox'><input id='box_6' type='checkbox'><input id='box_7' type='checkbox'><input id='box_8' type='checkbox'></div><button onClick=\"verifyAccount(" + data["i"] + ", '" + response["captcha"]["key"] + "' , '" + response["accessToken"] + "');\">Verify</button></div>");
 						  }
 					  }
 					  else if (data["i"] < data["quantity"])
@@ -246,7 +245,23 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 			
 			function verifyAccount(id, key, token)
 			{
-				var solution = $("#captcha_"+id).val();
+				var solution = "";
+				for (i=0; i<9; i++) {
+					var box = $("#box_"+i);
+					if (box.is(':checked') == true)
+					{
+						if (solution != "")
+						{
+							solution += "-" + i;
+						}
+						else 
+						{
+							solution = i;
+						}
+
+					}
+				}
+				console.log(solution);
 				$.ajax({
 				  type: "POST",
 				  url: "vote-ajax.php?pw=<?php echo $_GET["pw"]?>&solution=" + solution + "&key="+key,
