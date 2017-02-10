@@ -499,17 +499,17 @@ function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
 
 
 	?>
-	<article id ="postId-<?php echo $post["post_id"]; ?>" class="jodel" style="background-color: #<?php echo $post["color"];?>;">
+	<article id ="postId-<?php echo $post['post_id']; ?>" class="jodel" style="background-color: #<?php echo $post['color'];?>;">
 		<content>
 			<?php 
-			if(isset($post["image_url"]))
+			if(isset($post['image_url']))
 			{
 			    $regexRest = '/[^\w$ .!?-]+/u';
 
-				echo '<img src="' . $post["image_url"] . '" alt="' . htmlspecialchars(preg_replace($regexRest, '', $post["message"])) . '">';
+				echo '<img src="' . $post['image_url'] . '" alt="' . htmlspecialchars(preg_replace($regexRest, '', $post['message'])) . '">';
 			}
 			else {
-				echo str_replace('  ', ' &nbsp;', nl2br(htmlspecialchars($post["message"])));
+				echo str_replace('  ', ' &nbsp;', nl2br(htmlspecialchars($post['message'])));
 			}
 			?>
 		</content>
