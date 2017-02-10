@@ -155,6 +155,10 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 							<button name="vote" value="up" class="half" onClick="vote('up');">Upvote</button>
 							<button name="vote" value="down" class="half" onClick="vote('down');">Downvote</button><br>
 							<progress id="progressDelay" value="0" max="100"></progress>
+						
+							<div id="ResponseMessage"></div>
+							<div id="ResponseCaptcha"></div>
+						
 					</content>
 				</article>
 			
@@ -184,6 +188,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 
 		<script>
 			//delayed voting
+			var rekData;
 			function vote(type)
 			{
 				var id = $("#postIdDelay").val();
@@ -193,7 +198,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 								
 				var data = {"vote": type,
 						   "id":id,
-							"i": 0,
+							"i": 1,
 						   "quantity":quantity,
 						   "minTime":minTime,
 						   "maxTime":maxTime};
@@ -203,19 +208,48 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 				voteRek(data);
 			}
 			
-			function voteRek(data) {
+			function voteRek(data)
+			{
 				$.ajax({
 				  type: "POST",
-				  url: "admin.php?pw=password",
+				  url: "vote-ajax.php?pw=<?php echo $_GET["pw"]?>",
 				  data: {"vote" : data["vote"],
-						 "postId" : data["id"],
-						 "quantity" : 1},
-				  success: function(){
+						 "postId" : data["id"]},
+				  success: function(result){
 					  $("#progressDelay").val(data["i"]);
-					  if (data["i"] < data["quantity"]) {
+					  var response = JSON.parse(result);
+					  if (response["success"] != true)
+					  {
+						  $("#ResponseMessage").html(response["message"]);
+						  if (response["captcha"] != null) {
+							  rekData = data;
+							  $("#ResponseCaptcha").append( "<div id='captchaWrapper_" + data["i"] + "'><img src='" + response["captcha"]["image_url"] + "' style='width:100%'><input type='text' id='captcha_"+ data["i"]  +"'><button onClick=\"verifyAccount(" + data["i"] + ", '" + response["captcha"]["key"] + "' , '" + response["accessToken"] + "');\">Verify</button></div>");
+						  }
+					  }
+					  else if (data["i"] < data["quantity"])
+					  {
+						  $("#ResponseMessage").html(data["i"] + " of " + data["quantity"]);
 						  data["i"] += 1;
 						  setTimeout(function(){voteRek(data)}, getRandomFloat(data["minTime"],data["maxTime"])*1000);
+					  } else {
+						  $("#ResponseMessage").html(data["quantity"] + " votes completed");
 					  }
+				  }
+				});
+			}
+			
+			function verifyAccount(id, key, token)
+			{
+				var solution = $("#captcha_"+id).val();
+				$.ajax({
+				  type: "POST",
+				  url: "vote-ajax.php?pw=<?php echo $_GET["pw"]?>&solution=" + solution + "&key="+key,
+				  data: {"accessToken" : token},
+				  success: function(result){
+					  var response = JSON.parse(result);
+					  console.log("Verification = "+response["success"])
+					  $("#captchaWrapper_"+id).remove();
+					  voteRek(rekData);
 				  }
 				});
 			}
