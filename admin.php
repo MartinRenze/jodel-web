@@ -136,6 +136,12 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 					<content id="posts" class="adminpanel">
 						<h2>account management</h2>
 						<form method="post">
+							<div>
+							<?php
+								$result = $db->query("SELECT COUNT(*) FROM accounts");
+								echo $result->fetch_row()[0];
+							?>
+							accounts in the database</div>
 							<button type="submit" name="createAccount" value="TRUE">Create new Account</button>
 						</form>
 						<hr>
