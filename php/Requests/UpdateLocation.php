@@ -28,7 +28,7 @@ class UpdateLocation extends AbstractRequest {
     function getPayload()
     {
         return array(
-			"location" => $this->getLocation()->toArray(),
+			'location' => $this->getLocation()->toArray(),
         );
     }
     function getMethod()

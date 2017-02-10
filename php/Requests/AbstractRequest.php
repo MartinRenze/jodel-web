@@ -32,6 +32,7 @@ abstract class AbstractRequest
             $header['Authorization'] = "Bearer " . $this->getAccessToken();
         }
         //Comment out to debug the Request:
+
         /*
         printf("URL: ");
         var_dump($url);

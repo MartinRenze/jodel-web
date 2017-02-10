@@ -1,10 +1,8 @@
 <?php
-error_reporting(-1);
-
-include 'php/jodel-web.php';
+	error_reporting(-1);
+	include 'php/jodel-web.php';
 
 	$config = parse_ini_file('config/config.ini.php');
-
 
 	$location = new Location();
 	$location->setLat($config['default_lat']);
@@ -23,7 +21,6 @@ include 'php/jodel-web.php';
 		die();
 	}
 
-
 	//Check if it's a Spider or Google Bot
 	if(botDeviceUidIsSet($config) && isUserBot())
 	{
@@ -36,7 +33,7 @@ include 'php/jodel-web.php';
 	else
 	{
 		$config = NULL;
-		if(!isset($_COOKIE['JodelDeviceId']) || !isDeviceUidInDatabase($db->real_escape_string($_COOKIE['JodelDeviceId'])))
+		if(!isset($_COOKIE['JodelDeviceId']) || !isDeviceUidInDatabase($_COOKIE['JodelDeviceId']))
 		{
 			$deviceUid = createAccount();
 			setcookie('JodelDeviceId', $deviceUid, time()+60*60*24*365*10);
@@ -45,7 +42,7 @@ include 'php/jodel-web.php';
 		}
 		else
 		{
-			$deviceUid = $db->real_escape_string($_COOKIE['JodelDeviceId']);
+			$deviceUid = $_COOKIE['JodelDeviceId'];
 		}
 	}
 
@@ -56,7 +53,6 @@ include 'php/jodel-web.php';
 
 	$accessToken_forId1 = isTokenFresh($location);
 	$deviceUid_forId1 = getDeviceUidByAccessToken($accessToken_forId1);
-
 
 	//Set View
 	if(isset($_GET['view']))
@@ -80,146 +76,28 @@ include 'php/jodel-web.php';
 		$view = 'time';
 	}
 	
+	//Verify Account
+	if(isset($_GET['solution']) && isset($_GET['key']))
+	{
+		verifyCaptcha($accessToken_forId1);
+	}
+
 	//Set Location
-	if(isset($_GET['city'])) {
-		$url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($_GET['city']) . '&key=AIzaSyCwhnja-or07012HqrhPW7prHEDuSvFT4w';
-		$result = Requests::post($url);
-		if(json_decode($result->body, true)['status'] == 'ZERO_RESULTS' || json_decode($result->body, true)['status'] == 'INVALID_REQUEST')
-		{
-			$newPositionStatus = "0 results";
-		}
-		else
-		{
-			$name = json_decode($result->body, true)['results']['0']['address_components']['0']['long_name'];
-			$lat = json_decode($result->body, true)['results']['0']['geometry']['location']['lat'];
-			$lng = json_decode($result->body, true)['results']['0']['geometry']['location']['lng'];
-
-			$location = new Location();
-			$location->setLat($lat);
-			$location->setLng($lng);
-			$location->setCityName($name);
-			$accountCreator = new UpdateLocation();
-			$accountCreator->setLocation($location);
-			$accountCreator->setAccessToken($accessToken);
-			$data = $accountCreator->execute();
-
-			//safe location to db
-			if($data == 'Success')
-			{
-				$result = $db->query("UPDATE accounts 
-						SET name='" . $name . "',
-							lat='" . $lat . "',
-							lng='" . $lng . "'
-						WHERE access_token='" . $accessToken . "'");
-
-				if($result === false)
-				{
-						echo "Updating location failed: (" . $db->errno . ") " . $db->error;
-				}
-				else
-				{
-					$newPositionStatus = $name;
-					error_log('User with JodelDeviceId:' . $deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . '] changed to Location: ' . $name);
-				}
-			}
-		}
+	if(isset($_GET['city']))
+	{
+		$newPositionStatus = setLocation($accessToken, $deviceUid);
 	}
 	
 	//Vote
 	if(isset($_GET['vote']) && isset($_GET['postID']))
 	{
-		if(!deviceUidHasVotedThisPostId($deviceUid_forId1, $_GET['postID']))
-		{
-			if($_GET['vote'] == "up")
-			{
-				$accountCreator = new Upvote();
-			}
-			else if($_GET['vote'] == "down")
-			{
-				$accountCreator = new Downvote();
-			}
-			$accountCreator->setAccessToken($accessToken_forId1);
-			$accountCreator->postId = htmlspecialchars($_GET['postID']);
-			$data = $accountCreator->execute();
-
-
-			addVoteWithPostIdAndTypeToDeviceUid($_GET['postID'], $_GET['vote'], $deviceUid_forId1);
-		}
-
-		
-		if(isset($_GET['getPostDetails']) && isset($_GET['getPostDetails']))
-		{
-			header('Location: index.php?getPostDetails=true&postID=' . htmlspecialchars($_GET['postID_parent']) . '#postId-' . htmlspecialchars($_GET['postID']));
-		}
-		else
-		{
-			header("Location: index.php#postId-" . htmlspecialchars($_GET['postID']));
-		}	
-		die();
+		votePostId($deviceUid_forId1, $accessToken_forId1);
 	}
-	
 	
 	//SendJodel
 	if(isset($_POST['message']))
 	{
-		$accountCreator = new SendJodel();
-
-		if(isset($_POST['ancestor']))
-		{
-			$ancestor = $_POST['ancestor'];
-			$accountCreator->ancestor = $ancestor;
-		}
-		if(isset($_POST['color']))
-		{
-			$color = $_POST['color'];
-			switch ($color) {
-				case '8ABDB0':
-					$color = '8ABDB0';
-					break;
-				case '9EC41C':
-					$color = '9EC41C';
-					break;
-				case '06A3CB':
-					$color = '06A3CB';
-					break;
-				case 'FFBA00':
-					$color = 'FFBA00';
-					break;
-				case 'DD5F5F':
-					$color = 'DD5F5F';
-					break;
-				case 'FF9908':
-					$color = 'FF9908';
-					break;
-				
-				default:
-					$color = '8ABDB0';
-					break;
-			}
-			$accountCreator->color = $color;
-		}
-
-		$accountCreatorLocation = new UpdateLocation();
-		$accountCreatorLocation->setLocation($location);
-		$accountCreatorLocation->setAccessToken($accessToken_forId1);
-		$data = $accountCreatorLocation->execute();
-		
-		$accountCreator->location = $location;
-		
-		$accountCreator->setAccessToken($accessToken_forId1);
-		$data = $accountCreator->execute();
-
-		if(isset($_POST['ancestor']))
-		{
-			$actual_link = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-			header('Location: ' . $actual_link . '#postId-' . htmlspecialchars($data['post_id']));
-			exit;
-		}
-		else
-		{
-			header('Location: ./#');
-			exit;
-		}
+		sendJodel($location, $accessToken_forId1);
 	}
 
 
