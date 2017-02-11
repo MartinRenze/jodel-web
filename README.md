@@ -12,7 +12,7 @@ https://www.jodelblue.com/
 
 ## How to Use##
 ### Create Jodel account ###
-1. visit ./admin.php
+1. visit ./admin.php?pw=PasswordYouSetInConfig
 2. click on 'Create new Account'
 
 ## Requirements ##
