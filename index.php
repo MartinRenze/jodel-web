@@ -91,7 +91,7 @@
 	//Vote
 	if(isset($_GET['vote']) && isset($_GET['postID']))
 	{
-<<<<<<< HEAD
+		/*
 		if(!deviceUidHasVotedThisPostId($deviceUid_forId1, $_GET['postID']))
 		{
 			if($_GET['vote'] == "up")
@@ -105,7 +105,7 @@
 			$accountCreator->setAccessToken($accessToken_forId1);
 			$accountCreator->postId = htmlspecialchars($_GET['postID']);
 			$data = $accountCreator->execute();
-=======
+		*/
 		votePostId($deviceUid_forId1, $accessToken_forId1);
 	}
 	
@@ -114,80 +114,164 @@
 	{
 		sendJodel($location, $accessToken_forId1);
 	}
->>>>>>> mmainstreet/master
+
 
 
 	$posts;
-
-	//Get Post Details
-	if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
+	//Is Channel or City
+	if(isset($_GET['city']) && substr($_GET['city'], 0, 1) === '#')
 	{
-		$userHandleBuffer = [];
+		$channel = substr($_GET['city'], 1);
 
-		$accountCreator = new GetPostDetails();
+		$accountCreator = new GetChannel();
 		$accountCreator->setAccessToken($accessToken);
-		$data = $accountCreator->execute();
-		
-		$posts[0] = $data;
-		if(array_key_exists('children', $data)) {
-			foreach($data['children'] as $key => $child)
+		$accountCreator->channel = $channel;
+		$posts = $accountCreator->execute();
+		if(array_key_exists('recent', $posts))
+		{
+			$posts = $posts['recent'];
+			if(!array_key_exists(0, $posts))
 			{
-				
-				if(!$child["parent_creator"] == 1)
-				{
-					$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
-					if($numberForUser === FALSE)
-					{
-						array_push($userHandleBuffer, $child['user_handle']);
-						$data['children'][$key]['user_handle'] = count($userHandleBuffer);
-					}
-					else
-					{
-						$data['children'][$key]['user_handle'] = $numberForUser + 1;
-					}
-				}
+				$posts[0] = array(
+			    "post_id" => "0",
+			    "discovered_by" => 0,
+			    "message" => "Not found",
+			    "created_at" => "2017-02-11T16:44:50.385Z",
+			    "updated_at" => "2017-02-11T16:44:50.385Z",
+			    "pin_count" => 0,
+			    "color" => "FFBA00",
+			    "got_thanks" => FALSE,
+			    "post_own" => "friend",
+			    "discovered" => 0,
+			    "distance" => 9,
+			    "vote_count" => 0,
+			    "location" =>
+			    array("name" => "Berlin",
+			      "loc_coordinates" =>
+			      array(
+			        "lat" => 0,
+			        "lng" => 0
+			      ),
+			      "loc_accuracy" => 0,
+			      "country" => "",
+			      "city" => "",
+			    ),
+			    "tags" =>
+			    array(),
+			    "user_handle" => "0"
+			 );
+			}
+		}
+		else
+		{
+			$posts = array();
+			$posts[0] = 
+			array(
+			    "post_id" => "0",
+			    "discovered_by" => 0,
+			    "message" => "Bad Request",
+			    "created_at" => "2017-02-11T16:44:50.385Z",
+			    "updated_at" => "2017-02-11T16:44:50.385Z",
+			    "pin_count" => 0,
+			    "color" => "FFBA00",
+			    "got_thanks" => FALSE,
+			    "post_own" => "friend",
+			    "discovered" => 0,
+			    "distance" => 9,
+			    "vote_count" => 0,
+			    "location" =>
+			    array("name" => "Berlin",
+			      "loc_coordinates" =>
+			      array(
+			        "lat" => 0,
+			        "lng" => 0
+			      ),
+			      "loc_accuracy" => 0,
+			      "country" => "",
+			      "city" => "",
+			    ),
+			    "tags" =>
+			    array(),
+			    "user_handle" => "0"
+			 );
 
-				array_push($posts, $data['children'][$key]);
-			}
-			$loops = $data['child_count'] + 1;
-		}
-		else
-		{
-			$loops = 1;
-		}
-		$isDetailedView = TRUE;
-	}
-	//Get Posts
-	else
-	{
-		$version = 'v2';
-		if($view=='comment')
-		{
-			$url = "/v2/posts/location/discussed/";
-		}
-		else
-		{
-			if($view=='upVote')
-			{
-				$url = "/v2/posts/location/popular/";
-			}
-			else
-			{
-				$url = "/v3/posts/location/combo/";
-				$version = 'v3';
-			}
-		}
 
-		if($version == 'v3')
-		{
-			$posts = getPosts($lastPostId, $accessToken, $url, $version)['recent'];
-		}
-		else
-		{
-			$posts = getPosts($lastPostId, $accessToken, $url, $version)['posts'];
 		}
 		$loops = 29;
 		$isDetailedView = FALSE;
+	}
+	else
+	{
+		//Get Post Details
+		if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
+		{
+			$userHandleBuffer = [];
+
+			$accountCreator = new GetPostDetails();
+			$accountCreator->setAccessToken($accessToken);
+			$data = $accountCreator->execute();
+			
+			$posts[0] = $data;
+			if(array_key_exists('children', $data)) {
+				foreach($data['children'] as $key => $child)
+				{
+					
+					if(!$child["parent_creator"] == 1)
+					{
+						$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
+						if($numberForUser === FALSE)
+						{
+							array_push($userHandleBuffer, $child['user_handle']);
+							$data['children'][$key]['user_handle'] = count($userHandleBuffer);
+						}
+						else
+						{
+							$data['children'][$key]['user_handle'] = $numberForUser + 1;
+						}
+					}
+
+					array_push($posts, $data['children'][$key]);
+				}
+				$loops = $data['child_count'] + 1;
+			}
+			else
+			{
+				$loops = 1;
+			}
+			$isDetailedView = TRUE;
+		}
+		//Get Posts
+		else
+		{
+			$version = 'v2';
+			if($view=='comment')
+			{
+				$url = "/v2/posts/location/discussed/";
+			}
+			else
+			{
+				if($view=='upVote')
+				{
+					$url = "/v2/posts/location/popular/";
+				}
+				else
+				{
+					$url = "/v3/posts/location/combo/";
+					$version = 'v3';
+				}
+			}
+
+			if($version == 'v3')
+			{
+				$posts = getPosts($lastPostId, $accessToken, $url, $version)['recent'];
+			}
+			else
+			{
+				$posts = getPosts($lastPostId, $accessToken, $url, $version)['posts'];
+			}
+			$loops = 29;
+			$isDetailedView = FALSE;
+		}
 	}
 ?>
 <!DOCTYPE html>
@@ -246,6 +330,7 @@
 			<nav class="navbar navbar-full navbar-dark navbar-fixed-top">
 				<div class="container">					
 						<?php
+
 							if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
 							{
 								echo '<a id="comment-back" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postID']) . '">';
@@ -303,10 +388,10 @@
 					<div class="fixed">
 						<article>
 							<div>
-								<h2>Position</h2>
+								<h2>Position / Hashtag</h2>
 								<form method="get">
 									<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
-
+									<label>try: #jhj</label><br>
 									<input type="submit" value="Set Location" /> 
 								</form>
 							</div>

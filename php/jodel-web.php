@@ -15,6 +15,7 @@ include 'php/Requests/SendJodel.php';
 include 'php/Requests/GetCaptcha.php';
 include 'php/Requests/PostCaptcha.php';
 include 'php/Requests/GetUserConfig.php';
+include 'php/Requests/GetChannel.php';
 
 require_once 'php/Requests/libary/Requests.php';
 Requests::register_autoloader();
@@ -78,49 +79,59 @@ function verifyCaptcha($accessToken_forId1)
 
 function setLocation($accessToken, $deviceUid)
 {
-	$url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($_GET['city']) . '&key=AIzaSyCwhnja-or07012HqrhPW7prHEDuSvFT4w';
-	$result = Requests::post($url);
-	if(json_decode($result->body, true)['status'] == 'ZERO_RESULTS' || json_decode($result->body, true)['status'] == 'INVALID_REQUEST')
+	//Is Channel or City
+	if(substr($_GET['city'], 0, 1) === '#')
 	{
-		return "0 results";
-	}
+		$channel = substr($_GET['city'], 1);
+
+		return htmlspecialchars($_GET['city']);
+	}                
 	else
 	{
-		$name = json_decode($result->body, true)['results']['0']['address_components']['0']['long_name'];
-		$lat = json_decode($result->body, true)['results']['0']['geometry']['location']['lat'];
-		$lng = json_decode($result->body, true)['results']['0']['geometry']['location']['lng'];
-
-		$location = new Location();
-		$location->setLat($lat);
-		$location->setLng($lng);
-		$location->setCityName($name);
-		$accountCreator = new UpdateLocation();
-		$accountCreator->setLocation($location);
-		$accountCreator->setAccessToken($accessToken);
-		$data = $accountCreator->execute();
-
-		//safe location to db
-		$db = new DatabaseConnect();
-
-		if($data == 'Success')
+		$url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($_GET['city']) . '&key=AIzaSyCwhnja-or07012HqrhPW7prHEDuSvFT4w';
+		$result = Requests::post($url);
+		if(json_decode($result->body, true)['status'] == 'ZERO_RESULTS' || json_decode($result->body, true)['status'] == 'INVALID_REQUEST')
 		{
-			$result = $db->query("UPDATE accounts 
-					SET name='" . $name . "',
-						lat='" . $lat . "',
-						lng='" . $lng . "'
-					WHERE access_token='" . $accessToken . "'");
-
-			if($result === false)
-			{
-					echo "Updating location failed: (" . $db->errno . ") " . $db->error;
-			}
-			else
-			{
-				error_log('User with JodelDeviceId:' . $deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . '] changed to Location: ' . $name);
-			}
+			return "0 results";
 		}
+		else
+		{
+			$name = json_decode($result->body, true)['results']['0']['address_components']['0']['long_name'];
+			$lat = json_decode($result->body, true)['results']['0']['geometry']['location']['lat'];
+			$lng = json_decode($result->body, true)['results']['0']['geometry']['location']['lng'];
 
-		return $name;
+			$location = new Location();
+			$location->setLat($lat);
+			$location->setLng($lng);
+			$location->setCityName($name);
+			$accountCreator = new UpdateLocation();
+			$accountCreator->setLocation($location);
+			$accountCreator->setAccessToken($accessToken);
+			$data = $accountCreator->execute();
+
+			//safe location to db
+			$db = new DatabaseConnect();
+
+			if($data == 'Success')
+			{
+				$result = $db->query("UPDATE accounts 
+						SET name='" . $name . "',
+							lat='" . $lat . "',
+							lng='" . $lng . "'
+						WHERE access_token='" . $accessToken . "'");
+
+				if($result === false)
+				{
+						echo "Updating location failed: (" . $db->errno . ") " . $db->error;
+				}
+				else
+				{
+					error_log('User with JodelDeviceId:' . $deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . '] changed to Location: ' . $name);
+				}
+			}
+
+			return $name;
+		}
 	}
 }
 
