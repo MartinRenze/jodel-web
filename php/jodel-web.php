@@ -30,6 +30,15 @@ function isAccountVerified($accessToken_forId1)
 	return $data['verified'];
 }
 
+function getCaptcha($accessToken_forId1)
+{
+	$accountCreator = new GetCaptcha();
+	$accountCreator->setAccessToken($accessToken_forId1);
+	$captcha = $accountCreator->execute();
+
+	return array("image_url" => $captcha['image_url'], "key" => $captcha['key']);
+}
+
 function showCaptcha($accessToken_forId1)
 {
 	$accountCreator = new GetCaptcha();
@@ -44,7 +53,7 @@ function showCaptcha($accessToken_forId1)
 	//Form
 	
 	echo '<form method="get">';
-	echo	'<p>Enter Key (copy pasta from top): <input type="text" name="key" /></p>';
+	echo	'<p>Enter Key (copy pasta from top): <input type="text" value="' . $captcha['key'] . '" name="key" /></p>';
 	echo	'<p>Find the Coons (example: they are on picture 3, 4 and 5. You enter 2-3-4. Becouse we start counting at 0): <input type="text" name="solution" /></p>';
 	echo	'<p><input type="submit" /></p>';
 	echo '</form>';

@@ -91,6 +91,21 @@
 	//Vote
 	if(isset($_GET['vote']) && isset($_GET['postID']))
 	{
+<<<<<<< HEAD
+		if(!deviceUidHasVotedThisPostId($deviceUid_forId1, $_GET['postID']))
+		{
+			if($_GET['vote'] == "up")
+			{
+				$accountCreator = new Upvote();
+			}
+			else if($_GET['vote'] == "down")
+			{
+				$accountCreator = new Downvote();
+			}
+			$accountCreator->setAccessToken($accessToken_forId1);
+			$accountCreator->postId = htmlspecialchars($_GET['postID']);
+			$data = $accountCreator->execute();
+=======
 		votePostId($deviceUid_forId1, $accessToken_forId1);
 	}
 	
@@ -99,6 +114,7 @@
 	{
 		sendJodel($location, $accessToken_forId1);
 	}
+>>>>>>> mmainstreet/master
 
 
 	$posts;
