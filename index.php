@@ -62,7 +62,7 @@
 								echo '<i class="fa fa-angle-left fa-3x"></i>';
 								echo '</a>';
 								echo '<h1>';
-								echo '<a href="index.php?getPostDetails=' . htmlspecialchars($_GET['getPostDetails']) . '&postID=' . htmlspecialchars($_GET['postID']) . '" class="spinnable">';
+								echo '<a href="index.php?getPostDetails=' . htmlspecialchars($_GET['getPostDetails']) . '&postID=' . htmlspecialchars($_GET['postID']) . '" class="spinnable hidden-xs-down">';
 							}
 							else
 							{

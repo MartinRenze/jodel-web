@@ -375,11 +375,11 @@ h2 {
 
 #location_mobile {
 	padding: .67em 0em;
-	float: right;
+	overflow: auto;
 }
 
 #city_mobile {
-	float: right;
+	width: 100%;
 }
 
 #submit_mobile {
