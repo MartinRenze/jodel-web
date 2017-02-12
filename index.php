@@ -213,8 +213,9 @@
 
 			if(property_exists($data, 'status_code') && $data->status_code == 404)
 			{
-				header('HTTP/1.1 410 Gone'); 
-				die();
+				header('HTTP/1.1 410 Gone');
+				include './error-pages/410.html';
+				exit;
 			}
 
 			$posts[0] = $data;

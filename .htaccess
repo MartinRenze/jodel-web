@@ -12,5 +12,3 @@ IndexIgnore *
 
 ErrorDocument 404 /error-pages/404.html
 ErrorDocument 410 /error-pages/410.html
-
-
