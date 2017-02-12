@@ -1,282 +1,14 @@
-<?php
-	error_reporting(-1);
-	include 'php/jodel-web.php';
-
-	$config = parse_ini_file('config/config.ini.php');
-
-	$location = new Location();
-	$location->setLat($config['default_lat']);
-	$location->setLng($config['default_lng']);
-	$location->setCityName($config['default_location']);
-
-	$accessToken;
-	$accessToken_forId1;
-	$deviceUid;
-	$isSpider = FALSE;
-
-	//What is dude doing with my Server?
-	if($_SERVER['REMOTE_ADDR'] == '94.231.103.52')
-	{
-		echo('You are flooting my Server! Pls enable Cookies in your script and contact me: info@jodelblue.com');
-		die();
-	}
-
-	//Check if it's a Spider or Google Bot
-	if(botDeviceUidIsSet($config) && isUserBot())
-	{
-		$isSpider = TRUE;
-		error_log('Spider or Bot checked in!');
-		
-		$deviceUid = $config['botDeviceUid'];
-		$config = NULL;
-	}
-	else
-	{
-		$config = NULL;
-		if(!isset($_COOKIE['JodelDeviceId']) || !isDeviceUidInDatabase($_COOKIE['JodelDeviceId']))
-		{
-			$deviceUid = createAccount();
-			setcookie('JodelDeviceId', $deviceUid, time()+60*60*24*365*10);
-			error_log('Created account with JodelDeviceId:' . $deviceUid .  ' for [' . $_SERVER ['HTTP_USER_AGENT'] . ']');
-			
-		}
-		else
-		{
-			$deviceUid = $_COOKIE['JodelDeviceId'];
-		}
-	}
-
-	$location = getLocationByDeviceUid($deviceUid);
-	$newPositionStatus = $location->getCityName();
-	$accessToken = isTokenFreshByDeviceUid($location, $deviceUid);
-	//Acc is fresh. token and location is set
-
-	$accessToken_forId1 = isTokenFresh($location);
-	$deviceUid_forId1 = getDeviceUidByAccessToken($accessToken_forId1);
-
-	//Set View
-	if(isset($_GET['view']))
-	{
-		switch ($_GET['view']) {
-			case 'comment':
-				$view = 'comment';
-				break;
-			
-			case 'upVote':
-				$view = 'upVote';
-				break;
-
-			default:
-				$view = 'time';
-				break;
-		}
-	}
-	else
-	{
-		$view = 'time';
-	}
-	
-	//Verify Account
-	if(isset($_GET['solution']) && isset($_GET['key']))
-	{
-		verifyCaptcha($accessToken_forId1);
-	}
-
-	//Set Location
-	if(isset($_GET['city']))
-	{
-		$newPositionStatus = setLocation($accessToken, $deviceUid, $location->getCityName());
-	}
-	
-	//Vote
-	if(isset($_GET['vote']) && isset($_GET['postID']) && !$isSpider)
-	{
-		votePostId($deviceUid_forId1, $accessToken_forId1);
-	}
-	
-	//SendJodel
-	if(isset($_POST['message']) && !$isSpider)
-	{
-		sendJodel($location, $accessToken_forId1);
-	}
-
-
-
-	$posts;
-	//Is Channel or City
-	if(isset($_GET['city']) && substr($_GET['city'], 0, 1) === '#')
-	{
-		$channel = substr($_GET['city'], 1);
-
-		$accountCreator = new GetChannel();
-		$accountCreator->setAccessToken($accessToken);
-		$accountCreator->channel = $channel;
-		$posts = $accountCreator->execute();
-		if(array_key_exists('recent', $posts))
-		{
-			$posts = $posts['recent'];
-			if(!array_key_exists(0, $posts))
-			{
-				$posts[0] = array(
-			    "post_id" => "0",
-			    "discovered_by" => 0,
-			    "message" => "Not found",
-			    "created_at" => "2017-02-11T16:44:50.385Z",
-			    "updated_at" => "2017-02-11T16:44:50.385Z",
-			    "pin_count" => 0,
-			    "color" => "FFBA00",
-			    "got_thanks" => FALSE,
-			    "post_own" => "friend",
-			    "discovered" => 0,
-			    "distance" => 9,
-			    "vote_count" => 0,
-			    "location" =>
-			    array("name" => "Berlin",
-			      "loc_coordinates" =>
-			      array(
-			        "lat" => 0,
-			        "lng" => 0
-			      ),
-			      "loc_accuracy" => 0,
-			      "country" => "",
-			      "city" => "",
-			    ),
-			    "tags" =>
-			    array(),
-			    "user_handle" => "0"
-			 );
-			}
-		}
-		else
-		{
-			$posts = array();
-			$posts[0] = 
-			array(
-			    "post_id" => "0",
-			    "discovered_by" => 0,
-			    "message" => "Bad Request",
-			    "created_at" => "2017-02-11T16:44:50.385Z",
-			    "updated_at" => "2017-02-11T16:44:50.385Z",
-			    "pin_count" => 0,
-			    "color" => "FFBA00",
-			    "got_thanks" => FALSE,
-			    "post_own" => "friend",
-			    "discovered" => 0,
-			    "distance" => 9,
-			    "vote_count" => 0,
-			    "location" =>
-			    array("name" => "Berlin",
-			      "loc_coordinates" =>
-			      array(
-			        "lat" => 0,
-			        "lng" => 0
-			      ),
-			      "loc_accuracy" => 0,
-			      "country" => "",
-			      "city" => "",
-			    ),
-			    "tags" =>
-			    array(),
-			    "user_handle" => "0"
-			 );
-
-
-		}
-		$loops = 29;
-		$isDetailedView = FALSE;
-	}
-	else
-	{
-		//Get Post Details
-		if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
-		{
-			$userHandleBuffer = [];
-
-			$accountCreator = new GetPostDetails();
-			$accountCreator->setAccessToken($accessToken);
-			$data = $accountCreator->execute();
-
-			if(array_key_exists('status_code', $data) && $data->status_code == 404)
-			{
-				header('HTTP/1.1 410 Gone');
-				include './error-pages/410.html';
-				exit;
-			}
-
-			$posts[0] = $data;
-
-			if(array_key_exists('children', $data)) {
-				foreach($data['children'] as $key => $child)
-				{
-					
-					if(!$child["parent_creator"] == 1)
-					{
-						$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
-						if($numberForUser === FALSE)
-						{
-							array_push($userHandleBuffer, $child['user_handle']);
-							$data['children'][$key]['user_handle'] = count($userHandleBuffer);
-						}
-						else
-						{
-							$data['children'][$key]['user_handle'] = $numberForUser + 1;
-						}
-					}
-
-					array_push($posts, $data['children'][$key]);
-				}
-				$loops = $data['child_count'] + 1;
-			}
-			else
-			{
-				$loops = 1;
-			}
-			$isDetailedView = TRUE;
-		}
-		//Get Posts
-		else
-		{
-			$version = 'v2';
-			if($view=='comment')
-			{
-				$url = "/v2/posts/location/discussed/";
-			}
-			else
-			{
-				if($view=='upVote')
-				{
-					$url = "/v2/posts/location/popular/";
-				}
-				else
-				{
-					$url = "/v3/posts/location/combo/";
-					$version = 'v3';
-				}
-			}
-
-			if($version == 'v3')
-			{
-				$posts = getPosts($lastPostId, $accessToken, $url, $version)['recent'];
-			}
-			else
-			{
-				$posts = getPosts($lastPostId, $accessToken, $url, $version)['posts'];
-			}
-			$loops = 29;
-			$isDetailedView = FALSE;
-		}
-	}
-?>
+<?php include 'php/jodel-web.php';?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title><?php echo getTitle($posts[0], $view, $isDetailedView);?></title>
+		<title><?php echo $viewTest::getTitle($posts[0], $view, $isDetailedView);?></title>
 		
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		
-		<meta name="description" content="<?php echo getMetaDescription($posts[0], $view, $isDetailedView);?>">
+		<meta name="description" content="<?php echo $viewTest::getMetaDescription($posts[0], $view, $isDetailedView);?>">
 		<meta name="keywords" content="jodelblue, jodel, blue, webclient, web, client, web-app, browser, app">
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
@@ -364,7 +96,7 @@
 								{
 									$lastPostId = $posts[$i]['post_id'];
 
-									jodelToHtml($posts[$i], $view, $isDetailedView);
+									$viewTest::jodelToHtml($posts[$i], $view, $isDetailedView);
 								}
 							} ?>
 
@@ -393,7 +125,7 @@
 						<article>
 							<div>
 								<h2>Karma</h2>
-								<?php echo getKarma($accessToken_forId1); ?>
+								<?php echo $jodelAccountForKarma->getKarma(); ?>
 							</div>
 						</article>
 

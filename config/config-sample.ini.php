@@ -16,6 +16,7 @@ pw				= password
 ;Set a deviceUid to use for bots. Otherwise every visit from google-bot will create a new jodel-account
 ;just pick a free device_uid from your db
 botDeviceUid 		= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+karmaDeviceUid		= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ;You can find the coordinates with Google Maps
 default_location 	= Berlin
