@@ -84,7 +84,6 @@ function isDeviceUidInDatabase($deviceUid)
 	{
 		if(!isset($_COOKIE['JodelDeviceId']) || !isDeviceUidInDatabase($_COOKIE['JodelDeviceId']))
 		{
-			//$deviceUid = createAccount();
 			$jodelAccountForView = new JodelAccount();
 			setcookie('JodelDeviceId', $jodelAccountForView->deviceUid, time()+60*60*24*365*10);
 			error_log('Created account with JodelDeviceId:' . $jodelAccountForView->deviceUid .  ' for [' . $_SERVER ['HTTP_USER_AGENT'] . ']');

@@ -21,8 +21,7 @@ class JodelAccount
     {
         if($deviceUid == NULL)
         {
-            //Create New Account
-            $this->deviceUid = $deviceUid;
+            $this->deviceUid = $this->createAccount();
         }
         else
         {
@@ -37,8 +36,6 @@ class JodelAccount
             $this::refreshToken();
         }
         $this->accessToken  = $this::getAccessToken();
-
-
     }
 
     function isAccountVerified()
@@ -431,7 +428,7 @@ class JodelAccount
         $location->setLng($config['default_lng']);
         $location->setCityName($config['default_location']);
 
-        $deviceUid = registerAccount($location);
+        $deviceUid = $this->registerAccount($location);
 
         return $deviceUid;
     }
