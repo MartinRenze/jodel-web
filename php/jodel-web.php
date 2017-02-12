@@ -99,7 +99,7 @@ function isDeviceUidInDatabase($deviceUid)
 	
 	if(configPropertyExists($config, 'karmaDeviceUid'))
     {
-    	$jodelAccountForKarma = new JodelAccount($config['botDeviceUid']);
+    	$jodelAccountForKarma = new JodelAccount($config['karmaDeviceUid']);
     }
     else
     {
