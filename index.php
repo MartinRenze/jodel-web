@@ -89,28 +89,13 @@
 	}
 	
 	//Vote
-	if(isset($_GET['vote']) && isset($_GET['postID']))
+	if(isset($_GET['vote']) && isset($_GET['postID']) && !$isSpider)
 	{
-		/*
-		if(!deviceUidHasVotedThisPostId($deviceUid_forId1, $_GET['postID']))
-		{
-			if($_GET['vote'] == "up")
-			{
-				$accountCreator = new Upvote();
-			}
-			else if($_GET['vote'] == "down")
-			{
-				$accountCreator = new Downvote();
-			}
-			$accountCreator->setAccessToken($accessToken_forId1);
-			$accountCreator->postId = htmlspecialchars($_GET['postID']);
-			$data = $accountCreator->execute();
-		*/
 		votePostId($deviceUid_forId1, $accessToken_forId1);
 	}
 	
 	//SendJodel
-	if(isset($_POST['message']))
+	if(isset($_POST['message']) && !$isSpider)
 	{
 		sendJodel($location, $accessToken_forId1);
 	}
@@ -211,7 +196,7 @@
 			$accountCreator->setAccessToken($accessToken);
 			$data = $accountCreator->execute();
 
-			if(property_exists($data, 'status_code') && $data->status_code == 404)
+			if(array_key_exists('status_code', $data) && $data->status_code == 404)
 			{
 				header('HTTP/1.1 410 Gone');
 				include './error-pages/410.html';
