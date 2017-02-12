@@ -77,14 +77,12 @@ function verifyCaptcha($accessToken_forId1)
 	return $verified['verified'];
 }
 
-function setLocation($accessToken, $deviceUid)
+function setLocation($accessToken, $deviceUid, $cityName)
 {
 	//Is Channel or City
 	if(substr($_GET['city'], 0, 1) === '#')
 	{
-		$channel = substr($_GET['city'], 1);
-
-		return htmlspecialchars($_GET['city']);
+		return htmlspecialchars($_GET['city']) . " " . $cityName;
 	}                
 	else
 	{

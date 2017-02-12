@@ -85,7 +85,7 @@
 	//Set Location
 	if(isset($_GET['city']))
 	{
-		$newPositionStatus = setLocation($accessToken, $deviceUid);
+		$newPositionStatus = setLocation($accessToken, $deviceUid, $location->getCityName());
 	}
 	
 	//Vote
@@ -210,8 +210,15 @@
 			$accountCreator = new GetPostDetails();
 			$accountCreator->setAccessToken($accessToken);
 			$data = $accountCreator->execute();
-			
+
+			if(property_exists($data, 'status_code') && $data->status_code == 404)
+			{
+				header('HTTP/1.1 410 Gone'); 
+				die();
+			}
+
 			$posts[0] = $data;
+
 			if(array_key_exists('children', $data)) {
 				foreach($data['children'] as $key => $child)
 				{
