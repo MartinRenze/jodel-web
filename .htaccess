@@ -12,6 +12,12 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301]
 RewriteCond %{QUERY_STRING} ^(.*)postID=(.*)$
 RewriteRule ^/?index\.php(.*)$ /index.php?%1postId=%2 [L,R=301]
 
+RewriteCond %{QUERY_STRING} ^(.*)$
+RewriteRule ^(.*?)/(.*?)/(.*?)/(.*?)/?$ /index.php?country=$1&city=$2&hashtag=$3&view=$4&%1
+
+RewriteCond %{QUERY_STRING} ^(.*)$
+RewriteRule ^(.*?)/(.*?)/(.*?)/(.*?)/(.*?)/?$ /index.php?country=$1&city=$2&hashtag=$3&view=$4&postId=$5&postDetails=true&%1
+
 IndexIgnore *
 
 ErrorDocument 404 /error-pages/404.html
