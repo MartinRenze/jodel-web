@@ -134,9 +134,10 @@ function isDeviceUidInDatabase($deviceUid)
 	}
 	
 	//Verify Account
-	if(isset($_GET['solution']) && isset($_GET['key']))
+	if(isset($_GET['solution']) && isset($_GET['key']) && isset($_GET['deviceUid']))
 	{
-		$jodelAccountForKarma->verifyCaptcha();
+		$jodelAccountForVerify = new JodelAccount($_GET['deviceUid']);
+		$jodelAccountForVerify->verifyCaptcha();
 	}
 
 	//Set Location
@@ -146,9 +147,18 @@ function isDeviceUidInDatabase($deviceUid)
 	}
 	
 	//Vote
-	if(isset($_GET['vote']) && isset($_GET['postID']))
+	if(isset($_GET['vote']) && isset($_GET['postId']))
 	{
-		$jodelAccountForKarma->votePostId();
+		$jodelAccountForKarma->votePostId($_GET['postId'], $_GET['vote']);
+		if(isset($_GET['getPostDetails']) && isset($_GET['getPostDetails']))
+        {
+            header('Location: index.php?getPostDetails=true&postId=' . htmlspecialchars($_GET['postId_parent']) . '#postId-' . htmlspecialchars($_GET['postId']));
+        }
+        else
+        {
+            header("Location: index.php#postId-" . htmlspecialchars($_GET['postId']));
+        }   
+        die();
 	}
 	
 	//SendJodel
@@ -263,7 +273,7 @@ function isDeviceUidInDatabase($deviceUid)
 	else
 	{
 		//Get Post Details
-		if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
+		if(isset($_GET['postId']) && isset($_GET['getPostDetails']))
 		{
 			$userHandleBuffer = [];
 

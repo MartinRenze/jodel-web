@@ -1,24 +1,18 @@
 <?php
 
-$config = parse_ini_file('config/config.ini.php');
+include 'php/jodel-web.php';
+
 if(!isset($_GET['pw']) || $config['pw'] != $_GET['pw'])
 {
 	error_log($_SERVER['REMOTE_ADDR']  . ' used a wrong password on admin.php');
 	die();
 }
 
-include 'php/jodel-web.php';
-
-$location = new Location();
-$location->setLat('52.5134288');
-$location->setLng('13.2746394');
-$location->setCityName('Berlin');
-
 
 
 if(isset($_POST['createAccount']) && $_POST['createAccount'])
 {
-	createAccount();
+	$newJodelAccount = new JodelAccount();
 }
 
 
@@ -33,26 +27,10 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 		// output data of each row
 		while(($row = $result->fetch_assoc()) && $i < $_POST['quantity'])
 		{
-			$accessToken = $row['access_token'];
-			
-			$location = getLocationByAccessToken($accessToken);
+			$jodelAccount = new JodelAccount($row['device_uid']);
 
-			$accessToken = isTokenFreshByAccessToken($location, $accessToken);
-
-
-			if($_POST['vote'] == "up") {
-				$accountCreator = new Upvote();
-			}
-			else if($_POST['vote'] == "down") {
-				$accountCreator = new Downvote();
-			}
-
-			$accountCreator->setAccessToken($accessToken);
-			$accountCreator->postId = $_POST['postId'];
-			$data = $accountCreator->execute();
-			if(array_key_exists('post', $data))
+			if($jodelAccount->votePostId($_POST['postId'], $_POST['vote']))
 			{
-				addVoteWithPostIdAndTypeToDeviceUid($_POST['postId'], $_POST['vote'], $row['device_uid']);
 				$i++;
 			}
 		}
@@ -146,7 +124,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 						</form>
 						<hr>
 						<h2>voting</h2>
-						<form method="post">
+						<form method="POST">
 							<input placeholder="quantity" type="number" name="quantity"><br>
 							<input placeholder="postId" type="text" name="postId"><br>
 							<button type="submit" name="vote" value="up" class="half">Upvote</button>
@@ -166,21 +144,6 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 						
 					</content>
 				</article>
-			
-				<aside class="topSidebar col-sm-4 sidebar-outer">
-					<div class="fixed">
-						<article>
-							
-						</article>
-					</div>
-				</aside>
-			</div>
-			<div id="sortJodelBy" class="row">
-				<div class="col-sm-12">
-					<div class="row">
-						
-					</div>
-				</div>	
 			</div>
 		</div>
 		
@@ -189,7 +152,6 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
     	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8" crossorigin="anonymous"></script>
     	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
-    	<script src="js/jQueryEmoji.js"></script>
 
 		<script>
 			//delayed voting
@@ -228,7 +190,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 						  $("#ResponseMessage").html(response["message"]);
 						  if (response["captcha"] != null) {
 							  rekData = data;
-							  $("#ResponseCaptcha").append( "<div id='captchaWrapper_" + data["i"] + "'><img src='" + response["captcha"]["image_url"] + "' style='width:100%'><div class='captchaWrapper'><input id='box_0' type='checkbox'><input id='box_1' type='checkbox'><input id='box_2' type='checkbox'><input id='box_3' type='checkbox'><input id='box_4' type='checkbox'><input id='box_5' type='checkbox'><input id='box_6' type='checkbox'><input id='box_7' type='checkbox'><input id='box_8' type='checkbox'></div><button onClick=\"verifyAccount(" + data["i"] + ", '" + response["captcha"]["key"] + "' , '" + response["accessToken"] + "');\">Verify</button></div>");
+							  $("#ResponseCaptcha").append( "<div id='captchaWrapper_" + data["i"] + "'><img src='" + response["captcha"]["image_url"] + "' style='width:100%'><div class='captchaWrapper'><input id='box_0' type='checkbox'><input id='box_1' type='checkbox'><input id='box_2' type='checkbox'><input id='box_3' type='checkbox'><input id='box_4' type='checkbox'><input id='box_5' type='checkbox'><input id='box_6' type='checkbox'><input id='box_7' type='checkbox'><input id='box_8' type='checkbox'></div><button onClick=\"verifyAccount(" + data["i"] + ", '" + response["captcha"]["key"] + "' , '" + response["deviceUid"] + "');\">Verify</button></div>");
 						  }
 					  }
 					  else if (data["i"] < data["quantity"])
@@ -243,7 +205,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 				});
 			}
 			
-			function verifyAccount(id, key, token)
+			function verifyAccount(id, key, deviceUid)
 			{
 				var solution = "";
 				for (i=0; i<9; i++) {
@@ -265,7 +227,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 				$.ajax({
 				  type: "POST",
 				  url: "vote-ajax.php?pw=<?php echo $_GET["pw"]?>&solution=" + solution + "&key="+key,
-				  data: {"accessToken" : token},
+				  data: {"deviceUid" : deviceUid},
 				  success: function(result){
 					  var response = JSON.parse(result);
 					  console.log("Verification = "+response["success"])
@@ -279,30 +241,6 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 			{
 			  return Math.floor(Math.random() * (max - min)) + min;
 			}
-			
-			//BackButton
-			function goBack()
-			{
-				window.history.back();
-			}
-
-			$(document).ready(function()
-			{
-
-
-				//Transform UTF-8 Emoji to img
-				$('.jodel > content').Emoji();
-
-				$('a').on('click', function(){
-				    $('a').removeClass('selected');
-				    $(this).addClass('selected');
-				});
-
-				function scrollToAnchor(aid){
-				    var aTag = $("article[id='"+ aid +"']");
-				    $('html,body').animate({scrollTop: aTag.offset().top-90},'slow');
-				}
-			});	
 
 		</script>
 	</body>

@@ -74,11 +74,11 @@ class View
                 <?php
                     if($isDetailedView)
                     {?>
-                        <a href="index.php?vote=up&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>" rel="nofollow">
+                        <a href="index.php?vote=up&getPostDetails=true&postId=<?php echo $post['post_id'];?>&postId_parent=<?php echo htmlspecialchars($_GET['postId']);?>" rel="nofollow">
               <?php }
                     else
                     {?>
-                        <a href="index.php?vote=up&postID=<?php echo $post['post_id'];?>" rel="nofollow">
+                        <a href="index.php?vote=up&postId=<?php echo $post['post_id'];?>" rel="nofollow">
               <?php } ?>
                             <i class="fa fa-angle-up fa-3x"></i>
                         </a>    
@@ -87,11 +87,11 @@ class View
                 <?php
                     if($isDetailedView)
                     {?>
-                        <a href="index.php?vote=down&getPostDetails=true&postID=<?php echo $post['post_id'];?>&postID_parent=<?php echo htmlspecialchars($_GET['postID']);?>" rel="nofollow">
+                        <a href="index.php?vote=down&getPostDetails=true&postId=<?php echo $post['post_id'];?>&postId_parent=<?php echo htmlspecialchars($_GET['postId']);?>" rel="nofollow">
               <?php }
                     else
                     {?>
-                        <a href="index.php?vote=down&postID=<?php echo $post['post_id'];?>" rel="nofollow">
+                        <a href="index.php?vote=down&postId=<?php echo $post['post_id'];?>" rel="nofollow">
               <?php } ?>
                             <i class="fa fa-angle-down fa-3x"></i>
                         </a>
@@ -110,7 +110,7 @@ class View
                         <td class="comments">
                             <?php if(!$isDetailedView) {?>
                             <span data-tooltip="Comments">
-                                <a href="index.php?getPostDetails=true&view=<?php echo $view;?>&postID=<?php echo $post["post_id"];?>">
+                                <a href="index.php?getPostDetails=true&view=<?php echo $view;?>&postId=<?php echo $post["post_id"];?>">
                                     <i class="fa fa-commenting-o"></i>
                                     <?php if(array_key_exists("child_count", $post)) {
                                                 echo $post["child_count"];
@@ -204,7 +204,7 @@ class View
 		return array("image_url" => $captcha['image_url'], "key" => $captcha['key']);
 	}
 
-	function showCaptcha($accessToken)
+	function showCaptcha($accessToken, $deviceUid)
 	{
 		$accountCreator = new GetCaptcha();
 		$accountCreator->setAccessToken($accessToken);
@@ -220,6 +220,8 @@ class View
 		echo '<form method="get">';
 		echo	'<p>Enter Key (copy pasta from top): <input type="text" value="' . $captcha['key'] . '" name="key" /></p>';
 		echo	'<p>Find the Coons (example: they are on picture 3, 4 and 5. You enter 2-3-4. Becouse we start counting at 0): <input type="text" name="solution" /></p>';
+		echo 	'<input type="hidden" name="deviceUid" value="' . $deviceUid . '">';
+		echo 	'<input type="hidden" name="pw" value="upVote">';
 		echo	'<p><input type="submit" /></p>';
 		echo '</form>';
 

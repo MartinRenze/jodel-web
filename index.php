@@ -56,13 +56,13 @@
 				<div class="container">					
 						<?php
 
-							if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
+							if(isset($_GET['postId']) && isset($_GET['getPostDetails']))
 							{
-								echo '<a id="comment-back" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postID']) . '">';
+								echo '<a id="comment-back" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postId']) . '">';
 								echo '<i class="fa fa-angle-left fa-3x"></i>';
 								echo '</a>';
 								echo '<h1>';
-								echo '<a href="index.php?getPostDetails=' . htmlspecialchars($_GET['getPostDetails']) . '&postID=' . htmlspecialchars($_GET['postID']) . '" class="spinnable hidden-xs-down">';
+								echo '<a href="index.php?getPostDetails=' . htmlspecialchars($_GET['getPostDetails']) . '&postId=' . htmlspecialchars($_GET['postId']) . '" class="spinnable hidden-xs-down">';
 							}
 							else
 							{
@@ -102,7 +102,7 @@
 
 					</content>
 					
-					<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
+					<?php if(!isset($_GET['postId']) && !isset($_GET['getPostDetails'])) { ?>
 						<p id="loading">
 							Loading…
 						</p>
@@ -131,10 +131,10 @@
 
 						<article>
 							<div>
-								<?php if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) { ?>
+								<?php if(isset($_GET['postId']) && isset($_GET['getPostDetails'])) { ?>
 								<h2>Comment on Jodel</h2>
 								<form method="POST">				
-										<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postID']);?>" />
+										<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postId']);?>" />
 										<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
 									<br />
 									<input type="submit" value="SEND" /> 
@@ -218,7 +218,7 @@
 				    $('html,body').animate({scrollTop: aTag.offset().top-90},'slow');
 				}
 
-				<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
+				<?php if(!isset($_GET['postId']) && !isset($_GET['getPostDetails'])) { ?>
 
 				
 

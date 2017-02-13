@@ -29,13 +29,13 @@ class JodelAccount
         }
 
         $this->isBot        = $isBot;
-        $this->location     = $this::getLocation();
+        $this->location     = $this->getLocation();
 
-        if(!$this::isTokenFresh())
+        if(!$this->isTokenFresh())
         {
-            $this::refreshToken();
+            $this->refreshToken();
         }
-        $this->accessToken  = $this::getAccessToken();
+        $this->accessToken  = $this->getAccessToken();
     }
 
     function isAccountVerified()
@@ -131,55 +131,66 @@ class JodelAccount
 
     function verifyCaptcha()
     {
+        if(isset($_GET['deviceUid']))
+        {
+            $deviceUid = $_GET['deviceUid'];
+        }
+        if(isset($_POST['deviceUid']))
+        {
+            $deviceUid = $_POST['deviceUid'];
+        }
+        $jodelAccountForVerify = new JodelAccount($deviceUid);
+
         $solution = $_GET['solution'];
         $solution = array_map('intval', explode('-', $solution));
 
         $accountCreator = new PostCaptcha();
-        $accountCreator->setAccessToken($this->accessToken);
+        $accountCreator->setAccessToken($jodelAccountForVerify->accessToken);
         $accountCreator->captchaKey = $_GET['key'];
         $accountCreator->captchaSolution = $solution;
         $verified = $accountCreator->execute();
 
+        if(isset($verified->status_code))
+        {
+            return $verified->status_code;
+        }
         return $verified['verified'];
     }
 
     //ToDo Spider Check
-    function votePostId()
+    function votePostId($postId, $vote)
     {
         if(!$this->isAccountVerified())
         {
             $view = new View();
-            $view->showCaptcha($this->accessToken);
+            $view->showCaptcha($this->accessToken, $this->deviceUid);
         }
 
-        if(!$this->deviceUidHasVotedThisPostId($_GET['postID']))
+        if(!$this->deviceUidHasVotedThisPostId($postId))
         {
-            if($_GET['vote'] == "up")
+            if($vote == "up")
             {
                 $accountCreator = new Upvote();
             }
-            else if($_GET['vote'] == "down")
+            else if($vote == "down")
             {
                 $accountCreator = new Downvote();
             }
             $accountCreator->setAccessToken($this->accessToken);
-            $accountCreator->postId = htmlspecialchars($_GET['postID']);
+            $accountCreator->postId = htmlspecialchars($postId);
             $data = $accountCreator->execute();
 
-
-            $this->addVoteWithPostIdAndTypeToDeviceUid($_GET['postID'], $_GET['vote']);
+            if(array_key_exists('post', $data))
+            {
+                $this->addVoteWithPostIdAndTypeToDeviceUid($postId, $vote);
+                return TRUE;
+            }
+            else
+            {
+                return FALSE;
+                error_log("Could not vote: " . var_dump($data));
+            } 
         }
-
-        
-        if(isset($_GET['getPostDetails']) && isset($_GET['getPostDetails']))
-        {
-            header('Location: index.php?getPostDetails=true&postID=' . htmlspecialchars($_GET['postID_parent']) . '#postId-' . htmlspecialchars($_GET['postID']));
-        }
-        else
-        {
-            header("Location: index.php#postId-" . htmlspecialchars($_GET['postID']));
-        }   
-        die();
     }
 
     //ToDo Spider Check
