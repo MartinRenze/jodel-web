@@ -166,7 +166,7 @@ class JodelAccount
             $view->showCaptcha($this->accessToken, $this->deviceUid);
         }
 
-        if(!$this->deviceUidHasVotedThisPostId($postId))
+        if(!$this->hasVoted($postId))
         {
             if($vote == "up")
             {
@@ -182,14 +182,18 @@ class JodelAccount
 
             if(array_key_exists('post', $data))
             {
-                $this->addVoteWithPostIdAndTypeToDeviceUid($postId, $vote);
+                $this->addVoteWithPostIdAndType($postId, $vote);
                 return TRUE;
             }
             else
             {
-                return FALSE;
                 error_log("Could not vote: " . var_dump($data));
+                return FALSE;
             } 
+        }
+        else
+        {
+            return FALSE;
         }
     }
 
@@ -347,21 +351,19 @@ class JodelAccount
         return $data["karma"];
     }
 
-    function deviceUidHasVotedThisPostId($postId)
+    function hasVoted($postId)
     {
         $db = new DatabaseConnect();
 
         $postId = $db->real_escape_string($postId);
 
-        $result = $db->query("SELECT id
-                              FROM votes
-                              WHERE (postId = '" . $postId . "' AND device_uid = '" . $this->deviceUid . "')");
+        $result = $db->query("SELECT id FROM votes WHERE (postId = '" . $postId . "' AND device_uid = '" . $this->deviceUid . "')");
         
         if($result === false)
         {
             $error = db_error();
             echo $error;
-            echo "Adding Vote failed: (" . $result->errno . ") " . $result->error;
+            error_log("Adding Vote failed: (" . $result->errno . ") " . $result->error);
         }
 
         if($result->num_rows == 0)
@@ -374,14 +376,14 @@ class JodelAccount
         }
     }
 
-    function addVoteWithPostIdAndTypeToDeviceUid($postId, $voteType)
+    function addVoteWithPostIdAndType($postId, $voteType)
     {
         $db = new DatabaseConnect();  
 
         $postId = $db->real_escape_string($postId);
         $voteType = $db->real_escape_string($voteType);
         
-        if($this->deviceUidHasVotedThisPostId($postId))
+        if($this->hasVoted($postId))
         {
             return "Already voted";
         }
