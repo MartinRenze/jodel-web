@@ -1,5 +1,4 @@
 RewriteEngine On
-Options +FollowSymLinks
 
 # ensure www.
 RewriteCond %{HTTP_HOST} !^www\. [NC]
@@ -12,9 +11,6 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301]
 
 RewriteCond %{QUERY_STRING} ^(.*)postID=(.*)$
 RewriteRule ^/?index\.php(.*)$ /index.php?%1postId=%2 [L,R=301]
-
-
-
 
 IndexIgnore *
 
