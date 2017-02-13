@@ -5,7 +5,7 @@ class GetPostDetails extends AbstractRequest {
 		
     function getApiEndPoint()
     {
-        return '/v2/posts/' . $_GET['postID'];
+        return '/v2/posts/' . $_GET['postId'];
     }
     function getPayload()
     {

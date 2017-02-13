@@ -1,39 +1,6 @@
 <?php
-error_reporting(-1);
 
 include 'php/jodel-web.php';
-
-$config = parse_ini_file('config/config.ini.php');
-
-$location = new Location();
-$location->setLat($config['default_lat']);
-$location->setLng($config['default_lng']);
-$location->setCityName($config['default_location']);
-
-$accessToken;
-$accessToken_forId1;
-$deviceUid;
-
-
-if(!isset($_COOKIE["JodelDeviceId"]))
-{
-	$deviceUid = createAccount();
-	setcookie("JodelDeviceId", $deviceUid, time()+60*60*24*365*10);
-	
-}
-else
-{
-	$deviceUid = $db->real_escape_string($_COOKIE["JodelDeviceId"]);
-}
-
-$location = getLocationByDeviceUid($deviceUid);
-$newPositionStatus = $location->getCityName();
-$accessToken = isTokenFreshByDeviceUid($location, $deviceUid);
-//Acc is fresh. token and location is set
-
-$accessToken_forId1 = isTokenFresh($location);
-
-
 
 	if(isset($_GET['view']))
 	{
@@ -76,7 +43,7 @@ $accessToken_forId1 = isTokenFresh($location);
 	{
 		$lastPostId = htmlspecialchars($_GET['lastPostId']);
 		
-		$posts = getPosts($lastPostId, $accessToken, $url)['posts'];
+		$posts = $viewTest->getPosts($lastPostId, $jodelAccountForView->accessToken, $url)['posts'];
 		$loops = 29;
 		$showCommentIcon = TRUE;
 		?>
@@ -87,7 +54,7 @@ $accessToken_forId1 = isTokenFresh($location);
 			if(isset($posts[$i]))
 			{
 				$lastPostId = $posts[$i]['post_id'];
-				jodelToHtml($posts[$i], $view);	
+				$viewTest->jodelToHtml($posts[$i], $view);	
 			}
 		}
 		?>

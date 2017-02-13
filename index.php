@@ -1,205 +1,14 @@
-<?php
-	error_reporting(-1);
-	include 'php/jodel-web.php';
-
-	$config = parse_ini_file('config/config.ini.php');
-
-	$location = new Location();
-	$location->setLat($config['default_lat']);
-	$location->setLng($config['default_lng']);
-	$location->setCityName($config['default_location']);
-
-	$accessToken;
-	$accessToken_forId1;
-	$deviceUid;
-	$isSpider = FALSE;
-
-	//What is dude doing with my Server?
-	if($_SERVER['REMOTE_ADDR'] == '94.231.103.52')
-	{
-		echo('You are flooting my Server! Pls enable Cookies in your script and contact me: info@jodelblue.com');
-		die();
-	}
-
-	//Check if it's a Spider or Google Bot
-	if(botDeviceUidIsSet($config) && isUserBot())
-	{
-		$isSpider = TRUE;
-		error_log('Spider or Bot checked in!');
-		
-		$deviceUid = $config['botDeviceUid'];
-		$config = NULL;
-	}
-	else
-	{
-		$config = NULL;
-		if(!isset($_COOKIE['JodelDeviceId']) || !isDeviceUidInDatabase($_COOKIE['JodelDeviceId']))
-		{
-			$deviceUid = createAccount();
-			setcookie('JodelDeviceId', $deviceUid, time()+60*60*24*365*10);
-			error_log('Created account with JodelDeviceId:' . $deviceUid .  ' for [' . $_SERVER ['HTTP_USER_AGENT'] . ']');
-			
-		}
-		else
-		{
-			$deviceUid = $_COOKIE['JodelDeviceId'];
-		}
-	}
-
-	$location = getLocationByDeviceUid($deviceUid);
-	$newPositionStatus = $location->getCityName();
-	$accessToken = isTokenFreshByDeviceUid($location, $deviceUid);
-	//Acc is fresh. token and location is set
-
-	$accessToken_forId1 = isTokenFresh($location);
-	$deviceUid_forId1 = getDeviceUidByAccessToken($accessToken_forId1);
-
-	//Set View
-	if(isset($_GET['view']))
-	{
-		switch ($_GET['view']) {
-			case 'comment':
-				$view = 'comment';
-				break;
-			
-			case 'upVote':
-				$view = 'upVote';
-				break;
-
-			default:
-				$view = 'time';
-				break;
-		}
-	}
-	else
-	{
-		$view = 'time';
-	}
-	
-	//Verify Account
-	if(isset($_GET['solution']) && isset($_GET['key']))
-	{
-		verifyCaptcha($accessToken_forId1);
-	}
-
-	//Set Location
-	if(isset($_GET['city']))
-	{
-		$newPositionStatus = setLocation($accessToken, $deviceUid);
-	}
-	
-	//Vote
-	if(isset($_GET['vote']) && isset($_GET['postID']))
-	{
-<<<<<<< HEAD
-		if(!deviceUidHasVotedThisPostId($deviceUid_forId1, $_GET['postID']))
-		{
-			if($_GET['vote'] == "up")
-			{
-				$accountCreator = new Upvote();
-			}
-			else if($_GET['vote'] == "down")
-			{
-				$accountCreator = new Downvote();
-			}
-			$accountCreator->setAccessToken($accessToken_forId1);
-			$accountCreator->postId = htmlspecialchars($_GET['postID']);
-			$data = $accountCreator->execute();
-=======
-		votePostId($deviceUid_forId1, $accessToken_forId1);
-	}
-	
-	//SendJodel
-	if(isset($_POST['message']))
-	{
-		sendJodel($location, $accessToken_forId1);
-	}
->>>>>>> mmainstreet/master
-
-
-	$posts;
-
-	//Get Post Details
-	if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
-	{
-		$userHandleBuffer = [];
-
-		$accountCreator = new GetPostDetails();
-		$accountCreator->setAccessToken($accessToken);
-		$data = $accountCreator->execute();
-		
-		$posts[0] = $data;
-		if(array_key_exists('children', $data)) {
-			foreach($data['children'] as $key => $child)
-			{
-				
-				if(!$child["parent_creator"] == 1)
-				{
-					$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
-					if($numberForUser === FALSE)
-					{
-						array_push($userHandleBuffer, $child['user_handle']);
-						$data['children'][$key]['user_handle'] = count($userHandleBuffer);
-					}
-					else
-					{
-						$data['children'][$key]['user_handle'] = $numberForUser + 1;
-					}
-				}
-
-				array_push($posts, $data['children'][$key]);
-			}
-			$loops = $data['child_count'] + 1;
-		}
-		else
-		{
-			$loops = 1;
-		}
-		$isDetailedView = TRUE;
-	}
-	//Get Posts
-	else
-	{
-		$version = 'v2';
-		if($view=='comment')
-		{
-			$url = "/v2/posts/location/discussed/";
-		}
-		else
-		{
-			if($view=='upVote')
-			{
-				$url = "/v2/posts/location/popular/";
-			}
-			else
-			{
-				$url = "/v3/posts/location/combo/";
-				$version = 'v3';
-			}
-		}
-
-		if($version == 'v3')
-		{
-			$posts = getPosts($lastPostId, $accessToken, $url, $version)['recent'];
-		}
-		else
-		{
-			$posts = getPosts($lastPostId, $accessToken, $url, $version)['posts'];
-		}
-		$loops = 29;
-		$isDetailedView = FALSE;
-	}
-?>
+<?php include 'php/jodel-web.php';?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title><?php echo getTitle($posts[0], $view, $isDetailedView);?></title>
+		<title><?php echo $viewTest::getTitle($posts[0], $view, $isDetailedView);?></title>
 		
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		
-		<meta name="description" content="<?php echo getMetaDescription($posts[0], $view, $isDetailedView);?>">
+		<meta name="description" content="<?php echo $viewTest::getMetaDescription($posts[0], $view, $isDetailedView);?>">
 		<meta name="keywords" content="jodelblue, jodel, blue, webclient, web, client, web-app, browser, app">
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
@@ -246,13 +55,14 @@
 			<nav class="navbar navbar-full navbar-dark navbar-fixed-top">
 				<div class="container">					
 						<?php
-							if(isset($_GET['postID']) && isset($_GET['getPostDetails']))
+
+							if(isset($_GET['postId']) && isset($_GET['getPostDetails']))
 							{
-								echo '<a id="comment-back" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postID']) . '">';
+								echo '<a id="comment-back" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postId']) . '">';
 								echo '<i class="fa fa-angle-left fa-3x"></i>';
 								echo '</a>';
 								echo '<h1>';
-								echo '<a href="index.php?getPostDetails=' . htmlspecialchars($_GET['getPostDetails']) . '&postID=' . htmlspecialchars($_GET['postID']) . '" class="spinnable">';
+								echo '<a href="index.php?getPostDetails=' . htmlspecialchars($_GET['getPostDetails']) . '&postId=' . htmlspecialchars($_GET['postId']) . '" class="spinnable hidden-xs-down">';
 							}
 							else
 							{
@@ -286,13 +96,13 @@
 								{
 									$lastPostId = $posts[$i]['post_id'];
 
-									jodelToHtml($posts[$i], $view, $isDetailedView);
+									$viewTest::jodelToHtml($posts[$i], $view, $isDetailedView);
 								}
 							} ?>
 
 					</content>
 					
-					<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
+					<?php if(!isset($_GET['postId']) && !isset($_GET['getPostDetails'])) { ?>
 						<p id="loading">
 							Loading…
 						</p>
@@ -303,10 +113,10 @@
 					<div class="fixed">
 						<article>
 							<div>
-								<h2>Position</h2>
+								<h2>Position / Hashtag</h2>
 								<form method="get">
 									<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
-
+									<label>try: #jhj</label><br>
 									<input type="submit" value="Set Location" /> 
 								</form>
 							</div>
@@ -315,16 +125,16 @@
 						<article>
 							<div>
 								<h2>Karma</h2>
-								<?php echo getKarma($accessToken_forId1); ?>
+								<?php echo $jodelAccountForKarma->getKarma(); ?>
 							</div>
 						</article>
 
 						<article>
 							<div>
-								<?php if(isset($_GET['postID']) && isset($_GET['getPostDetails'])) { ?>
+								<?php if(isset($_GET['postId']) && isset($_GET['getPostDetails'])) { ?>
 								<h2>Comment on Jodel</h2>
 								<form method="POST">				
-										<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postID']);?>" />
+										<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postId']);?>" />
 										<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
 									<br />
 									<input type="submit" value="SEND" /> 
@@ -408,7 +218,7 @@
 				    $('html,body').animate({scrollTop: aTag.offset().top-90},'slow');
 				}
 
-				<?php if(!isset($_GET['postID']) && !isset($_GET['getPostDetails'])) { ?>
+				<?php if(!isset($_GET['postId']) && !isset($_GET['getPostDetails'])) { ?>
 
 				
 

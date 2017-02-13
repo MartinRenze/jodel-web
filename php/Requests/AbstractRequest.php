@@ -12,6 +12,7 @@ abstract class AbstractRequest
     private $payLoad;
     public $expects = '';
     public $version = 'v2';
+    public $hasPayload = FALSE;
 
     public function execute()
     {
@@ -56,9 +57,9 @@ abstract class AbstractRequest
                 $result = Requests::post($url, $header, $this->payLoad);
                 break;
             case 'GET':
-                if($this->version == 'v3')
+                if($this->hasPayload)
                 {
-                    $result = Requests::get($url, $header);
+                    $result = Requests::get($url, $header, $this->payLoad);
                 }
                 else
                 {
@@ -75,6 +76,10 @@ abstract class AbstractRequest
                 break;
             case 204:
                 $result = "Success";
+                break;
+            case 400:
+                //throw new \Exception('Unauthorized');
+                error_log('Error 400 - Fehlerhafte Anfrage'); // - JodelDeviceId:' . $deviceUid);
                 break;
             case 401:
 				//throw new \Exception('Unauthorized');

@@ -12,9 +12,10 @@ if(!isset($_GET['pw']) || $config['pw'] != $_GET['pw'])
 
 include 'php/jodel-web.php';
 
-if(isset($_GET['solution']) && isset($_GET['key']) && isset($_POST["accessToken"]))
+if(isset($_GET['solution']) && isset($_GET['key']) && isset($_POST['deviceUid']))
 {
-	$response = array("success" => verifyCaptcha($_POST["accessToken"]));
+	$jodelAccount = new JodelAccount($_POST['deviceUid']);
+	$response = array("success" => $jodelAccount->verifyCaptcha());
 	echo json_encode($response);
 	die();
 }
@@ -33,34 +34,18 @@ $token = "";
 			$accessToken = $row['access_token'];
 			$deviceUid = $row['device_uid'];
 			
-			if(!isAccountVerified($accessToken))
+			$jodelAccount = new JodelAccount($deviceUid);
+
+			if(!$jodelAccount->isAccountVerified())
 			{
+				$view = new View();
 				$message = "This account is not verified. Please verify this account first.";
-				$captcha = getCaptcha($accessToken);
-				$token = $accessToken;
+				$captcha = $view->getCaptcha($accessToken);
 				$success = false;
 			}
-			else {
-				
-				$location = getLocationByAccessToken($accessToken);
-
-				$accessToken = isTokenFreshByAccessToken($location, $accessToken);
-
-
-				if($_POST['vote'] == "up") {
-					$accountCreator = new Upvote();
-				}
-				else if($_POST['vote'] == "down") {
-					$accountCreator = new Downvote();
-				}
-
-				$accountCreator->setAccessToken($accessToken);
-				$accountCreator->postId = $_POST['postId'];
-				$data = $accountCreator->execute();
-				if(array_key_exists('post', $data))
-				{
-					addVoteWithPostIdAndTypeToDeviceUid($_POST['postId'], $_POST['vote'], $deviceUid);
-				}
+			else
+			{
+				$jodelAccount->votePostId($_POST['postId'], $_POST['vote']);
 			}
 		}
 		else
@@ -72,7 +57,7 @@ $token = "";
 
 if (isset($captcha))
 {
-	$response = array("success" => $success, "message" => $message, "captcha" => $captcha, "accessToken" => $token);
+	$response = array("success" => $success, "message" => $message, "captcha" => $captcha, "deviceUid" => $deviceUid);
 }
 else 
 {
