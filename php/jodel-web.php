@@ -25,6 +25,8 @@ Requests::register_autoloader();
 
 $config = parse_ini_file('config/config.ini.php');
 
+$baseUrl = $config['Url'];
+
 $location = new Location();
 $location->setLat($config['default_lat']);
 $location->setLng($config['default_lng']);
@@ -141,7 +143,7 @@ function isDeviceUidInDatabase($deviceUid)
 	}
 
 	//Set Location
-	if(isset($_GET['city']))
+	if(isset($_GET['city']) && !$jodelAccountForView->locationEquals($_GET['city']))
 	{
 		$newPositionStatus = $jodelAccountForView->setLocation();
 	}

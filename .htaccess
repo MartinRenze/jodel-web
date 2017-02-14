@@ -1,5 +1,7 @@
 RewriteEngine On
 
+#Change Base if you are hosting on subdir
+
 RewriteBase /jodel-web/
 
 # ensure www.
@@ -12,13 +14,13 @@ RewriteCond %{HTTPS} off
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteCond %{QUERY_STRING} ^(.*)postID=(.*)$
-RewriteRule ^/?index\.php(.*)$ /index.php?%1postId=%2 [L,R=301]
+RewriteRule ^index\.php$ index.php?%1postId=%2 [L,R=301]
 
 RewriteCond %{QUERY_STRING} ^(.*)$
-RewriteRule ^(.*?)/(.*?)/(.*?)/(.*?)/?$ /index.php?country=$1&city=$2&hashtag=$3&view=$4&%1
+RewriteRule ^(.*?)/(.*?)/(.*?)/(.*?)/(.*?)/?$ index.php?country=$1&city=$2&hashtag=$3&view=$4&postId=$5&getPostDetails=true&%1
 
 RewriteCond %{QUERY_STRING} ^(.*)$
-RewriteRule ^(.*?)/(.*?)/(.*?)/(.*?)/(.*?)/?$ /index.php?country=$1&city=$2&hashtag=$3&view=$4&postId=$5&postDetails=true&%1
+RewriteRule ^(.*?)/(.*?)/(.*?)/(.*?)/?$ index.php?country=$1&city=$2&hashtag=$3&view=$4&%1
 
 IndexIgnore *
 
