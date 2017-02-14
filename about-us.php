@@ -11,42 +11,42 @@
 		<meta name="keywords" content="jodelblue, jodel, blue, webclient, web, client">
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
-		<link rel="stylesheet" href="css/font-awesome.min.css">
-		<link rel="stylesheet" href="style.css" type="text/css">
+		<link rel="stylesheet" href="<?php echo $baseUrl;?>css/font-awesome.min.css">
+		<link rel="stylesheet" href="<?php echo $baseUrl;?>style.css" type="text/css">
 		
-		<link rel="shortcut icon" type="image/x-icon" href="./img/favicon/favicon.ico">
-		<link rel="icon" type="image/x-icon" href="./img/favicon/favicon.ico">
-		<link rel="icon" type="image/gif" href="./img/favicon/favicon.gif">
-		<link rel="icon" type="image/png" href="./img/favicon/favicon.png">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon.png">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon-57x57.png" sizes="57x57">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon-60x60.png" sizes="60x60">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon-72x72.png" sizes="72x72">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon-76x76.png" sizes="76x76">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon-114x114.png" sizes="114x114">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon-120x120.png" sizes="120x120">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon-128x128.png" sizes="128x128">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon-144x144.png" sizes="144x144">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon-152x152.png" sizes="152x152">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon-180x180.png" sizes="180x180">
-		<link rel="apple-touch-icon" href="./img/favicon/apple-touch-icon-precomposed.png">
-		<link rel="icon" type="image/png" href="./img/favicon/favicon-16x16.png" sizes="16x16">
-		<link rel="icon" type="image/png" href="./img/favicon/favicon-32x32.png" sizes="32x32">
-		<link rel="icon" type="image/png" href="./img/favicon/favicon-96x96.png" sizes="96x96">
-		<link rel="icon" type="image/png" href="./img/favicon/favicon-160x160.png" sizes="160x160">
-		<link rel="icon" type="image/png" href="./img/favicon/favicon-192x192.png" sizes="192x192">
-		<link rel="icon" type="image/png" href="./img/favicon/favicon-196x196.png" sizes="196x196">
-		<meta name="msapplication-TileImage" content="./img/favicon/win8-tile-144x144.png"> 
+		<link rel="shortcut icon" type="image/x-icon" href="<?php echo $baseUrl;?>img/favicon/favicon.ico">
+		<link rel="icon" type="image/x-icon" href="<?php echo $baseUrl;?>img/favicon/favicon.ico">
+		<link rel="icon" type="image/gif" href="<?php echo $baseUrl;?>img/favicon/favicon.gif">
+		<link rel="icon" type="image/png" href="<?php echo $baseUrl;?>img/favicon/favicon.png">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon.png">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon-57x57.png" sizes="57x57">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon-60x60.png" sizes="60x60">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon-72x72.png" sizes="72x72">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon-76x76.png" sizes="76x76">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon-114x114.png" sizes="114x114">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon-120x120.png" sizes="120x120">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon-128x128.png" sizes="128x128">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon-144x144.png" sizes="144x144">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon-152x152.png" sizes="152x152">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon-180x180.png" sizes="180x180">
+		<link rel="apple-touch-icon" href="<?php echo $baseUrl;?>img/favicon/apple-touch-icon-precomposed.png">
+		<link rel="icon" type="image/png" href="<?php echo $baseUrl;?>img/favicon/favicon-16x16.png" sizes="16x16">
+		<link rel="icon" type="image/png" href="<?php echo $baseUrl;?>img/favicon/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="<?php echo $baseUrl;?>img/favicon/favicon-96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="<?php echo $baseUrl;?>img/favicon/favicon-160x160.png" sizes="160x160">
+		<link rel="icon" type="image/png" href="<?php echo $baseUrl;?>img/favicon/favicon-192x192.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="<?php echo $baseUrl;?>img/favicon/favicon-196x196.png" sizes="196x196">
+		<meta name="msapplication-TileImage" content="<?php echo $baseUrl;?>img/favicon/win8-tile-144x144.png"> 
 		<meta name="msapplication-TileColor" content="#5682a3"> 
 		<meta name="msapplication-navbutton-color" content="#5682a3"> 
 		<meta name="application-name" content="JodelBlue"/> 
 		<meta name="msapplication-tooltip" content="JodelBlue"/> 
 		<meta name="apple-mobile-web-app-title" content="JodelBlue"/> 
-		<meta name="msapplication-square70x70logo" content="./img/favicon/win8-tile-70x70.png"> 
-		<meta name="msapplication-square144x144logo" content="./img/favicon/win8-tile-144x144.png"> 
-		<meta name="msapplication-square150x150logo" content="./img/favicon/win8-tile-150x150.png"> 
-		<meta name="msapplication-wide310x150logo" content="./img/favicon/win8-tile-310x150.png"> 
-		<meta name="msapplication-square310x310logo" content="./img/favicon/win8-tile-310x310.png"> 
+		<meta name="msapplication-square70x70logo" content="<?php echo $baseUrl;?>img/favicon/win8-tile-70x70.png"> 
+		<meta name="msapplication-square144x144logo" content="<?php echo $baseUrl;?>img/favicon/win8-tile-144x144.png"> 
+		<meta name="msapplication-square150x150logo" content="<?php echo $baseUrl;?>img/favicon/win8-tile-150x150.png"> 
+		<meta name="msapplication-wide310x150logo" content="<?php echo $baseUrl;?>img/favicon/win8-tile-310x150.png"> 
+		<meta name="msapplication-square310x310logo" content="<?php echo $baseUrl;?>img/favicon/win8-tile-310x310.png"> 
 	</head>
 	
 	<body>
@@ -115,26 +115,7 @@
 					</content>
 				</article>
 			</div>
-			<div id="sortJodelBy" class="row">
-				<div class="col-xs-12">
-					<div class="row">
-						<div class="col-xs-3">
-							<a href="index.php"><i class="fa fa-clock-o fa-3x"></i></a>
-						</div>
-						<div class="col-xs-3">
-							<a href="index.php?view=comment"><i class="fa fa-commenting-o fa-3x"></i></a>
-						</div>
-						<div class="col-xs-3">
-							<a href="index.php?view=upVote"><i class="fa fa-angle-up fa-3x"></i></a>
-						</div>
-						<div class="col-xs-3">
-							<nav>
-								<a href="./about-us.html" class="active">about us</a>
-							</nav>
-						</div>
-					</div>
-				</div>	
-			</div>
+			<?php include './template/nav-bottom.php';?>
 		</div>
 		
 		

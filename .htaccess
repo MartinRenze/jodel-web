@@ -2,7 +2,7 @@ RewriteEngine On
 
 #Change Base if you are hosting on subdir
 
-RewriteBase /jodel-web/
+RewriteBase /
 
 # ensure www.
 RewriteCond %{HTTP_HOST} !^www\. [NC]
