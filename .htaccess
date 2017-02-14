@@ -24,5 +24,5 @@ RewriteRule ^(.*?)/(.*?)/(.*?)/(.*?)/?$ index.php?country=$1&city=$2&hashtag=$3&
 
 IndexIgnore *
 
-ErrorDocument 404 /error-pages/404.html
-ErrorDocument 410 /error-pages/410.html
+ErrorDocument 404 /error-pages/404.php
+ErrorDocument 410 /error-pages/410.php
