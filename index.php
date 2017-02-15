@@ -1,14 +1,63 @@
-<?php include 'php/jodel-web.php';?>
+<?php
+	include 'php/jodel-web.php';
+	$posts;
+	
+	//Get Post Details
+	if(isset($_GET['postId']) && isset($_GET['getPostDetails']))
+	{
+		$userHandleBuffer = [];
+
+		$accountCreator = new GetPostDetails();
+		$accountCreator->setAccessToken($jodelAccountForView->accessToken);
+		$data = $accountCreator->execute();
+
+		if(array_key_exists('status_code', $data) && $data->status_code == 404)
+		{
+			header('HTTP/1.1 410 Gone');
+			include './error-pages/410.php';
+			exit;
+		}
+
+		$posts[0] = $data;
+
+		if(array_key_exists('children', $data)) {
+			foreach($data['children'] as $key => $child)
+			{
+				
+				if(!$child["parent_creator"] == 1)
+				{
+					$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
+					if($numberForUser === FALSE)
+					{
+						array_push($userHandleBuffer, $child['user_handle']);
+						$data['children'][$key]['user_handle'] = count($userHandleBuffer);
+					}
+					else
+					{
+						$data['children'][$key]['user_handle'] = $numberForUser + 1;
+					}
+				}
+
+				array_push($posts, $data['children'][$key]);
+			}
+		}
+	}
+	//Get Posts and Hashtags
+	else
+	{
+		$posts = $view->getPosts($jodelAccountForView);
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title><?php echo $viewTest->getTitle($posts[0], $view, $isDetailedView);?></title>
+		<title><?php echo $view->getTitle($posts[0]);?></title>
 		
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta http-equiv="x-ua-compatible" content="ie=edge">
 		
-		<meta name="description" content="<?php echo $viewTest->getMetaDescription($posts[0], $view, $isDetailedView);?>">
+		<meta name="description" content="<?php echo $view->getMetaDescription($posts[0]);?>">
 		<meta name="keywords" content="jodelblue, jodel, blue, webclient, web, client, web-app, browser, app">
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
@@ -58,7 +107,7 @@
 
 							if(isset($_GET['postId']) && isset($_GET['getPostDetails']))
 							{
-								echo '<a id="comment-back" href="index.php?view=' . $view . '#postId-' . htmlspecialchars($_GET['postId']) . '">';
+								echo '<a id="comment-back" href="index.php?view=' . $view->view . '#postId-' . htmlspecialchars($_GET['postId']) . '">';
 								echo '<i class="fa fa-angle-left fa-3x"></i>';
 								echo '</a>';
 								echo '<h1>';
@@ -75,7 +124,7 @@
 
 					<div id="location_mobile" class="hidden-sm-up">
 						<form method="get">
-							<input type="text" id="city_mobile" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
+							<input type="text" id="city_mobile" name="search" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
 
 							<input type="submit" id="submit_mobile" class="fa" value="&#xf0ac;" />
 						</form>
@@ -90,16 +139,11 @@
 
 					<content id="posts">
 						<?php
-							for($i = 0; $i<$loops; $i++)
+							foreach($posts as $post)
 							{
-								if(array_key_exists($i, $posts) && array_key_exists('post_id', $posts[$i]) && isset($posts[$i]['post_id']))
-								{
-									$lastPostId = $posts[$i]['post_id'];
-
-									$viewTest::jodelToHtml($posts[$i], $view, $isDetailedView);
-								}
+								$view->lastPostId = $post['post_id'];
+								$view->jodelToHtml($post);
 							} ?>
-
 					</content>
 					
 					<?php if(!isset($_GET['postId']) && !isset($_GET['getPostDetails'])) { ?>
@@ -115,7 +159,7 @@
 							<div>
 								<h2>Position / Hashtag</h2>
 								<form method="get">
-									<input type="text" id="city" name="city" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
+									<input type="text" id="city" name="search" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
 									<label>try: #jhj</label><br>
 									<input type="submit" value="Set Location" /> 
 								</form>
@@ -205,8 +249,9 @@
 
 
 				var win = $(window);
-				var lastPostId = "<?php echo $lastPostId; ?>";
-				var view = "<?php echo $view; ?>"
+				var lastPostId = "<?php echo $view->lastPostId; ?>";
+				var view = "<?php echo $view->view; ?>";
+				var hashtag = "<?php echo $view->hashtag; ?>";
 				var old_lastPostId = "";
 				var morePostsAvailable = true;
 
@@ -221,7 +266,7 @@
 							if(!$("article[id='"+ hash +"']").length)
 							{
 								$.ajax({
-									url: '<?php echo $baseUrl;?>get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view,
+									url: '<?php echo $baseUrl;?>get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view + '&hashtag=' + encodeURI(hashtag),
 									dataType: 'html',
 									async: false,
 									success: function(html) {
@@ -264,7 +309,7 @@
 						$('#loading').show();
 
 						$.ajax({
-							url: '<?php echo $baseUrl;?>get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view,
+							url: '<?php echo $baseUrl;?>get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view + '&hashtag=' + encodeURI(hashtag),
 							dataType: 'html',
 							async: false,
 							success: function(html) {

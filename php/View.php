@@ -2,13 +2,36 @@
 
 class View
 {
+    public $country;
+    public $city;
+    public $hashtag;
 	public $view;
+    public $postId;
+    public $isDetailedView;
+
 	public $lastPostId = '';
 
+    function __construct($country, $city, $hashtag = '#all', $view = 'time', $postId = '')
+    {
+        $this->country = $country;
+        $this->city = $city;
+        $this->hashtag = $hashtag;
+        $this->view = $view;
+        $this->postId = $postId;
+
+        if($postId == '')
+        {
+            $this->isDetailedView = FALSE;
+        }
+        else
+        {
+            $this->isDetailedView = TRUE;
+        }
+    }
 	/**
 	 * Compute HTML Code
 	 */
- 	function jodelToHtml($post, $view = 'time', $isDetailedView = FALSE)
+ 	function jodelToHtml($post)
     {   //ToDO
         //Replace # with link
         //preg_replace('~(\#)([^\s!,. /()"\'?]+)~', '<a href="tag/$2">#$2</a>', $text);
@@ -72,7 +95,7 @@ class View
             </content>
             <aside>
                 <?php
-                    if($isDetailedView)
+                    if($this->isDetailedView)
                     {?>
                         <a href="index.php?vote=up&getPostDetails=true&postId=<?php echo $post['post_id'];?>&postId_parent=<?php echo htmlspecialchars($_GET['postId']);?>" rel="nofollow">
               <?php }
@@ -85,7 +108,7 @@ class View
                             <br />
                         <?php echo $post["vote_count"];?><br />
                 <?php
-                    if($isDetailedView)
+                    if($this->isDetailedView)
                     {?>
                         <a href="index.php?vote=down&getPostDetails=true&postId=<?php echo $post['post_id'];?>&postId_parent=<?php echo htmlspecialchars($_GET['postId']);?>" rel="nofollow">
               <?php }
@@ -108,9 +131,9 @@ class View
                             </span> 
                         </td>
                         <td class="comments">
-                            <?php if(!$isDetailedView) {?>
+                            <?php if(!$this->isDetailedView) {?>
                             <span data-tooltip="Comments">
-                                <a href="index.php?getPostDetails=true&view=<?php echo $view;?>&postId=<?php echo $post["post_id"];?>">
+                                <a href="index.php?getPostDetails=true&view=<?php echo $this->view;?>&postId=<?php echo $post["post_id"];?>">
                                     <i class="fa fa-commenting-o"></i>
                                     <?php if(array_key_exists("child_count", $post)) {
                                                 echo $post["child_count"];
@@ -122,7 +145,7 @@ class View
                         </td>
                         <td class="distance">
                             <?php
-                                if($isDetailedView)
+                                if($this->isDetailedView)
                                 {
                                     if(isset($post["parent_creator"]) && $post["parent_creator"] == 1)
                                     {
@@ -166,11 +189,11 @@ class View
 	 *
 	 * @return     string  The title.
 	 */
-	function getTitle($post, $view = 'time', $isDetailedView = FALSE)
+	function getTitle($post)
 	{
 		$title = 'JodelBlue - Web-App and Browser-Client';
 
-		if($isDetailedView)
+		if($this->isDetailedView)
 		{
 			$title = 'JodelBlue: ' . substr(htmlspecialchars($post['message']), 0, 44);
 		}
@@ -183,11 +206,11 @@ class View
 	 *
 	 * @return     string  The meta description.
 	 */
-	function getMetaDescription($post, $view = 'time', $isDetailedView = FALSE)
+	function getMetaDescription($post)
 	{
 		$description = 'JodelBlue is a Web-App and Browser-Client for the Jodel App. No registration required! Browse Jodels all over the world. Send your own Jodels or upvote others.';
 
-		if($isDetailedView)
+		if($this->isDetailedView)
 		{
 			$description = 'On JodelBlue with ' . htmlspecialchars($post['vote_count']) . ' Upvotes: ' . substr(htmlspecialchars($post['message']), 0, 140);
 		}
@@ -229,24 +252,98 @@ class View
 		
 	}
 
-	function getPosts($lastPostId, $accessToken, $url, $version = 'v2')
-	{	
-		$accountCreator = new GetPosts();
-		$accountCreator->setLastPostId($lastPostId);
-		$accountCreator->setAccessToken($accessToken);
-		$accountCreator->setUrl($url);
-		$accountCreator->version = $version;
+	function getPosts($jodelAccount)
+	{
+        if($this->hashtag != '#all' && $this->hashtag != '' && $this->hashtag != NULL)
+        {
+            $accountCreator = new GetChannel();
+            $accountCreator->view = $this->view;
+            $accountCreator->setAccessToken($jodelAccount->accessToken);
+            $accountCreator->channel = $this->hashtag;
+            $accountCreator->lastPostId = $this->lastPostId;
+            $data = $accountCreator->execute();
+        }
+        else
+        {
+            if($this->lastPostId == '' && $this->view == 'combo')
+            {
+                $url = "/v3/posts/location/combo";
+            }
+            else
+            {
+                if($this->view == 'discussed')
+                {
+                    $url = "/v2/posts/location/discussed/";
+                }
+                else
+                {
+                    if($this->view == 'popular')
+                    {
+                        $url = "/v2/posts/location/popular/";
+                    }
+                    else
+                    {
+                        $url = "/v2/posts/location/";
+                    }
+                }
+            }
 
-		$config = parse_ini_file('config/config.ini.php');
-		$location = new Location();
-		$location->setLat($config['default_lat']);
-		$location->setLng($config['default_lng']);
-		$location->setCityName($config['default_location']);
-		$accountCreator->location = $location;
-		$data = $accountCreator->execute();
-		
-		return $data;
+            $accountCreator = new GetPosts();
+            $accountCreator->setLastPostId($this->lastPostId);
+            $accountCreator->setAccessToken($jodelAccount->accessToken);
+            $accountCreator->setUrl($url);
+            $accountCreator->version = 'v3';
+
+            $config = parse_ini_file('config/config.ini.php');
+            $location = new Location();
+            $location->setLat($config['default_lat']);
+            $location->setLng($config['default_lng']);
+            $location->setCityName($config['default_location']);
+            $accountCreator->location = $location;
+            $data = $accountCreator->execute();
+        }
+    	if(array_key_exists('recent', $data))
+        {
+            return $data['recent'];
+        }
+        else if(array_key_exists('posts', $data))
+        {
+            return $data['posts'];
+        }
+        else
+        {
+            error_log('Fehler View getPosts ');
+            error_log(print_r($data, true));
+
+            $notFound[0] = array(
+                "post_id" => "0",
+                "discovered_by" => 0,
+                "message" => "Not found",
+                "created_at" => "2017-02-11T16:44:50.385Z",
+                "updated_at" => "2017-02-11T16:44:50.385Z",
+                "pin_count" => 0,
+                "color" => "FFBA00",
+                "got_thanks" => FALSE,
+                "post_own" => "friend",
+                "discovered" => 0,
+                "distance" => 9,
+                "vote_count" => 0,
+                "location" =>
+                array("name" => "Berlin",
+                  "loc_coordinates" =>
+                  array(
+                    "lat" => 0,
+                    "lng" => 0
+                  ),
+                  "loc_accuracy" => 0,
+                  "country" => "",
+                  "city" => "",
+                ),
+                "tags" =>
+                array(),
+                "user_handle" => "0"
+            );
+            return $notFound;
+        }
 	}
-
-
 }
