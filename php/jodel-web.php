@@ -227,6 +227,6 @@ function isDeviceUidInDatabase($deviceUid)
 	//SendJodel
 	if(isset($_POST['message']))
 	{
-		$jodelAccountForKarma->sendJodel();
+		$jodelAccountForKarma->sendJodel($jodelAccountForView->location);
 	}
 ?>

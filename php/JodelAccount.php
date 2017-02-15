@@ -245,7 +245,7 @@ class JodelAccount
     }
 
     //ToDo Spider Check
-    function sendJodel()
+    function sendJodel($location)
     {
         if(!$this->isAccountVerified())
         {
@@ -289,7 +289,7 @@ class JodelAccount
         }
 
         $accountCreatorLocation = new UpdateLocation();
-        $accountCreatorLocation->setLocation($this->location);
+        $accountCreatorLocation->setLocation($location);
         $accountCreatorLocation->setAccessToken($this->accessToken);
         $data = $accountCreatorLocation->execute();
         
