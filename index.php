@@ -120,7 +120,7 @@
 							else
 							{
 								echo '<h1>';	
-								echo '<a href="./" class="spinnable">';
+								echo '<a href="' . $view->toUrl() . '" class="spinnable">';
 							}
 						?>
 						JodelBlue <i class="fa fa-refresh fa-1x"></i></a>

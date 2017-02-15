@@ -8,11 +8,13 @@ class View
 	public $view;
     public $postId;
     public $isDetailedView;
+    public $baseUrl;
 
 	public $lastPostId = '';
 
-    function __construct($country, $city, $hashtag = '#all', $view = 'time', $postId = '')
+    function __construct($baseUrl, $country, $city, $hashtag = '#all', $view = 'time', $postId = '')
     {
+        $this->baseUrl = $baseUrl;
         $this->country = $country;
         $this->city = $city;
         $this->hashtag = $hashtag;
@@ -251,6 +253,28 @@ class View
 		die();
 		
 	}
+
+    function toUrl()
+    {
+        $url = $this->baseUrl . 'index.php?country=DE' .
+                            '&city=' . $this->city .
+                            '&hashtag=' . urlencode($this->hashtag) . 
+                            '&view=' . $this->view;
+        if($this->postId != '')
+        {
+            $url .= '&postId=' . $this->postId . 
+                    '&getPostDetails=TRUE';
+        }
+
+        return $url;
+    }
+
+    function changeView($view)
+    {
+        $tempView = clone $this;
+        $tempView->view = $view;
+        return $tempView;
+    }
 
 	function getPosts($jodelAccount)
 	{

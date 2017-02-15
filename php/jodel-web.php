@@ -190,11 +190,11 @@ function isDeviceUidInDatabase($deviceUid)
 
 	if(isset($_GET['postId']))
 	{
-		$view = new View('DE', $cityName, $hashtag, $view, $_GET['postId']);
+		$view = new View($baseUrl, 'DE', $cityName, $hashtag, $view, $_GET['postId']);
 	}
 	else
 	{
-		$view = new View('DE', $cityName, $hashtag, $view);
+		$view = new View($baseUrl, 'DE', $cityName, $hashtag, $view);
 	}
 	
 	$newPositionStatus = '';

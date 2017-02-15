@@ -2,13 +2,13 @@
 	<div class="col-xs-12">
 		<div class="row">
 			<div class="col-xs-3">
-				<a href="<?php echo $baseUrl;?>index.php" <?php if($view->view=='combo') echo 'class="active"';?>><i class="fa fa-clock-o fa-3x"></i></a>
+				<a <?php if($view->view == 'combo')echo 'class="active"';?> href="<?php echo $view->changeView('combo')->toUrl();?>"><i class="fa fa-clock-o fa-3x"></i></a>
 			</div>
 			<div class="col-xs-3">
-				<a href="<?php echo $baseUrl;?>index.php?view=discussed" <?php if($view->view=='discussed') echo 'class="active"';?>><i class="fa fa-commenting-o fa-3x"></i></a>
+				<a <?php if($view->view == 'discussed') echo 'class="active"';?> href="<?php echo $view->changeView('discussed')->toUrl();?>"><i class="fa fa-commenting-o fa-3x"></i></a>
 			</div>
 			<div class="col-xs-3">
-				<a href="<?php echo $baseUrl;?>index.php?view=popular" <?php if($view->view=='popular') echo 'class="active"';?>><i class="fa fa-angle-up fa-3x"></i></a>
+				<a <?php if($view->view == 'popular') echo 'class="active"';?> href="<?php echo $view->changeView('popular')->toUrl();?>"><i class="fa fa-angle-up fa-3x"></i></a>
 			</div>
 			<div class="col-xs-3">
 				<nav>
