@@ -1,5 +1,5 @@
 <?php
-$config = parse_ini_file('config/config.ini.php');
+$config = parse_ini_file('../config/config.ini.php');
 
 $baseUrl = $config['Url'];
 ?>

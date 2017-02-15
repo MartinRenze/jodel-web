@@ -49,7 +49,7 @@
 	}
 	if(!isset($posts[0]))
 	{
-		error_log('Fehler: ' . print_r($posts, true));
+		error_log('Fehler: ' . print_r($posts, true) . print_r($posts['recent'], true) . print_r($posts['posts'], true));
 	}
 ?>
 <!DOCTYPE html>
