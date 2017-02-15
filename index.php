@@ -49,7 +49,7 @@
 	}
 	if(!isset($posts[0]))
 	{
-		error_log('Fehler: ' . print_r($object, true));
+		error_log('Fehler: ' . print_r($posts, true));
 	}
 ?>
 <!DOCTYPE html>
