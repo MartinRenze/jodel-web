@@ -139,6 +139,8 @@ function isDeviceUidInDatabase($deviceUid)
 			$_GET['city'] = $_GET['search'];
 		}
 	}
+	$hashtag = trim($hashtag);
+
 	if($hashtag == '')
 	{
 		if(isset($_GET['hashtag']))
