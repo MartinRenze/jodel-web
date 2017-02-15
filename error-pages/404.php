@@ -1,4 +1,3 @@
-<?php include 'php/jodel-web.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -78,12 +77,12 @@
 								The requested URL was not found on this server.
 							</content>
 							<aside>
-								<a href="index.php?vote=up&postID=5838412c02cc581a5ef66f93">
+								<a href="index.php">
 									<i class="fa fa-angle-up fa-3x"></i>
 								</a>	
 									<br />
 								404<br />
-								<a href="index.php?vote=down&postID=5838412c02cc581a5ef66f93">
+								<a href="index.php">
 									<i class="fa fa-angle-down fa-3x"></i>
 								</a>
 							</aside>
@@ -122,7 +121,6 @@
 					</content>
 				</article>
 			</div>
-			<?php include '../template/nav-bottom.php';?>
 		</div>
 		
 		
