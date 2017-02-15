@@ -1,3 +1,4 @@
+<?php include 'php/jodel-web.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -121,7 +122,7 @@
 					</content>
 				</article>
 			</div>
-			<?php include './template/nav-bottom.php';?>
+			<?php include '../template/nav-bottom.php';?>
 		</div>
 		
 		

@@ -150,6 +150,8 @@ function isDeviceUidInDatabase($deviceUid)
 			$hashtag = '#all';
 		}
 	}
+
+	error_log('hashtag: ' . $hashtag);
 	
 	//Set Location
 	if(isset($_GET['city']) && !$jodelAccountForView->locationEquals($_GET['city']))

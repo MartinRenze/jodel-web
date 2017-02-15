@@ -48,7 +48,9 @@
 		$posts = $view->getPosts($jodelAccountForView);
 	}
 	if(!isset($posts[0]))
+	{
 		error_log('Fehler: ' . print_r($object, true));
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
