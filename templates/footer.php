@@ -128,7 +128,7 @@
 
 		<?php  
 		echo ''
-			if('../' . is_file(dirname(__FILE__) . '/piwik-script.html'))
+			if(is_file('../' . dirname(__FILE__) . '/piwik-script.html'))
 			{
 			    include('../' . dirname(__FILE__) . '/piwik-script.html');
 			}
