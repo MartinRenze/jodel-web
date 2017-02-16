@@ -123,12 +123,14 @@
 			<?php } ?>
 			});	
 
-		</script>
 		<?php } ?>
+		</script>
+
 		<?php  
 			if(is_file(__dir__ . '/piwik-script.html'))
 			{
 			    require_once(__dir__ . '/piwik-script.html');
+			    echo __dir__ . '/piwik-script.html';
 			}
 		?>
 
