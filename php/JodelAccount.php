@@ -331,7 +331,7 @@ class JodelAccount
 
         if($expiration_date <= time())
         {
-           return FLASE;
+           return FALSE;
         }
         
         return TRUE;

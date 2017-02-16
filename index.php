@@ -347,9 +347,9 @@
 		</script>
 
 		<?php  
-			if(is_file($baseUrl . 'piwik-script.html'))
+			if(is_file('./piwik-script.html'))
 			{
-			    require_once($baseUrl . 'piwik-script.html');
+			    require_once('./piwik-script.html');
 			}
 		?>
 
