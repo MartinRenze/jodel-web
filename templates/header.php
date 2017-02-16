@@ -54,19 +54,26 @@
 		<nav class="navbar navbar-full navbar-dark fixed-top">
 			<div class="container">					
 					<?php
-
+						if(isset($view))
+						{
+							$refreshUrl = $view->toUrl();
+						}
+						else
+						{
+							$refreshUrl = $baseUrl;
+						}
 						if($backButton != '')
 						{
 							echo '<a id="comment-back" href="' . $backButton . '">';
 							echo '<i class="fa fa-angle-left fa-3x"></i>';
 							echo '</a>';
 							echo '<h1>';
-							echo '<a href="' . $view->toUrl() . '" class="spinnable hidden-xs-down">';
+							echo '<a href="' . $refreshUrl . '" class="spinnable hidden-xs-down">';
 						}
 						else
 						{
 							echo '<h1>';	
-							echo '<a href="' . $view->toUrl() . '" class="spinnable">';
+							echo '<a href="' . $refreshUrl . '" class="spinnable">';
 						}
 					?>
 					JodelBlue <i class="fa fa-refresh fa-1x"></i></a>
