@@ -49,4 +49,4 @@ include 'templates/header.php';
 	</div>
 	<?php include 'templates/nav-bottom.php';?>
 </div>
-<?php include 'templatess/footer.php';?>
+<?php include 'templates/footer.php';?>
