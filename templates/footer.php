@@ -127,6 +127,7 @@
 		</script>
 
 		<?php  
+		echo __dir__ . '/piwik-script.html';
 			if(is_file(__dir__ . '/piwik-script.html'))
 			{
 			    require_once(__dir__ . '/piwik-script.html');
