@@ -127,6 +127,7 @@
 		</script>
 
 		<?php  
+			echo realpath('../piwik-script.html');
 			if(is_file(realpath('/piwik-script.html')))
 			{
 			    require_once(realpath('../piwik-script.html'));
