@@ -127,9 +127,9 @@
 		</script>
 
 		<?php  
-			if(is_file('../' . dirname(__FILE__) . '/piwik-script.html'))
+			if(is_file(realpath(__DIR__ . '/..') . '/piwik-script.html'))
 			{
-			    include('../' . dirname(__FILE__) . '/piwik-script.html');
+			    include(realpath(__DIR__ . '/..') . '/piwik-script.html');
 			}
 		?>
 
