@@ -1,5 +1,5 @@
 <?php
-	$config = parse_ini_file(realpath('/config/config.ini.php'));
+	$config = parse_ini_file(realpath('../config/config.ini.php'));
 
 	$baseUrl = $config['Url'];
 
