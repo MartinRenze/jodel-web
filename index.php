@@ -145,4 +145,7 @@
 			</div>
 			<?php include 'templates/nav-bottom.php';?>
 		</div>
-		<?php include 'templates/footer.php';?>
+		<?php
+			$includeEmojiAndAjax = TRUE;
+			include 'templates/footer.php';
+		?>
