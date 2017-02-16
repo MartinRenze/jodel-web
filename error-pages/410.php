@@ -1,5 +1,5 @@
 <?php
-	$config = parse_ini_file(realpath('../config/config.ini.php'));
+	$config = parse_ini_file(realpath(__DIR__ . '/..') . '/config/config.ini.php'));
 
 	$baseUrl = $config['Url'];
 
@@ -7,7 +7,7 @@
 	$title = '410 Gone - JodelBlue Web-App and Browser-Client';
 	$description = 'JodelBlue is a WebClient for the Jodel App. No registration required! Browse Jodels all over the world. Send your own Jodels or upvote others.';
 	$backButton = $baseUrl;
-	include realpath('../templates/header.php');
+	include(realpath(__DIR__ . '/..') . '/templates/header.php'));
 ?>		
 		<div class="mainContent container">		
 			<div class="content row">

@@ -14,7 +14,7 @@
 		if(array_key_exists('status_code', $data) && $data->status_code == 404)
 		{
 			header('HTTP/1.1 410 Gone');
-			//include 'error-pages/410.php';
+			include 'error-pages/410.php';
 			exit;
 		}
 
