@@ -135,7 +135,7 @@ class View
                         <td class="comments">
                             <?php if(!$this->isDetailedView) {?>
                             <span data-tooltip="Comments">
-                                <a href="index.php?getPostDetails=true&view=<?php echo $this->view;?>&postId=<?php echo $post["post_id"];?>">
+                                <a href="<?php echo $this->changePostId($post['post_id'])->toUrl();?>">
                                     <i class="fa fa-commenting-o"></i>
                                     <?php if(array_key_exists("child_count", $post)) {
                                                 echo $post["child_count"];
@@ -267,6 +267,21 @@ class View
         }
 
         return $url;
+    }
+
+    function changePostId($postId)
+    {
+        $tempView = clone $this;
+        $tempView->postId = $postId;
+        $tempView->isDetailedView = TRUE;
+        return $tempView;
+    }
+
+    function back()
+    {
+        $tempView = clone $this;
+        $tempView->postId = '';
+        return $tempView;
     }
 
     function changeView($view)

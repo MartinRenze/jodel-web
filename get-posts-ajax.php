@@ -1,5 +1,4 @@
 <?php
-
 include 'php/jodel-web.php';
 
 if(isset($_GET['lastPostId']))
