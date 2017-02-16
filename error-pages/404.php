@@ -7,7 +7,7 @@
 	$title = '404 Not Found - JodelBlue Web-App and Browser-Client';
 	$description = 'JodelBlue is a WebClient for the Jodel App. No registration required! Browse Jodels all over the world. Send your own Jodels or upvote others.';
 	$backButton = $baseUrl;
-	include '../templates/header.php';
+	include realpath('../templates/header.php');
 ?>		
 <div class="mainContent container">		
 	<div class="content row">
