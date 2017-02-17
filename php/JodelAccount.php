@@ -245,7 +245,7 @@ class JodelAccount
     }
 
     //ToDo Spider Check
-    function sendJodel($location)
+    function sendJodel($location, $view)
     {
         if(!$this->isAccountVerified())
         {
@@ -300,13 +300,12 @@ class JodelAccount
 
         if(isset($_POST['ancestor']))
         {
-            $actual_link = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-            header('Location: ' . $actual_link . '#postId-' . htmlspecialchars($data['post_id']));
+            header('Location: ' . $view->toUrl();
             exit;
         }
         else
         {
-            header('Location: ./#');
+            header('Location: ' . $baseUrl);
             exit;
         }
     }

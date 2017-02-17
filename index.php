@@ -1,5 +1,5 @@
 <?php
-	include 'php/jodel-web.php';
+	include('php/jodel-web.php');
 	$posts;
 	
 	//Get Post Details
