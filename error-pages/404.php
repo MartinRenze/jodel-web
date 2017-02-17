@@ -66,4 +66,4 @@
 		</article>
 	</div>
 </div>
-<?php include(realpath(__DIR__ . '/..') . '/templates/footer.php';?>
+<?php include(realpath(__DIR__ . '/..') . '/templates/footer.php');?>
