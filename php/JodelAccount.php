@@ -300,7 +300,7 @@ class JodelAccount
 
         if(isset($_POST['ancestor']))
         {
-            header('Location: ' . $view->toUrl();
+            header('Location: ' . $view->toUrl());
             exit;
         }
         else
