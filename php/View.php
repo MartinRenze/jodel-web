@@ -12,12 +12,12 @@ class View
 
 	public $lastPostId = '';
 
-    function __construct($baseUrl, $country, $city, $hashtag = '#all', $view = 'time', $postId = '')
+    function __construct($baseUrl, $country, $city, $hashtag = '%23all', $view = 'time', $postId = '')
     {
         $this->baseUrl = $baseUrl;
         $this->country = $country;
         $this->city = $city;
-        $this->hashtag = $hashtag;
+        $this->hashtag = urldecode($hashtag);
         $this->view = $view;
         $this->postId = $postId;
 
@@ -257,7 +257,7 @@ class View
     function toUrl()
     {
         $url = $this->baseUrl . 'index.php?country=DE' .
-                            '&city=' . $this->city .
+                            '&city=' . urlencode($this->city) .
                             '&hashtag=' . urlencode($this->hashtag) . 
                             '&view=' . $this->view;
         if($this->postId != '')
