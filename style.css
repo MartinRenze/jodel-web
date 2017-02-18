@@ -246,11 +246,11 @@ header .navbar {
 	color:  #5682a3;
 }
 
-.jodel .comments a:visited {
+.jodel .comments a:visited, .jodel .voting a:visited {
 	color: #fff;
 }
 
-.jodel .comments a:hover, .jodel .comments a:active {
+.jodel .comments a:hover, .jodel .comments a:active, .jodel .voting a:hover, .jodel .voting a:active {
 	color:  #fff;
 }
 
@@ -287,28 +287,18 @@ header .navbar {
 	margin-top: -2rem;
 }
 
-.jodel footer table {
+.jodel footer .wrapper {
 	width: 100%;
 	table-layout: fixed;
+	display: flex;
+	align-content: space-around;
+	justify-content: space-between;
 }
 
-.jodel footer table .comments{
-	text-align: center;
+.jodel footer .wrapper > span {
+	font-size: 150%;
 }
 
-.jodel .time {
-	font-size: 150%;
-	float: left;
-}
-
-.jodel .comments {
-	font-size: 150%;
-	margin: 0 auto;
-}
-.jodel .distance {
-	font-size: 150%;
-	float: right;
-}
 
 /*
  * Admin
