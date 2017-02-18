@@ -47,6 +47,53 @@ class JodelAccount
         return $data['verified'];
     }
 
+    function locationEquals($city)
+    {
+        $url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($city) . '&key=AIzaSyCwhnja-or07012HqrhPW7prHEDuSvFT4w';
+        $result = Requests::post($url);
+        if(json_decode($result->body, true)['status'] == 'ZERO_RESULTS' || json_decode($result->body, true)['status'] == 'INVALID_REQUEST')
+        {
+            error_log('Error locationEquals');
+            return FALSE;
+        }
+        else
+        {
+            $name = json_decode($result->body, true)['results']['0']['address_components']['0']['long_name'];
+            $lat = json_decode($result->body, true)['results']['0']['geometry']['location']['lat'];
+            $lng = json_decode($result->body, true)['results']['0']['geometry']['location']['lng'];
+        }
+
+        $db = new DatabaseConnect();
+        $result = $db->query("SELECT * FROM accounts WHERE device_uid='" . $this->deviceUid  . "'");
+        
+        $location = new Location();
+        
+        if ($result->num_rows > 0)
+        {
+            // output data of each row
+            while($row = $result->fetch_assoc())
+            {
+                $location->setLat($row['lat']);
+                $location->setLng($row['lng']);
+                $location->setCityName($row['name']);
+            }
+        }
+        else
+        {
+            echo "Error: 0 results";
+            error_log("Error no Location found - getLocation");
+        }
+
+        if($location->getLat() == $lat && $location->getLng() == $lng && $location->getCityName() == $name)
+        {
+            return TRUE;
+        }  
+        else
+        {
+            return FALSE;
+        }
+    }
+
     function setLocation()
     {
         //Is Channel or City
@@ -198,7 +245,7 @@ class JodelAccount
     }
 
     //ToDo Spider Check
-    function sendJodel()
+    function sendJodel($location, $view)
     {
         if(!$this->isAccountVerified())
         {
@@ -242,7 +289,7 @@ class JodelAccount
         }
 
         $accountCreatorLocation = new UpdateLocation();
-        $accountCreatorLocation->setLocation($this->location);
+        $accountCreatorLocation->setLocation($location);
         $accountCreatorLocation->setAccessToken($this->accessToken);
         $data = $accountCreatorLocation->execute();
         
@@ -253,13 +300,12 @@ class JodelAccount
 
         if(isset($_POST['ancestor']))
         {
-            $actual_link = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-            header('Location: ' . $actual_link . '#postId-' . htmlspecialchars($data['post_id']));
+            header('Location: ' . $view->toUrl());
             exit;
         }
         else
         {
-            header('Location: ./#');
+            header('Location: ' . $baseUrl);
             exit;
         }
     }
@@ -269,51 +315,48 @@ class JodelAccount
         $db = new DatabaseConnect();  
         $result = $db->query("SELECT * FROM accounts WHERE device_uid='" . $this->deviceUid . "'");
 
-        $access_token;
-
         if ($result->num_rows > 0)
         {
-                // output data of each row
-                while($row = $result->fetch_assoc()) {
-                        //$access_token = $row["access_token"];
-                        $expiration_date = $row["expiration_date"];
-                        $deviceUid = $row["device_uid"];
-                        $access_token = $row["access_token"];
-                }
+            // output data of each row
+            while($row = $result->fetch_assoc())
+            {
+                    $expiration_date = $row["expiration_date"];
+            }
         }
         else
         {
-                echo '0 results';
+            error_log('0 results');
         }
 
-        if($expiration_date <= time()) {
-            $accountCreator = new CreateUser();
-            $accountCreator->setAccessToken($access_token);
-            $accountCreator->setDeviceUid($deviceUid);
-            $accountCreator->setLocation($this->location);
-            $data = $accountCreator->execute();
-
-            $access_token = (string)$data[0]['access_token'];
-            $expiration_date = $data[0]['expiration_date'];
-            $device_uid = (string)$data[1];
-            
-            $db = new DatabaseConnect();  
-            $result = $db->query("UPDATE accounts 
-                                    SET access_token='" . $access_token . "',
-                                        expiration_date='" . $expiration_date . "'
-                                    WHERE device_uid='" . $device_uid . "'");
-
-            if($result === false){
-                    echo "Adding account failed: (" . $db->errno . ") " . $db->error;
-            }   
+        if($expiration_date <= time())
+        {
+           return FALSE;
         }
         
-        return $access_token;
+        return TRUE;
     }
 
     function refreshToken()
     {
+        $accountCreator = new CreateUser();
+        $accountCreator->setAccessToken($this->accessToken);
+        $accountCreator->setDeviceUid($this->deviceUid);
+        $accountCreator->setLocation($this->location);
+        $data = $accountCreator->execute();
 
+        $access_token = (string)$data[0]['access_token'];
+        $expiration_date = $data[0]['expiration_date'];
+        $device_uid = (string)$data[1];
+        
+        $db = new DatabaseConnect();  
+        $result = $db->query("UPDATE accounts 
+                                SET access_token='" . $access_token . "',
+                                    expiration_date='" . $expiration_date . "'
+                                WHERE device_uid='" . $device_uid . "'");
+
+        if($result === false){
+                error_log("Adding account failed: (" . $db->errno . ") " . $db->error);
+        }   
     }
 
 
@@ -335,7 +378,7 @@ class JodelAccount
         }
         else
         {
-            echo "Error: 0 results";
+            error_log('Error: 0 results');
         }
 
         return $accessToken;

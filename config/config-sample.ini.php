@@ -17,6 +17,10 @@ pw				= password
 ;just pick a free device_uid from your db
 botDeviceUid 		= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 karmaDeviceUid		= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Url					= https://www.mySite.com/
+
+;you need to set up a working .htaccess File for this
+useNiceUrls			= FALSE
 
 ;You can find the coordinates with Google Maps
 default_location 	= Berlin

@@ -1,18 +1,28 @@
 RewriteEngine On
 
+#Change Base if you are hosting on subdir
+
+RewriteBase /
+
 # ensure www.
 RewriteCond %{HTTP_HOST} !^www\. [NC]
-RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301]
+RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # ensure https
 RewriteCond %{HTTP:X-Forwarded-Proto} !https 
 RewriteCond %{HTTPS} off
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteCond %{QUERY_STRING} ^(.*)postID=(.*)$
-RewriteRule ^/?index\.php(.*)$ /index.php?%1postId=%2 [L,R=301]
+RewriteRule ^index\.php$ index.php?%1postId=%2 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^(.*)$
+RewriteRule ^(.*?)/(.*?)/(.*?)/(.*?)/(.*?)/?$ index.php?country=$1&city=$2&hashtag=$3&view=$4&postId=$5&getPostDetails=true&%1
+
+RewriteCond %{QUERY_STRING} ^(.*)$
+RewriteRule ^(.*?)/(.*?)/(.*?)/(.*?)/?$ index.php?country=$1&city=$2&hashtag=$3&view=$4&%1
 
 IndexIgnore *
 
-ErrorDocument 404 /error-pages/404.html
-ErrorDocument 410 /error-pages/410.html
+ErrorDocument 404 /error-pages/404.php
+ErrorDocument 410 /error-pages/410.php

@@ -436,6 +436,12 @@ h2 {
 
 /* Footer Nav */
 
+#sortJodelBy a {
+	display: inline-block;
+	height: 100%;
+	width: 100%;
+}
+
 #sortJodelBy {
 	position: fixed;
 	bottom: 0px;
