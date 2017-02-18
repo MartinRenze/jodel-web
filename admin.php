@@ -2,10 +2,15 @@
 
 include 'php/jodel-web.php';
 
-if(!isset($_GET['pw']) || $config['pw'] != $_GET['pw'])
+if((!isset($_GET['pw']) || $config['pw'] != $_GET['pw']) && !isUserAdmin())
 {
 	error_log($_SERVER['REMOTE_ADDR']  . ' used a wrong password on admin.php');
 	die();
+}
+else if (isset($_GET['pw']))
+{
+	setcookie('JodelAdminPassword', $_GET['pw'], time()+60*60*24*365*10);
+	error_log('admin password saved for [' . $_SERVER ['HTTP_USER_AGENT'] . ']');
 }
 
 
@@ -133,9 +138,9 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 						<hr>
 						<h2>delayed voting</h2>
 							<input placeholder="quantity" id="quantityDelay" type="number" name="quantity"><br>
-							<input placeholder="min interval" id="minDelay" type="text" name="min"><br>
-							<input placeholder="max interval" id="maxDelay" type="text" name="max"><br>
-							<input placeholder="postId" id="postIdDelay" type="text" name="postId"><br>
+							<input placeholder="min interval" id="minDelay" value="<?php echo $config["minInterval"]?>" type="text" name="min"><br>
+							<input placeholder="max interval" id="maxDelay" value="<?php echo $config["maxInterval"]?>" type="text" name="max"><br>
+							<input placeholder="postId" id="postIdDelay" value="<?php echo $_GET["postId"]?>" type="text" name="postId"><br>
 							<button name="vote" value="up" class="half" onClick="vote('up');">Upvote</button>
 							<button name="vote" value="down" class="half" onClick="vote('down');">Downvote</button><br>
 							<progress id="progressDelay" value="0" max="100"></progress>
@@ -161,8 +166,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 				var id = $("#postIdDelay").val();
 				var quantity = parseInt($("#quantityDelay").val());
 				var minTime = parseFloat($("#minDelay").val());
-				var maxTime = parseFloat($("#maxDelay").val());
-								
+				var maxTime = parseFloat($("#maxDelay").val());	
 				var data = {"vote": type,
 						   "id":id,
 							"i": 1,
@@ -172,7 +176,23 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 				
 				$("#progressDelay").attr("max", quantity);
 				$("#progressDelay").val(0);
-				voteRek(data);
+				if (minTime > maxTime)
+				{
+					$("#ResponseMessage").html("min interval is greater than max interval");
+					
+				}
+				else if (id == "")
+				{
+					$("#ResponseMessage").html("please enter a postId");
+				}
+				else if (isNaN(quantity))
+				{
+					$("#ResponseMessage").html("please enter a valid quantity of votes");
+				}
+				else 
+				{
+					voteRek(data);
+				}
 			}
 			
 			function voteRek(data)

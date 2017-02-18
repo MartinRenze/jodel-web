@@ -24,14 +24,12 @@ require_once 'php/Requests/libary/Requests.php';
 Requests::register_autoloader();
 
 $config = parse_ini_file('config/config.ini.php');
-
 $baseUrl = $config['Url'];
 
 $location = new Location();
 $location->setLat($config['default_lat']);
 $location->setLng($config['default_lng']);
 $location->setCityName($config['default_location']);
-
 //What is dude doing with my Server?
 if($_SERVER['REMOTE_ADDR'] == '94.231.103.52')
 {
@@ -56,6 +54,17 @@ function configPropertyExists($config, $property)
     {
         return TRUE;
     }
+}
+function isUserAdmin() {
+	global $config;
+	if (isset($_COOKIE['JodelAdminPassword']) && configPropertyExists($config, 'pw') && $config['pw'] == $_COOKIE['JodelAdminPassword'])
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 function isDeviceUidInDatabase($deviceUid)
