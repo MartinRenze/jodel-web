@@ -40,7 +40,6 @@ if($_SERVER['REMOTE_ADDR'] == '94.231.103.52')
 function user_log($msg)
 {
     $log  = $msg . PHP_EOL;
-    error_log(realpath(__DIR__ . '/..') . '/logs/user_log-' . date("j.n.Y") . '.txt');
     file_put_contents(realpath(__DIR__ . '/..') . '/logs/user_log-' . date("j.n.Y") . '.txt', $log, FILE_APPEND);
 }
 
