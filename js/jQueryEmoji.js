@@ -33,7 +33,7 @@ Licensed under MIT
 			$element = $(element),
 			element = element,
 			defaults = {
-				path:'/img/apple72/',//edit this to your web folder
+				path:'img/apple72/',//edit this to your web folder
 				class: 'emoji',
 				alt: true,
 				ext: 'png'
