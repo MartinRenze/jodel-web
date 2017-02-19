@@ -83,7 +83,9 @@ abstract class AbstractRequest
                 break;
             case 401:
 				//throw new \Exception('Unauthorized');
+                error_log(print_r($header, true));
                 error_log('Error 401 - Unauthorized'); // - JodelDeviceId:' . $deviceUid);
+                error_log(print_r($result, true));
                 break;
             case 404:
                 //echo "Es wurde bereits gevoted";
