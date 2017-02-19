@@ -223,6 +223,7 @@ class JodelAccount
             {
                 $accountCreator = new Downvote();
             }
+            
             $accountCreator->setAccessToken($this->accessToken);
             $accountCreator->postId = htmlspecialchars($postId);
             $data = $accountCreator->execute();
