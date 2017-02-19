@@ -204,13 +204,20 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 						 "postId" : data["id"]},
 				  success: function(result){
 					  $("#progressDelay").val(data["i"]);
-					  var response = JSON.parse(result);
+					  var response;
+					  try 
+					  {
+						response = JSON.parse(result);
+					  } catch (e) {
+						//voteRek(data);
+					  }
 					  if (response["success"] != true)
 					  {
 						  $("#ResponseMessage").html(response["message"]);
 						  if (response["captcha"] != null) {
 							  rekData = data;
 							  $("#ResponseCaptcha").append( "<div id='captchaWrapper_" + data["i"] + "'><img src='" + response["captcha"]["image_url"] + "' style='width:100%'><div class='captchaWrapper'><input id='box_0' type='checkbox'><input id='box_1' type='checkbox'><input id='box_2' type='checkbox'><input id='box_3' type='checkbox'><input id='box_4' type='checkbox'><input id='box_5' type='checkbox'><input id='box_6' type='checkbox'><input id='box_7' type='checkbox'><input id='box_8' type='checkbox'></div><button onClick=\"verifyAccount(" + data["i"] + ", '" + response["captcha"]["key"] + "' , '" + response["deviceUid"] + "');\">Verify</button></div>");
+							  //verifyAccount(data["i"], response["captcha"]["key"], response["deviceUid"]);
 						  }
 					  }
 					  else if (data["i"] < data["quantity"])
