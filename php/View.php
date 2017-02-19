@@ -151,7 +151,7 @@ class View
 						{
 						?>
 						<span class="voting">
-							<a href="admin.php?postId=<?php echo $post['post_id'] ?>">
+							<a target="_blank" href="admin.php?postId=<?php echo $post['post_id'] ?>">
 								<i class="fa fa-thumbs-o-up"></i> Vote
 							</a>
 						</span>
