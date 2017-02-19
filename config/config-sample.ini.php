@@ -19,6 +19,11 @@ botDeviceUid 		= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 karmaDeviceUid		= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 Url					= https://www.mySite.com/
 
+[Voting]
+;standard values for the delayed voting
+minInterval 		= 1
+maxInterval			= 6
+
 ;you need to set up a working .htaccess File for this
 useNiceUrls			= FALSE
 

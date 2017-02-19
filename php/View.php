@@ -123,17 +123,17 @@ class View
             </aside>
 
             <footer>
-                <table>
-                    <tr>
-                        <td class="time">
+                <span class="wrapper">
+                    
+                        <span class="time">
                             <span class="tip" data-tooltip="Time">
                                 <i class="fa fa-clock-o"></i>
                                 <?php echo $timediff;?>
                                 <span class="tiptext"><?php echo $d->format('Y-m-d H:i:s');?></span>
                             </span> 
-                        </td>
-                        <td class="comments">
-                            <?php if(!$this->isDetailedView) {?>
+                        </span>
+						<?php if(!$this->isDetailedView) {?>
+                        <span class="comments">
                             <span data-tooltip="Comments">
                                 <a href="<?php echo $this->changePostId($post['post_id'])->toUrl();?>">
                                     <i class="fa fa-commenting-o"></i>
@@ -141,11 +141,24 @@ class View
                                                 echo $post["child_count"];
                                             } else echo "0";
                                     ?>
-                                    </a>
+                                </a>
                             </span>
-                            <?php } ?>
-                        </td>
-                        <td class="distance">
+                            
+                        </span>
+						<?php
+						}															  
+						if (isUserAdmin())
+						{
+						?>
+						<span class="voting">
+							<a href="admin.php?postId=<?php echo $post['post_id'] ?>">
+								<i class="fa fa-thumbs-o-up"></i> Vote
+							</a>
+						</span>
+						<?php
+						}
+						?>
+                        <span class="distance">
                             <?php
                                 if($this->isDetailedView)
                                 {
@@ -177,9 +190,9 @@ class View
                                 <?php echo $post['distance'];?> km
                                 <span class="tiptext"><?php echo $post['location']['name'];?></span>
                             </span>
-                        </td>
-                    </tr>
-                </table>
+                        </span>
+                    
+                </span>
             </footer>
         </article>
     <?php

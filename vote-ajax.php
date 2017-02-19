@@ -1,16 +1,15 @@
 <?php
+include 'php/jodel-web.php';
 
-$config = parse_ini_file('config/config.ini.php');
-if(!isset($_GET['pw']) || $config['pw'] != $_GET['pw'])
+if((!isset($_GET['pw']) || $config['pw'] != $_GET['pw']) && !isUserAdmin())
 {
 	error_log($_SERVER['REMOTE_ADDR']  . ' used a wrong password on vote-ajax.php');
 	$respone = array("message" => $_SERVER['REMOTE_ADDR']  . ' used a wrong password on vote-ajax.php',"success" => false);
 	echo json_encode($response);
-	
 	die();
 }
-
-include 'php/jodel-web.php';
+else
+{
 
 if(isset($_GET['solution']) && isset($_GET['key']) && isset($_POST['deviceUid']))
 {
@@ -62,6 +61,7 @@ if (isset($captcha))
 else 
 {
 	$response = array("success" => $success, "message" => $message);
+}
 }
 echo json_encode($response);
 ?>
