@@ -129,6 +129,9 @@ function isDeviceUidInDatabase($deviceUid)
 
 	if(isset($_GET['search']))
 	{
+
+		user_log('User with JodelDeviceId:' . $jodelAccountForView->deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . '] searched for ' . $_GET['search']);
+
 		if(substr($_GET['search'], 0, 1) === "#")
 		{
 			if(strrpos($_GET['search'], ' ') == NULL)
