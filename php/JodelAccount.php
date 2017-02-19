@@ -141,7 +141,7 @@ class JodelAccount
                     }
                     else
                     {
-                        error_log('User with JodelDeviceId:' . $this->deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . '] changed to Location: ' . $name);
+                        user_log('User with JodelDeviceId:' . $this->deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . '] changed to Location: ' . $name);
                     }
                 }
 
