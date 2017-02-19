@@ -10,7 +10,7 @@
 	</div>
 	<div class="col-3">
 		<nav>
-			<a href="<?php echo $baseUrl;?>about-us.php">about us</a>
+			<a href="<?php echo $baseUrl;?>about-us.php">about</a>
 		</nav>
 	</div>
 </div>
