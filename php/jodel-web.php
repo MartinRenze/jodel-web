@@ -37,6 +37,12 @@ if($_SERVER['REMOTE_ADDR'] == '94.231.103.52')
 	die();
 }
 
+function user_log($msg)
+{
+    $log  = $msg . PHP_EOL;
+    file_put_contents(realpath(__DIR__ . '/..') . '/logs/user_log-' . date("j.n.Y") . '.txt', $log, FILE_APPEND);
+}
+
 function isUserBot()
 {
     preg_match('/bot|spider|google|twitter/i', $_SERVER['HTTP_USER_AGENT'], $matches);
@@ -85,7 +91,7 @@ function isDeviceUidInDatabase($deviceUid)
 	//Check if it's a Spider or Google Bot
 	if(configPropertyExists($config, 'botDeviceUid') && isUserBot())
 	{
-		error_log('Spider or Bot checked in!');
+		user_log('Spider or Bot checked in!');
 		
 		$jodelAccountForView = new JodelAccount($config['botDeviceUid'], TRUE);
 	}
@@ -95,7 +101,7 @@ function isDeviceUidInDatabase($deviceUid)
 		{
 			$jodelAccountForView = new JodelAccount();
 			setcookie('JodelDeviceId', $jodelAccountForView->deviceUid, time()+60*60*24*365*10);
-			error_log('Created account with JodelDeviceId:' . $jodelAccountForView->deviceUid .  ' for [' . $_SERVER ['HTTP_USER_AGENT'] . ']');
+			user_log('Created account with JodelDeviceId:' . $jodelAccountForView->deviceUid .  ' for [' . $_SERVER ['HTTP_USER_AGENT'] . ']');
 			
 		}
 		else
@@ -123,6 +129,9 @@ function isDeviceUidInDatabase($deviceUid)
 
 	if(isset($_GET['search']))
 	{
+
+		user_log('User with JodelDeviceId:' . $jodelAccountForView->deviceUid .  ' [' . $_SERVER['REMOTE_ADDR'] . '][' . $_SERVER ['HTTP_USER_AGENT'] . '] searched for ' . $_GET['search']);
+
 		if(substr($_GET['search'], 0, 1) === "#")
 		{
 			if(strrpos($_GET['search'], ' ') == NULL)
