@@ -1,6 +1,9 @@
 <?php
 include 'php/jodel-web.php';
 
+error_log($_GET['hashtag']);
+error_log($view->hashtag);
+
 if(isset($_GET['lastPostId']))
 {
 	$view->lastPostId = htmlspecialchars($_GET['lastPostId']);

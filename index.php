@@ -50,10 +50,15 @@
 	if(!isset($posts[0]))
 	{
 		error_log('Fehler: ' . print_r($posts, true) . print_r($posts['recent'], true) . print_r($posts['posts'], true));
+		$title = $view->getTitle();
+		$description = $view->getMetaDescription();
+	}
+	else
+	{
+		$title = $view->getTitle($posts[0]);
+		$description = $view->getMetaDescription($posts[0]);
 	}
 
-	$title = $view->getTitle($posts[0]);
-	$description = $view->getMetaDescription($posts[0]);
 	if($view->isDetailedView)
 	{
 		$backButton = $view->back()->toUrl() . '#postId-' . $view->postId;

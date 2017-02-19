@@ -4,3 +4,5 @@ User with JodelDeviceId:39de9699f9edd2f300e5622ad4ee52ef1141e3033567dc1425ffe8f1
 User with JodelDeviceId:39de9699f9edd2f300e5622ad4ee52ef1141e3033567dc1425ffe8f1346fca54 [::1][Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0] changed to Location: test1
 User with JodelDeviceId:39de9699f9edd2f300e5622ad4ee52ef1141e3033567dc1425ffe8f1346fca54 [::1][Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0] searched for Ilmenau
 User with JodelDeviceId:39de9699f9edd2f300e5622ad4ee52ef1141e3033567dc1425ffe8f1346fca54 [::1][Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0] changed to Location: Ilmenau
+User with JodelDeviceId:39de9699f9edd2f300e5622ad4ee52ef1141e3033567dc1425ffe8f1346fca54 [::1][Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0] searched for Ilmenau
+User with JodelDeviceId:39de9699f9edd2f300e5622ad4ee52ef1141e3033567dc1425ffe8f1346fca54 [::1][Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0] searched for #jhj

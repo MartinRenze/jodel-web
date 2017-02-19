@@ -49,7 +49,7 @@
 							if(!$("article[id='"+ hash +"']").length)
 							{
 								$.ajax({
-									url: '<?php echo $baseUrl;?>get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view + '&hashtag=' + encodeURI(hashtag),
+									url: '<?php echo $baseUrl;?>get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view + '&hashtag=' + encodeURIComponent(hashtag),
 									dataType: 'html',
 									async: false,
 									success: function(html) {
@@ -92,7 +92,7 @@
 						$('#loading').show();
 
 						$.ajax({
-							url: '<?php echo $baseUrl;?>get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view + '&hashtag=' + encodeURI(hashtag),
+							url: '<?php echo $baseUrl;?>get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view + '&hashtag=' + encodeURIComponent(hashtag),
 							dataType: 'html',
 							async: false,
 							success: function(html) {

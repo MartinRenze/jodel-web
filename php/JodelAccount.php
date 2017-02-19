@@ -234,7 +234,7 @@ class JodelAccount
             }
             else
             {
-                error_log("Could not vote: " . var_dump($data));
+                error_log("Could not vote: " . print_r($data, true));
                 return FALSE;
             } 
         }
@@ -305,7 +305,7 @@ class JodelAccount
         }
         else
         {
-            header('Location: ' . $baseUrl);
+            header('Location: ' . $view->baseUrl);
             exit;
         }
     }
