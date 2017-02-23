@@ -223,7 +223,7 @@ class View
 	 */
 	function getMetaDescription($post = '')
 	{
-		$description = 'JodelBlue is a Web-App and Browser-Client for the Jodel App. No registration required! Browse Jodels in ' . htmlspecialchars($this->city) . ' or all over the world. Send your own Jodels or upvote others.';
+		$description = 'JodelBlue is a Web-App and Browser-Client for the Jodel App. No registration required! Browse Jodels in ' . htmlspecialchars($this->city) . ' or all over the world.';
 
 		if($post != '' && $this->isDetailedView)
 		{
