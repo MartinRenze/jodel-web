@@ -29,14 +29,50 @@
 				    $('html,body').animate({scrollTop: aTag.offset().top-90},'slow');
 				}
 
-				<?php if(!isset($_GET['postId']) && !isset($_GET['getPostDetails'])) { ?>
-
+				//Ajax load more Posts
 				var win = $(window);
 				var lastPostId = "<?php echo $view->lastPostId; ?>";
 				var view = "<?php echo $view->view; ?>";
 				var hashtag = "<?php echo $view->hashtag; ?>";
 				var old_lastPostId = "";
-				var morePostsAvailable = true;
+				var isreadyAgain = true;
+
+				function getMorePostsByClick()
+				{
+					alert(lastPostId);
+				}
+
+				function getMorePosts(lastPostId, view, hashtag, old_lastPostId)
+				{
+					$.ajax({
+						url: '<?php echo $baseUrl;?>get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view + '&hashtag=' + encodeURIComponent(hashtag),
+						dataType: 'html',
+						async: false,
+						success: function(html) {
+							var div = document.createElement('div');
+							div.innerHTML = html;
+							var elements = div.childNodes;
+							old_lastPostId = lastPostId;
+							lastPostId = elements[3].textContent;
+							lastPostId = lastPostId.replace(/\s+/g, '');
+
+							if(lastPostId == old_lastPostId)
+							{
+								$('#loading').hide();
+							}
+							else
+							{
+								$('#posts').append(elements[1].innerHTML);
+							}
+						}
+					});
+
+					$('.jodel > content').Emoji();
+
+					return {"lastPostId":lastPostId, "old_lastPostId":old_lastPostId};
+				}
+
+				<?php if(!isset($_GET['postId']) && !isset($_GET['getPostDetails'])) { ?>
 
 				if(window.location.hash)
 				{
@@ -48,32 +84,9 @@
 						{
 							if(!$("article[id='"+ hash +"']").length)
 							{
-								$.ajax({
-									url: '<?php echo $baseUrl;?>get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view + '&hashtag=' + encodeURIComponent(hashtag),
-									dataType: 'html',
-									async: false,
-									success: function(html) {
-										var div = document.createElement('div');
-										div.innerHTML = html;
-										var elements = div.childNodes;
-										old_lastPostId = lastPostId;
-										lastPostId = elements[3].textContent;
-										lastPostId = lastPostId.replace(/\s+/g, '');
-										//alert('Neu: ' + lastPostId + " Alt: " + old_lastPostId);
-										if(lastPostId == old_lastPostId) {
-											
-											//morePostsAvailable = false;
-										}
-										else {
-											//alert(elements[3].textContent);
-											$('#posts').append(elements[1].innerHTML);
-											$('#posts').hide().show(0);
-										}
-										$('#loading').hide();
-									}
-								});
-
-								$('.jodel > content').Emoji();
+								var result = getMorePosts(lastPostId, view, hashtag, old_lastPostId);
+								old_lastPostId = result['old_lastPostId'];
+								lastPostId = result['lastPostId'];
 							}
 							
 						}
@@ -83,41 +96,16 @@
 				}
 
 				// Each time the user scrolls
-				win.scroll(function() {
-
-
+				win.scroll(function()
+				{
 					// End of the document reached?
-					if ($(window).scrollTop() + $(window).height() > $(document).height() - 100 && morePostsAvailable)
+					if ($(window).scrollTop() + $(window).height() > $(document).height() - 100 && isreadyAgain)
 					{
-						$('#loading').show();
-
-						$.ajax({
-							url: '<?php echo $baseUrl;?>get-posts-ajax.php?lastPostId=' + lastPostId + '&view=' + view + '&hashtag=' + encodeURIComponent(hashtag),
-							dataType: 'html',
-							async: false,
-							success: function(html) {
-								var div = document.createElement('div');
-								div.innerHTML = html;
-								var elements = div.childNodes;
-								old_lastPostId = lastPostId;
-								lastPostId = elements[3].textContent;
-								lastPostId = lastPostId.replace(/\s+/g, '');
-								//alert('Neu: ' + lastPostId + " Alt: " + old_lastPostId);
-								if(lastPostId == old_lastPostId)
-								{
-									
-									//morePostsAvailable = false;
-								}
-								else
-								{
-									//alert(elements[3].textContent);
-									$('#posts').append(elements[1].innerHTML);
-								}
-								$('#loading').hide();
-							}
-						});
-
-						$('.jodel > content').Emoji();
+						isreadyAgain = false;
+						var result = getMorePosts(lastPostId, view, hashtag, old_lastPostId);
+						old_lastPostId = result['old_lastPostId'];
+						lastPostId = result['lastPostId'];
+						isreadyAgain = true;
 					}
 				});
 			<?php } ?>

@@ -206,9 +206,9 @@ class View
 	 */
 	function getTitle($post = '')
 	{
-		$title = 'JodelBlue - Web-App and Browser-Client';
+		$title = 'JodelBlue - Top Jodel from ' . htmlspecialchars($this->city) . ' Web-App and Browser-Client';
 
-		if($post != '' && $this->isDetailedView)
+		if($post != '' && isset($post['message']) && $post['message'] != '' && $this->isDetailedView)
 		{
 			$title = 'JodelBlue: ' . substr(htmlspecialchars($post['message']), 0, 44);
 		}
@@ -223,11 +223,11 @@ class View
 	 */
 	function getMetaDescription($post = '')
 	{
-		$description = 'JodelBlue is a Web-App and Browser-Client for the Jodel App. No registration required! Browse Jodels all over the world. Send your own Jodels or upvote others.';
+		$description = 'JodelBlue is a Web-App and Browser-Client for the Jodel App. No registration required! Browse Jodels in ' . htmlspecialchars($this->city) . ' or all over the world. Send your own Jodels or upvote others.';
 
 		if($post != '' && $this->isDetailedView)
 		{
-			$description = 'On JodelBlue with ' . htmlspecialchars($post['vote_count']) . ' Upvotes: ' . substr(htmlspecialchars($post['message']), 0, 140);
+			$description = 'On JodelBlue in ' . htmlspecialchars($this->city) .  ' with ' . htmlspecialchars($post['vote_count']) . ' Upvotes: ' . substr(htmlspecialchars($post['message']), 0, 130);
 		}
 
 		return $description;

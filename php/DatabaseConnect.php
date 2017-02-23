@@ -13,7 +13,7 @@ class DatabaseConnect extends mysqli
 }
 $db = new DatabaseConnect();
 if ($db->connect_errno) {
-  echo 'Sorry, die Verbindung zu unserem superfetten endgeilen 
+  echo 'Sorry, die Verbindung zu unserem 
         Server ist hops gegangen. Wegen '.$db -> connect_error;
 }
 
