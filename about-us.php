@@ -17,7 +17,7 @@ include 'templates/header.php';
 							<p>This page was not created by "The Jodel Venture GmbH", the official developers of the Jodel app.</p>
 							<p>All content is from the official Jodel app, all rights remain with the respective owners. We do not store any data or spread them.</p>
 
-							<p>If you find bugs or want to help me developing the project feel free to contact me:</p>
+							<p>If you find bugs or want to help me developing the project, feel free to contact me:</p>
 							<p>info@jodelblue.com</p>
 
 							<p><a style="color: #fff; text-decoration: underline;" href="https://github.com/mmainstreet/jodel-web">JodelBlue on GitHub</a></p>
@@ -27,7 +27,7 @@ include 'templates/header.php';
 							<div>
 								<h2>Donate to JodelBlue</h2>
 								<p class="bitcoin-address">Bitcoin-address: <a href="img/bitcoin-address.png">1DzaUWm9Du6CUQLj6QTGC9kpxzKE3yZZHV</a></p>
-								<progress max="35" value="0"></progress>
+								<progress max="3500" value="111"></progress>
 								<p>
 									My payments to keep this Project up so far:
 								</p>

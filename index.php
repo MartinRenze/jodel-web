@@ -144,7 +144,7 @@
 							<div>
 								<h2>Donate to JodelBlue</h2>
 								<p class="bitcoin-address">Bitcoin-address: <a href="img/bitcoin-address.png">1DzaUWm9Du6CUQLj6QTGC9kpxzKE3yZZHV</a></p>
-								<progress max="35" value="0"></progress>
+								<progress max="3500" value="111"></progress>
 								<p>
 									My payments to keep this Project up so far:
 								</p>
