@@ -208,7 +208,7 @@ class View
 	{
 		$title = 'JodelBlue - Top Jodel from ' . htmlspecialchars($this->city) . ' Web-App and Browser-Client';
 
-		if($post != '' && isset($post['message']) && $post['message'] != '' && $this->isDetailedView)
+		if($post != '' && array_key_exists('message', $post) && $post['message'] != '' && $this->isDetailedView)
 		{
 			$title = 'JodelBlue: ' . substr(htmlspecialchars($post['message']), 0, 44);
 		}
@@ -225,7 +225,7 @@ class View
 	{
 		$description = 'JodelBlue is a Web-App and Browser-Client for the Jodel App. No registration required! Browse Jodels in ' . htmlspecialchars($this->city) . ' or all over the world.';
 
-		if($post != '' && $this->isDetailedView)
+		if($post != '' && array_key_exists('message', $post) && $post['message'] != '' && $this->isDetailedView)
 		{
 			$description = 'On JodelBlue in ' . htmlspecialchars($this->city) .  ' with ' . htmlspecialchars($post['vote_count']) . ' Upvotes: ' . substr(htmlspecialchars($post['message']), 0, 130);
 		}
@@ -354,11 +354,11 @@ class View
             $accountCreator->location = $location;
             $data = $accountCreator->execute();
         }
-    	if(array_key_exists('recent', $data))
+    	if(array_key_exists('recent', $data) && array_key_exists(0, $data['recent']))
         {
             return $data['recent'];
         }
-        else if(array_key_exists('posts', $data))
+        else if(array_key_exists('posts', $data)&& array_key_exists(0, $data['posts']))
         {
             return $data['posts'];
         }

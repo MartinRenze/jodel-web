@@ -80,7 +80,6 @@ class JodelAccount
         }
         else
         {
-            echo "Error: 0 results";
             error_log("Error no Location found - getLocation");
         }
 
@@ -207,42 +206,51 @@ class JodelAccount
     //ToDo Spider Check
     function votePostId($postId, $vote)
     {
-        if(!$this->isAccountVerified())
+        if(!$this->isBot)
         {
-            $view = new View();
-            $view->showCaptcha($this->accessToken, $this->deviceUid);
-        }
-
-        if(!$this->hasVoted($postId))
-        {
-            if($vote == "up")
+            if(!$this->isAccountVerified())
             {
-                $accountCreator = new Upvote();
-            }
-            else if($vote == "down")
-            {
-                $accountCreator = new Downvote();
+                $view = new View();
+                $view->showCaptcha($this->accessToken, $this->deviceUid);
             }
 
-            $accountCreator->setAccessToken($this->accessToken);
-            $accountCreator->postId = htmlspecialchars($postId);
-            $data = $accountCreator->execute();
-
-            if(array_key_exists('post', $data))
+            if(!$this->hasVoted($postId))
             {
-                $this->addVoteWithPostIdAndType($postId, $vote);
-                return TRUE;
+                if($vote == "up")
+                {
+                    $accountCreator = new Upvote();
+                }
+                else if($vote == "down")
+                {
+                    $accountCreator = new Downvote();
+                }
+
+                $accountCreator->setAccessToken($this->accessToken);
+                $accountCreator->postId = htmlspecialchars($postId);
+                $data = $accountCreator->execute();
+
+                if(array_key_exists('post', $data))
+                {
+                    $this->addVoteWithPostIdAndType($postId, $vote);
+                    return TRUE;
+                }
+                else if(array_key_exists('error', $data))
+                {
+                    error_log('Could not vote - Error: ' . $data['error']);
+                }
+                else
+                {
+                    error_log('Could not vote: ' . print_r($data, true));
+                    return FALSE;
+                } 
             }
             else
             {
-                error_log("Could not vote: " . print_r($data, true));
                 return FALSE;
-            } 
+            }
         }
-        else
-        {
-            return FALSE;
-        }
+
+        return FALSE;
     }
 
     //ToDo Spider Check

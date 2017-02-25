@@ -172,7 +172,7 @@ function isDeviceUidInDatabase($deviceUid)
 	}
 	
 	//Set Location
-	if(isset($_GET['city']) && !$jodelAccountForView->locationEquals($_GET['city']))
+	if(isset($_GET['city']) && $_GET['city'] != '' && !$jodelAccountForView->locationEquals($_GET['city']))
 	{
 		$cityName = $jodelAccountForView->setLocation();
 	}
