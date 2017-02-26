@@ -240,6 +240,7 @@ class JodelAccount
                 }
                 else
                 {
+                    error_log('Could not vote - Error: ' . $data['status_code']);
                     error_log('Could not vote: ' . print_r($data, true));
                     return FALSE;
                 } 

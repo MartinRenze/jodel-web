@@ -365,7 +365,7 @@ class View
         else
         {
             error_log('Fehler View getPosts ');
-            error_log(print_r($data, true));
+            //error_log(print_r($data, true));
 
             $notFound[0] = array(
                 "post_id" => "0",
