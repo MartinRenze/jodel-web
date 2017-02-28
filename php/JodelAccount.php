@@ -406,7 +406,7 @@ class JodelAccount
         $accountCreator->setAccessToken($this->accessToken);
         $data = $accountCreator->execute();
         
-        return $data["karma"];
+        return $data['karma'];
     }
 
     function hasVoted($postId)
@@ -482,7 +482,7 @@ class JodelAccount
 
         $success = TRUE;
         if($result === false){
-                $error = db_error();
+                $error = $db->error();
                 echo $error;
                 echo "Adding account failed: (" . $result->errno . ") " . $result->error;
                 $success = FALSE;

@@ -19,9 +19,9 @@ if ($db->connect_errno) {
 
 $query = "CREATE TABLE IF NOT EXISTS `accounts` (
 			 `id` int(11) unsigned NOT NULL auto_increment,
-			 `access_token` varchar(50) NOT NULL default '',
-			 `refresh_token` varchar(50) NOT NULL default '',
-			 `token_type` varchar(50) NOT NULL default 'bearer',
+			 `access_token` varchar(55) NOT NULL default '',
+			 `refresh_token` varchar(55) NOT NULL default '',
+			 `token_type` varchar(55) NOT NULL default 'bearer',
 			 `expires_in` INT NOT NULL,
 			 `expiration_date` INT NOT NULL,
 			 `device_uid` varchar(255) NOT NULL default '',
