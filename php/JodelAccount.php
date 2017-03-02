@@ -229,6 +229,8 @@ class JodelAccount
                 $accountCreator->postId = htmlspecialchars($postId);
                 $data = $accountCreator->execute();
 
+                error_log('Could not vote: ' . print_r($data, true));
+
                 if(array_key_exists('post', $data))
                 {
                     $this->addVoteWithPostIdAndType($postId, $vote);
@@ -240,7 +242,6 @@ class JodelAccount
                 }
                 else
                 {
-                    error_log('Could not vote - Error: ' . $data['status_code']);
                     error_log('Could not vote: ' . print_r($data, true));
                     return FALSE;
                 } 
@@ -305,13 +306,15 @@ class JodelAccount
         
 		if($data != 'Success')
 		{
-			error_log(print_r($data, true));
+			error_log('Could not set location befor Post: ' . print_r($data, true));
 		}
 
         $accountCreator->location = $this->location;
         
         $accountCreator->setAccessToken($this->accessToken);
         $data = $accountCreator->execute();
+
+        error_log(print_r($data, true));
 
         if(isset($_POST['ancestor']))
         {

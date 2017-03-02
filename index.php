@@ -95,7 +95,7 @@
 						<article>
 							<div>
 								<h2>Position / Hashtag</h2>
-								<form method="get">
+								<form action="index.php" method="get">
 									<input type="text" id="city" name="search" placeholder="<?php if(isset($newPositionStatus)) echo $newPositionStatus; ?>" required>
 									<label>try: #jhj</label><br>
 									<input type="submit" value="Set Location" /> 

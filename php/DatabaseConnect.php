@@ -12,9 +12,17 @@ class DatabaseConnect extends mysqli
 
 }
 $db = new DatabaseConnect();
+
+if($db->connect_errno == 1203)  // 1203 == ER_TOO_MANY_USER_CONNECTIONS (mysqld_error.h)
+{
+	error_log('ER_TOO_MANY_USER_CONNECTIONS');
+	sleep(1);
+	header('location: '.$_SERVER['PHP_SELF']);
+}
+
 if ($db->connect_errno) {
   echo 'Sorry, die Verbindung zu unserem 
-        Server ist hops gegangen. Wegen '.$db -> connect_error;
+        Server ist hops gegangen. Wegen '. $db -> connect_error;
 }
 
 $query = "CREATE TABLE IF NOT EXISTS `accounts` (

@@ -364,7 +364,7 @@ class View
         }
         else
         {
-            error_log('Fehler View getPosts ');
+            error_log('Could not find Posts in: ' . $this->city . ' Error: ' . print_r($data, true));
             //error_log(print_r($data, true));
 
             $notFound[0] = array(
