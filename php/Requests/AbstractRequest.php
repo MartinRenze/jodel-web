@@ -93,11 +93,11 @@ abstract class AbstractRequest
                 $result = json_decode($result->body, true);
                 break;
             case 429:
-                error_log('Error 429 - Too Many Requests');
+                error_log('Error 429 - Too Many Requests' . print_r(json_decode($result->body, true), true));
             	exit("Error 429: Too Many Requests");
             	break;
             case 403:
-                error_log('Error 403 - Access denied');
+                error_log('Error 403 - Access denied:' . print_r(json_decode($result->body, true), true));
                 exit("Error 403: Access denied");
                 break;
             default:
