@@ -37,7 +37,7 @@ class JodelAccount
         }
         $this->accessToken  = $this->getAccessToken();
 
-        error_log(isAccountVerified());
+        error_log($this->isAccountVerified());
     }
 
     function isAccountVerified()
