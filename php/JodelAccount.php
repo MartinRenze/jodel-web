@@ -187,17 +187,20 @@ class JodelAccount
         if(isset($_GET['deviceUid']))
         {
             $deviceUid = $_GET['deviceUid'];
+            $jodelAccountForVerify = new JodelAccount($deviceUid);
         }
         else if(isset($_POST['deviceUid']))
         {
             $deviceUid = $_POST['deviceUid'];
+            $jodelAccountForVerify = new JodelAccount($deviceUid);
         }
         else
         {
             $deviceUid = $this->deviceUid;
+            $jodelAccountForVerify = $this;
         }
 
-        $jodelAccountForVerify = new JodelAccount($deviceUid);
+        
 
         $solution = $_GET['solution'];
         $solution = array_map('intval', explode('-', $solution));
