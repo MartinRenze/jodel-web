@@ -32,7 +32,7 @@
 			foreach($data['children'] as $key => $child)
 			{
 				
-				if(!$child["parent_creator"] == 1)
+				if(array_key_exists('parent_creator', $child) && !$child['parent_creator'] == 1)
 				{
 					$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
 					if($numberForUser === FALSE)

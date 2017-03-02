@@ -101,6 +101,10 @@ abstract class AbstractRequest
                 error_log('Error 403 - Access denied:' . print_r(json_decode($result->body, true), true));
                 $result = json_decode($result->body, true);
                 break;
+            case 503:
+                error_log('Error 503 - ' . print_r($result, true));
+                $result = json_decode($result->body, true);
+                break;
             default:
                 error_log('Error '.$result->status_code.' - Unauthorized');
                 $result = json_decode($result->body, true);
