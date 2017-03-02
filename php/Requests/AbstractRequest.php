@@ -75,22 +75,23 @@ abstract class AbstractRequest
                 $result = json_decode($result->body, true);
                 break;
             case 204:
-                $result = "Success";
+                $result = 'Success';
                 break;
             case 400:
-                error_log('Error 400 - Fehlerhafte Anfrage');
                 $result = json_decode($result->body, true);
+                error_log('Error 400 - ' . print_r($result, true));
                 break;
             case 401:
-                error_log('Error 401 - Unauthorized');
                 $result = json_decode($result->body, true);
+                error_log('Error 401 - ' . print_r($result, true));
                 break;
             case 404:
-                error_log('Error 404 - Es wurde bereits gevoted');
+                error_log('Error 404 - ' . print_r($result, true));
                 $result = json_decode($result->body, true);
+                break;
 			case 477:
-                error_log('Error 477 - Signing failed');
                 $result = json_decode($result->body, true);
+                error_log('Error 477 - ' . print_r($result, true));
                 break;
             case 429:
                 error_log('Error 429 - Too Many Requests' . print_r(json_decode($result->body, true), true));
@@ -98,7 +99,7 @@ abstract class AbstractRequest
             	break;
             case 403:
                 error_log('Error 403 - Access denied:' . print_r(json_decode($result->body, true), true));
-                exit("Error 403: Access denied");
+                $result = json_decode($result->body, true);
                 break;
             default:
                 error_log('Error '.$result->status_code.' - Unauthorized');
