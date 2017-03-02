@@ -49,7 +49,7 @@ class JodelAccount
         $accountCreator->setAccessToken($this->accessToken);
         $data = $accountCreator->execute();
 
-        error_log(print_r($data, true));
+        //error_log(print_r($data, true));
 
         return $data['verified'];
     }
