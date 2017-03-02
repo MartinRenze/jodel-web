@@ -1,15 +1,7 @@
 <?php
 	include('php/jodel-web.php');
 	$posts;
-	
-	if(isset($_GET['solution']) && isset($_GET['key']) && isset($_POST['deviceUid']))
-	{
-		$jodelAccount = new JodelAccount($_POST['deviceUid']);
-		$response = array("success" => $jodelAccount->verifyCaptcha());
-		echo json_encode($response);
-		die();
-	}
-	
+
 	//Get Post Details
 	if(isset($_GET['postId']) && isset($_GET['getPostDetails']))
 	{
