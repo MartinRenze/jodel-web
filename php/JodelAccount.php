@@ -39,7 +39,7 @@ class JodelAccount
 
         if($this->isAccountVerified() != 1)
         {
-            $this->getCaptcha();
+            $this->showCaptcha();
             //$this->verifyCaptcha();
         }
     }
