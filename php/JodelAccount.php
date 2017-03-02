@@ -37,7 +37,10 @@ class JodelAccount
         }
         $this->accessToken  = $this->getAccessToken();
 
-        $this->isAccountVerified();
+        if($this->isAccountVerified() != 1)
+        {
+            $this->verifyCaptcha();
+        }
     }
 
     function isAccountVerified()
@@ -185,10 +188,15 @@ class JodelAccount
         {
             $deviceUid = $_GET['deviceUid'];
         }
-        if(isset($_POST['deviceUid']))
+        else if(isset($_POST['deviceUid']))
         {
             $deviceUid = $_POST['deviceUid'];
         }
+        else
+        {
+            $deviceUid = $this->deviceUid;
+        }
+
         $jodelAccountForVerify = new JodelAccount($deviceUid);
 
         $solution = $_GET['solution'];
