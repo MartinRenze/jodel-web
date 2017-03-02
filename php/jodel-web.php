@@ -39,7 +39,6 @@ if($_SERVER['REMOTE_ADDR'] == '94.231.103.52')
 
 if(isset($_GET['solution']) && isset($_GET['key']) && isset($_GET['deviceUid']))
 {
-	error_log('test');
 	$jodelAccount = new JodelAccount($_GET['deviceUid']);
 	$response = array("success" => $jodelAccount->verifyCaptcha());
 	echo json_encode($response);

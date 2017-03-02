@@ -37,11 +37,11 @@ class JodelAccount
         }
         $this->accessToken  = $this->getAccessToken();
 
-        if($this->isAccountVerified() != 1)
+       /* if($this->isAccountVerified() != 1)
         {
             $this->showCaptcha();
             //$this->verifyCaptcha();
-        }
+        }*/
     }
 
     function showCaptcha()
