@@ -370,11 +370,11 @@ class View
             $notFound[0] = array(
                 "post_id" => "0",
                 "discovered_by" => 0,
-                "message" => "Not found",
+                "message" => "No more Posts found",
                 "created_at" => "2017-02-11T16:44:50.385Z",
                 "updated_at" => "2017-02-11T16:44:50.385Z",
                 "pin_count" => 0,
-                "color" => "FFBA00",
+                "color" => "5682a3",
                 "got_thanks" => FALSE,
                 "post_own" => "friend",
                 "discovered" => 0,
