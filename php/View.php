@@ -233,40 +233,6 @@ class View
 		return $description;
 	}
 
-	function getCaptcha($accessToken)
-	{
-		$accountCreator = new GetCaptcha();
-		$accountCreator->setAccessToken($accessToken);
-		$captcha = $accountCreator->execute();
-
-		return array("image_url" => $captcha['image_url'], "key" => $captcha['key']);
-	}
-
-	function showCaptcha($accessToken, $deviceUid)
-	{
-		$accountCreator = new GetCaptcha();
-		$accountCreator->setAccessToken($accessToken);
-		$captcha = $accountCreator->execute();
-
-		echo $captcha['image_url'];
-		echo('<br><img width="100%" src="' . $captcha['image_url'] . '">');
-		echo "<br>Key: " . $captcha['key'];
-		echo "<br>";
-
-		//Form
-		
-		echo '<form method="get">';
-		echo	'<p>Enter Key (copy pasta from top): <input type="text" value="' . $captcha['key'] . '" name="key" /></p>';
-		echo	'<p>Find the Coons (example: they are on picture 3, 4 and 5. You enter 2-3-4. Becouse we start counting at 0): <input type="text" name="solution" /></p>';
-		echo 	'<input type="hidden" name="deviceUid" value="' . $deviceUid . '">';
-		echo 	'<input type="hidden" name="pw" value="upVote">';
-		echo	'<p><input type="submit" /></p>';
-		echo '</form>';
-
-		die();
-		
-	}
-
     function toUrl()
     {
         $url = $this->baseUrl . 'index.php?country=DE' .

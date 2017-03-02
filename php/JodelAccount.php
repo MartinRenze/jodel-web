@@ -39,8 +39,43 @@ class JodelAccount
 
         if($this->isAccountVerified() != 1)
         {
-            $this->verifyCaptcha();
+            $this->getCaptcha();
+            //$this->verifyCaptcha();
         }
+    }
+
+    function showCaptcha()
+    {
+        $accountCreator = new GetCaptcha();
+        $accountCreator->setAccessToken($this->accessToken);
+        $captcha = $accountCreator->execute();
+
+        echo $captcha['image_url'];
+        echo('<br><img width="100%" src="' . $captcha['image_url'] . '">');
+        echo "<br>Key: " . $captcha['key'];
+        echo "<br>";
+
+        //Form
+        
+        echo '<form method="get">';
+        echo    '<p>Enter Key (copy pasta from top): <input type="text" value="' . $captcha['key'] . '" name="key" /></p>';
+        echo    '<p>Find the Coons (example: they are on picture 3, 4 and 5. You enter 2-3-4. Becouse we start counting at 0): <input type="text" name="solution" /></p>';
+        echo    '<input type="hidden" name="deviceUid" value="' . $this->deviceUid . '">';
+        echo    '<input type="hidden" name="pw" value="upVote">';
+        echo    '<p><input type="submit" /></p>';
+        echo '</form>';
+
+        die();
+        
+    }
+
+    function getCaptcha()
+    {
+        $accountCreator = new GetCaptcha();
+        $accountCreator->setAccessToken($this->accessToken);
+        $captcha = $accountCreator->execute();
+
+        return array("image_url" => $captcha['image_url'], "key" => $captcha['key']);
     }
 
     function isAccountVerified()
@@ -200,8 +235,6 @@ class JodelAccount
             $jodelAccountForVerify = $this;
         }
 
-        
-
         $solution = $_GET['solution'];
         $solution = array_map('intval', explode('-', $solution));
 
@@ -226,7 +259,7 @@ class JodelAccount
             if(!$this->isAccountVerified())
             {
                 $view = new View();
-                $view->showCaptcha($this->accessToken, $this->deviceUid);
+                $this->showCaptcha();
             }
 
             if(!$this->hasVoted($postId))
@@ -275,7 +308,7 @@ class JodelAccount
     {
         if(!$this->isAccountVerified())
         {
-            showCaptcha($this->accessToken);
+            $this->showCaptcha();
         }
 
         $accountCreator = new SendJodel();
