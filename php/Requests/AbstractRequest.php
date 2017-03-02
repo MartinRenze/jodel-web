@@ -104,6 +104,11 @@ abstract class AbstractRequest
             case 503:
                 error_log('Error 503 - ' . print_r($result, true));
                 $result = json_decode($result->body, true);
+
+                if(array_key_exists('error', $result) && $result['error'] == 'Service Unavailable"')
+                {
+                    header('location:'.$_SERVER['PHP_SELF']); 
+                }
                 break;
             default:
                 error_log('Error '.$result->status_code.' - Unauthorized');
