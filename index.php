@@ -130,7 +130,7 @@
 								</form>
 									<?php } else { ?>
 								<h2>New Jodel</h2>
-								<form method="POST">
+								<form enctype="multipart/form-data" method="POST">
 									<textarea id="message" name="message" placeholder="Send a Jodel to all students within 10km" required></textarea> 
 									<br />
 									<select id="postColorPicker" name="color">
@@ -142,6 +142,8 @@
 										<option value="FF9908">Orange</option>
 									</select> 
 									<br />
+									<input type="hidden" name="MAX_FILE_SIZE" value="999990000" />
+									<input name="image" type="file" />
 									<input type="submit" value="SEND" /> 
 								</form>
 								<?php } ?>

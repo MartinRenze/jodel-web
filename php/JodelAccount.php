@@ -358,6 +358,14 @@ class JodelAccount
 		}
 
         $accountCreator->location = $this->location;
+
+        $image = '';
+        if(isset($_FILES['image']) && $_FILES['image']['size'] > 0)
+        {
+            $image = file_get_contents($_FILES['image']['tmp_name']);
+        }
+        
+        $accountCreator->image = $image;
         
         $accountCreator->setAccessToken($this->accessToken);
         $data = $accountCreator->execute();
