@@ -306,9 +306,10 @@ class JodelAccount
     //ToDo Spider Check
     function sendJodel($location, $view)
     {
-        if(!$this->isAccountVerified())
+        if($this->isAccountVerified() != 1)
         {
             $this->showCaptcha();
+            //$this->verifyCaptcha();
         }
 
         $accountCreator = new SendJodel();
