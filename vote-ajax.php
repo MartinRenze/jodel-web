@@ -1,6 +1,14 @@
 <?php
-error_reporting(0);
+
 include 'php/jodel-web.php';
+
+if(isset($_GET['postId']) && $_GET['vote'])
+{
+	error_log('test');
+	header('Content-Type: application/json');
+    echo json_encode($jodelAccountForKarma->votePostId($_GET['postId'], $_GET['vote']));
+    die();
+}
 
 if((!isset($_GET['pw']) || $config['pw'] != $_GET['pw']) && !isUserAdmin())
 {

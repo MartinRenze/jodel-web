@@ -14,6 +14,33 @@
 				window.history.back();
 			}
 		<?php if(isset($includeEmojiAndAjax)){ ?>
+
+			function vote(postId, vote, obj)
+			{
+				$.ajax({
+					url: '<?php echo $baseUrl;?>vote-ajax.php?postId=' + postId + '&vote=' + vote,
+					dataType: 'json',
+					async: true,
+					success: function(json)
+					{
+						if(json)
+						{
+							obj.style.color = '#5682a3';
+
+							if(vote == 'up')
+							{
+								obj.parentNode.getElementsByTagName('span')[0].innerHTML = ++obj.parentNode.getElementsByTagName('span')[0].innerHTML;
+							}
+
+							if(vote == 'down')
+							{
+								obj.parentNode.getElementsByTagName('span')[0].innerHTML = --obj.parentNode.getElementsByTagName('span')[0].innerHTML;
+							}
+						}
+					}
+				});
+			}
+
 			$(document).ready(function()
 			{
 				//Transform UTF-8 Emoji to img

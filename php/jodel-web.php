@@ -236,21 +236,6 @@ function isDeviceUidInDatabase($deviceUid)
 		$jodelAccountForVerify->verifyCaptcha();
 	}
 	
-	//Vote
-	if(isset($_GET['vote']) && isset($_GET['postId']))
-	{
-		$jodelAccountForKarma->votePostId($_GET['postId'], $_GET['vote']);
-		if(isset($_GET['getPostDetails']) && isset($_GET['getPostDetails']))
-        {
-            header('Location: index.php?getPostDetails=true&postId=' . htmlspecialchars($_GET['postId_parent']) . '#postId-' . htmlspecialchars($_GET['postId']));
-        }
-        else
-        {
-            header("Location: index.php#postId-" . htmlspecialchars($_GET['postId']));
-        }   
-        die();
-	}
-	
 	//SendJodel
 	if(isset($_POST['message']))
 	{

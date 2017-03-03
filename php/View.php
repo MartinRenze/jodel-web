@@ -95,31 +95,15 @@ class View
                 }
                 ?>
             </content>
-            <aside>
-                <?php
-                    if($this->isDetailedView)
-                    {?>
-                        <a href="index.php?vote=up&getPostDetails=true&postId=<?php echo $post['post_id'];?>&postId_parent=<?php echo htmlspecialchars($_GET['postId']);?>" rel="nofollow">
-              <?php }
-                    else
-                    {?>
-                        <a href="index.php?vote=up&postId=<?php echo $post['post_id'];?>" rel="nofollow">
-              <?php } ?>
-                            <i class="fa fa-angle-up fa-3x"></i>
-                        </a>    
-                            <br />
-                        <?php echo $post["vote_count"];?><br />
-                <?php
-                    if($this->isDetailedView)
-                    {?>
-                        <a href="index.php?vote=down&getPostDetails=true&postId=<?php echo $post['post_id'];?>&postId_parent=<?php echo htmlspecialchars($_GET['postId']);?>" rel="nofollow">
-              <?php }
-                    else
-                    {?>
-                        <a href="index.php?vote=down&postId=<?php echo $post['post_id'];?>" rel="nofollow">
-              <?php } ?>
-                            <i class="fa fa-angle-down fa-3x"></i>
-                        </a>
+            <aside>                    
+                <button onclick="vote('<?php echo $post['post_id'];?>', 'up', this)">
+                    <i class="fa fa-angle-up fa-3x"></i>
+                </button>    
+                <br><span><?php echo $post["vote_count"];?></span><br>
+
+                <button onclick="vote('<?php echo $post['post_id'];?>', 'down', this)">
+                    <i class="fa fa-angle-down fa-3x"></i>
+                </button>
             </aside>
 
             <footer>
@@ -137,9 +121,10 @@ class View
                             <span data-tooltip="Comments">
                                 <a href="<?php echo $this->changePostId($post['post_id'])->toUrl();?>">
                                     <i class="fa fa-commenting-o"></i>
-                                    <?php if(array_key_exists("child_count", $post)) {
-                                                echo $post["child_count"];
-                                            } else echo "0";
+                                    <?php if(array_key_exists("child_count", $post))
+                                    {
+                                        echo $post["child_count"];
+                                    } else echo "0";
                                     ?>
                                 </a>
                             </span>

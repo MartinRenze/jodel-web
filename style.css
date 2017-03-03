@@ -74,7 +74,7 @@ a:hover, a:active {
     vertical-align: -0.15em;
 }
 
-button, input, textarea {
+form button, input, textarea {
 	font-weight: 600;
 	border: 1px solid white;
 	border-radius: 5px;
@@ -86,13 +86,13 @@ select {
 	cursor: pointer;
 }
 
-input[type="submit"], button {
+input[type="submit"], form button {
 	background-color: #6081a0;
 	color: white;
 	cursor: pointer;
 }
 
-input[type="submit"]:active, button:active {
+input[type="submit"]:active, form button:active {
 	box-shadow: inset 0 1px 2px black;
 }
 
@@ -239,6 +239,16 @@ header .navbar {
 }
 
 /* Jodels */
+.jodel button {
+	background-color: unset;
+	border: unset;
+	cursor: pointer;
+	color: #fff;
+	margin: 0px;
+	width: 100%;
+	padding: 0px;
+}
+
 .jodel a {
 	text-decoration: none;
 	color: #fff;
