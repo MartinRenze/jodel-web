@@ -24,4 +24,4 @@ https://www.jodelblue.com/
 ### Optional ###
 + HTTPS (deactivate by deleting .htaccess)
 
-### Thanks to [Loewe1000](https://github.com/Loewe1000), [LauretBernd](https://github.com/LauertBernd) and [Christian Fibich](https://bitbucket.org/cfib90/)###
+### Thanks to [Bambi-pa-hal-is](https://github.com/Bambi-pa-hal-is), [Loewe1000](https://github.com/Loewe1000), [LauretBernd](https://github.com/LauertBernd) and [Christian Fibich](https://bitbucket.org/cfib90/)###
