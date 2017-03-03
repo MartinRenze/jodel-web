@@ -27,12 +27,18 @@
 		}
 
 		$posts[0] = $data;
+		$ojHandle = $posts[0]['user_handle'];
 
-		if(array_key_exists('children', $data)) {
+		if(array_key_exists('children', $data))
+		{
 			foreach($data['children'] as $key => $child)
 			{
-				
-				if(array_key_exists('parent_creator', $child) && !$child['parent_creator'] == 1)
+				//is Comment from OJ?
+				if($ojHandle == $child['user_handle'])
+				{
+					$data['children'][$key]['user_handle'] = 'OJ';
+				}
+				else
 				{
 					$numberForUser = array_search($child['user_handle'], $userHandleBuffer);
 					if($numberForUser === FALSE)
@@ -45,7 +51,6 @@
 						$data['children'][$key]['user_handle'] = $numberForUser + 1;
 					}
 				}
-
 				array_push($posts, $data['children'][$key]);
 			}
 		}

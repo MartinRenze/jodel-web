@@ -162,7 +162,7 @@ class View
                             <?php
                                 if($this->isDetailedView)
                                 {
-                                    if(isset($post["parent_creator"]) && $post["parent_creator"] == 1)
+                                    if(isset($post['user_handle']) && $post['user_handle'] == 'OJ')
                                     {
                                         ?>
                                         <span data-tooltip="Author">
@@ -173,11 +173,11 @@ class View
                                     else
                                     {
                                         //Is not parent Jodel in detailed View
-                                        if(!array_key_exists('child_count', $post) && array_key_exists('parent_creator', $post))
+                                        if(!array_key_exists('child_count', $post))
                                         {
                                             ?>
                                             <span data-tooltip="Author">
-                                                <i class="fa fa-user-o"></i> #<?php echo $post["user_handle"];?> |
+                                                <i class="fa fa-user-o"></i> #<?php echo $post['user_handle'];?> |
                                             </span>
                                             <?php
                                         }
