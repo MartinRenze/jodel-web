@@ -277,7 +277,7 @@ class JodelAccount
                 $accountCreator->postId = htmlspecialchars($postId);
                 $data = $accountCreator->execute();
 
-                error_log('Could not vote: ' . print_r($data, true));
+                user_log('User voted: ' . print_r($data, true));
 
                 if(array_key_exists('post', $data))
                 {
@@ -377,7 +377,7 @@ class JodelAccount
             return $errorMsg;
         }
 
-        error_log(print_r($data, true));
+        user_log('User posted: ' . print_r($data, true));
 
         if(isset($_POST['ancestor']))
         {
