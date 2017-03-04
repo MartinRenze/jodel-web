@@ -21,7 +21,7 @@ if(isset($_GET['solution']) && isset($_POST['deviceUid']))
 if((!isset($_GET['pw']) || $config['pw'] != $_GET['pw']) && !isUserAdmin())
 {
 	error_log($_SERVER['REMOTE_ADDR']  . ' used a wrong password on vote-ajax.php');
-	$respone = array("message" => $_SERVER['REMOTE_ADDR']  . ' used a wrong password on vote-ajax.php',"success" => false);
+	$response = array("message" => $_SERVER['REMOTE_ADDR']  . ' used a wrong password on vote-ajax.php',"success" => false);
 	echo json_encode($response);
 	die();
 }
