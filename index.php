@@ -86,6 +86,7 @@
 		<div class="mainContent container">		
 			<div class="content row">
 				<article class="topContent col-sm-8">
+					<div id="errorMsg"></div>
 
 					<content id="posts">
 						<?php

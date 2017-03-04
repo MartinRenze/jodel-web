@@ -91,6 +91,14 @@
 
 			$(document).ready(function()
 			{
+				<?php if(isset($errorMsg)) { ?>
+				//Error Msg
+				if('<?php echo $errorMsg;?>' != '')
+				{
+					alert('<?php echo $errorMsg;?>');
+				}
+				<?php } ?>
+
 				//Transform UTF-8 Emoji to img
 				$('.jodel > content').Emoji();
 

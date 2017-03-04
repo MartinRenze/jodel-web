@@ -371,6 +371,12 @@ class JodelAccount
         $accountCreator->setAccessToken($this->accessToken);
         $data = $accountCreator->execute();
 
+        if(isset($data['error']) && $data['error'] == 'length')
+        {
+            $errorMsg = 'Error: The input was to long';
+            return $errorMsg;
+        }
+
         error_log(print_r($data, true));
 
         if(isset($_POST['ancestor']))

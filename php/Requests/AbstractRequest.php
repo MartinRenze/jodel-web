@@ -16,7 +16,7 @@ abstract class AbstractRequest
 
     public function execute()
     {
-		$result = new \stdClass();
+        $result = new \stdClass();
 		        
 		$this->payLoad = $this->getPayload();
 		$device_uid = '';
@@ -70,12 +70,16 @@ abstract class AbstractRequest
                 $result = Requests::put($url, $header, $this->payLoad);
                 break;
         }
+
+        http_response_code($result->status_code);
+
         switch ($result->status_code) {
             case 200:
                 $result = json_decode($result->body, true);
                 break;
             case 204:
                 $result = 'Success';
+                http_response_code(200);
                 break;
             case 400:
                 $result = json_decode($result->body, true);
@@ -83,7 +87,15 @@ abstract class AbstractRequest
                 break;
             case 401:
                 $result = json_decode($result->body, true);
-                error_log('Error 401 - ' . print_r($result, true));
+
+                if(array_key_exists('error', $result) && $result['error'] == 'length')
+                {
+
+                }
+                else
+                {
+                    error_log('Error 401 - ' . print_r($result, true));
+                }
                 break;
             case 404:
                 error_log('Error 404 - ' . print_r($result, true));
@@ -109,7 +121,7 @@ abstract class AbstractRequest
                 error_log('Error 503 - ' . print_r($result, true));
                 $result = json_decode($result->body, true);
 
-                if(array_key_exists('error', $result) && $result['error'] == 'Service Unavailable"')
+                if(array_key_exists('error', $result) && $result['error'] == 'Service Unavailable')
                 {
                     header('location:'.$_SERVER['PHP_SELF']); 
                 }

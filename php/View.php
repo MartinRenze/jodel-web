@@ -218,7 +218,7 @@ class View
 		return $description;
 	}
 
-    function toUrl()
+    function toUrl($msg = '')
     {
         $url = $this->baseUrl . 'index.php?country=DE' .
                             '&city=' . urlencode($this->city) .
@@ -228,6 +228,11 @@ class View
         {
             $url .= '&postId=' . $this->postId . 
                     '&getPostDetails=TRUE';
+        }
+
+        if($msg != '')
+        {
+            $url .= '&msg=' . urlencode($msg);
         }
 
         return $url;

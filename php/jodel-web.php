@@ -25,6 +25,7 @@ Requests::register_autoloader();
 
 $config = parse_ini_file('config/config.ini.php');
 $baseUrl = $config['Url'];
+$buildViewError = '';
 
 $location = new Location();
 $location->setLat($config['default_lat']);
@@ -239,6 +240,6 @@ function isDeviceUidInDatabase($deviceUid)
 	//SendJodel
 	if(isset($_POST['message']))
 	{
-		$jodelAccountForView->sendJodel($jodelAccountForView->location, $view);
+		$errorMsg = $jodelAccountForView->sendJodel($jodelAccountForView->location, $view);
 	}
 ?>

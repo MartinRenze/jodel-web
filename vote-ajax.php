@@ -4,7 +4,6 @@ include 'php/jodel-web.php';
 
 if(isset($_GET['postId']) && $_GET['vote'])
 {
-	error_log('test');
 	header('Content-Type: application/json');
     echo json_encode($jodelAccountForKarma->votePostId($_GET['postId'], $_GET['vote']));
     die();
