@@ -6,8 +6,56 @@
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 	    <script src="<?php echo $baseUrl;?>js/jQueryEmoji.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.1.1/ekko-lightbox.min.js" integrity="sha256-1odJPEl+KoMUaA1T7QNMGSSU/r5LCKCRC6SL8P0r2gY=" crossorigin="anonymous"></script>
 
 		<script>
+		//lightbox
+		$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+		    event.preventDefault();
+		    $(this).ekkoLightbox();
+		});
+
+		//Verify Captcha
+		function verifyAccount(key, deviceUid)
+		{
+			var solution = "";
+			for (i=0; i<9; i++) {
+				var box = $("#box_"+i);
+				if (box.is(':checked') == true)
+				{
+					if (solution != "" || solution == "0")
+					{
+						solution += "-" + i;
+					}
+					else 
+					{
+						solution = i;
+					}
+
+				}
+			}
+			console.log(solution);
+			$.ajax({
+			  type: "POST",
+			  url: "<?php echo $baseUrl;?>vote-ajax.php?solution=" + solution + "&key="+key,
+			  data: {"deviceUid" : deviceUid},
+			  success: function(result){
+				  	var response = JSON.parse(result);
+
+			  		if(response["success"])
+			  		{
+			  			location.reload();
+			  		}
+			  		else
+			  		{
+			  			alert('Fail! Please try again.');
+			  			location.reload();
+			  		}
+
+			  }
+			});
+		}
+
 			//BackButton
 			function goBack()
 			{

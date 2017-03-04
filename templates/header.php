@@ -11,6 +11,7 @@
 		<meta name="keywords" content="jodelblue, jodel, blue, webclient, web, client, web-app, browser, app">
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.1.1/ekko-lightbox.min.css" integrity="sha256-8aNQFtmxcOMVoOhLD4mrHqaKC2Ui++LmlQsoKTqxwIE=" crossorigin="anonymous" />
 		<link rel="stylesheet" href="<?php echo $baseUrl;?>css/font-awesome.min.css">
 		<link rel="stylesheet" href="<?php echo $baseUrl;?>style.css" type="text/css">
 		

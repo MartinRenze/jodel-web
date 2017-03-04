@@ -125,33 +125,47 @@
 
 						<article>
 							<div>
-								<?php if(isset($_GET['postId']) && isset($_GET['getPostDetails'])) { ?>
-								<h2>Comment on Jodel</h2>
-								<form method="POST">				
-										<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postId']);?>" />
-										<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
-									<br />
-									<input type="submit" value="SEND" /> 
-								</form>
-									<?php } else { ?>
+								<?php if(!$jodelAccountForView->isAccountVerified())
+								{
+								?>
 								<h2>New Jodel</h2>
-								<form enctype="multipart/form-data" method="POST">
-									<textarea id="message" name="message" placeholder="Send a Jodel to all students within 10km" required></textarea> 
-									<br />
-									<select id="postColorPicker" name="color">
-										<option value="06A3CB">Blue</option>
-										<option value="8ABDB0">Teal</option>
-										<option value="9EC41C">Green</option>
-										<option value="FFBA00">Yellow</option>
-										<option value="DD5F5F">Red</option>
-										<option value="FF9908">Orange</option>
-									</select> 
-									<br />
-									<input type="hidden" name="MAX_FILE_SIZE" value="999990000" />
-									<input name="image" type="file" />
-									<input type="submit" value="SEND" /> 
-								</form>
+								
+								<button href="templates/captcha.php" data-title="Verify Captcha" data-width="1200" data-toggle="lightbox" data-gallery="remoteload">I am not a robot</button>
+
+								<?php 
+								}
+								else
+								{
+
+
+									if(isset($_GET['postId']) && isset($_GET['getPostDetails'])) { ?>
+									<h2>Comment on Jodel</h2>
+									<form method="POST">				
+											<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postId']);?>" />
+											<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
+										<br />
+										<input type="submit" value="SEND" /> 
+									</form>
+										<?php } else { ?>
+									<h2>New Jodel</h2>
+									<form enctype="multipart/form-data" method="POST">
+										<textarea id="message" name="message" placeholder="Send a Jodel to all students within 10km" required></textarea> 
+										<br />
+										<select id="postColorPicker" name="color">
+											<option value="06A3CB">Blue</option>
+											<option value="8ABDB0">Teal</option>
+											<option value="9EC41C">Green</option>
+											<option value="FFBA00">Yellow</option>
+											<option value="DD5F5F">Red</option>
+											<option value="FF9908">Orange</option>
+										</select> 
+										<br />
+										<input type="hidden" name="MAX_FILE_SIZE" value="999990000" />
+										<input name="image" type="file" />
+										<input type="submit" value="SEND" /> 
+									</form>
 								<?php } ?>
+							<?php } ?>
 							</div>
 						</article>
 							

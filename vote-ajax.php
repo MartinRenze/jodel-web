@@ -10,6 +10,14 @@ if(isset($_GET['postId']) && $_GET['vote'])
     die();
 }
 
+if(isset($_GET['solution']) && isset($_POST['deviceUid']))
+{
+	$jodelAccount = new JodelAccount($_POST['deviceUid']);
+	$response = array("success" => $jodelAccount->verifyCaptcha());
+	echo json_encode($response);
+	die();
+}
+
 if((!isset($_GET['pw']) || $config['pw'] != $_GET['pw']) && !isUserAdmin())
 {
 	error_log($_SERVER['REMOTE_ADDR']  . ' used a wrong password on vote-ajax.php');
@@ -19,14 +27,6 @@ if((!isset($_GET['pw']) || $config['pw'] != $_GET['pw']) && !isUserAdmin())
 }
 else
 {
-
-if(isset($_GET['solution']) && isset($_GET['key']) && isset($_POST['deviceUid']))
-{
-	$jodelAccount = new JodelAccount($_POST['deviceUid']);
-	$response = array("success" => $jodelAccount->verifyCaptcha());
-	echo json_encode($response);
-	die();
-}
 
 $message = "";
 $success = true;

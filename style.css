@@ -74,7 +74,7 @@ a:hover, a:active {
     vertical-align: -0.15em;
 }
 
-form button, input, textarea {
+form button, input, textarea, article > div > button, #captchaWrapper button {
 	font-weight: 600;
 	border: 1px solid white;
 	border-radius: 5px;
@@ -86,7 +86,7 @@ select {
 	cursor: pointer;
 }
 
-input[type="submit"], form button {
+input[type="submit"], form button, article > div > button, #captchaWrapper button {
 	background-color: #6081a0;
 	color: white;
 	cursor: pointer;
@@ -377,6 +377,14 @@ h2 {
 	-webkit-border-radius: 5px;
 	padding: 1rem 1rem 2rem 1rem;
 	margin-bottom: 1rem;
+}
+
+#captchaWrapper p {
+	font-size: 1.5rem;
+}
+
+#captchaWrapper img {
+	width: 100%;
 }
 
 #location_mobile {

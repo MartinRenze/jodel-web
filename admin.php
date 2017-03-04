@@ -128,15 +128,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 							<button type="submit" name="createAccount" value="TRUE">Create new Account</button>
 						</form>
 						<hr>
-						<h2>voting</h2>
-						<form method="POST">
-							<input placeholder="quantity" type="number" name="quantity"><br>
-							<input placeholder="postId" type="text" name="postId"><br>
-							<button type="submit" name="vote" value="up" class="half">Upvote</button>
-							<button type="submit" name="vote" value="down" class="half">Downvote</button>
-						</form>
-						<hr>
-						<h2>delayed voting</h2>
+						<h2>Voting</h2>
 							<input placeholder="quantity" id="quantityDelay" type="number" name="quantity"><br>
 							<input placeholder="min interval" id="minDelay" value="<?php echo $config["minInterval"]?>" type="text" name="min"><br>
 							<input placeholder="max interval" id="maxDelay" value="<?php echo $config["maxInterval"]?>" type="text" name="max"><br>
@@ -145,8 +137,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 							<button name="vote" value="down" class="half" onClick="vote('down');">Downvote</button><br>
 							<progress id="progressDelay" value="0" max="100"></progress>
 							<div id="ResponseMessage"></div>
-							<div id="ResponseCaptcha"></div>
-						
+							<div id="ResponseCaptcha"></div>	
 					</content>
 				</article>
 			</div>
