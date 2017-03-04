@@ -315,38 +315,45 @@ class View
         }
         else
         {
-            error_log('Could not find Posts in: ' . $this->city . ' Error: ' . print_r($data, true));
-            //error_log(print_r($data, true));
+            if($this->lastPostId == '')
+            {
+                error_log('Could not find Posts in: ' . $this->city . ' Error: ' . print_r($data, true));
+                //error_log(print_r($data, true));
 
-            $notFound[0] = array(
-                "post_id" => "0",
-                "discovered_by" => 0,
-                "message" => "No more Posts found",
-                "created_at" => "2017-02-11T16:44:50.385Z",
-                "updated_at" => "2017-02-11T16:44:50.385Z",
-                "pin_count" => 0,
-                "color" => "5682a3",
-                "got_thanks" => FALSE,
-                "post_own" => "friend",
-                "discovered" => 0,
-                "distance" => 9,
-                "vote_count" => 0,
-                "location" =>
-                array("name" => "Berlin",
-                  "loc_coordinates" =>
-                  array(
-                    "lat" => 0,
-                    "lng" => 0
-                  ),
-                  "loc_accuracy" => 0,
-                  "country" => "",
-                  "city" => "",
-                ),
-                "tags" =>
-                array(),
-                "user_handle" => "0"
-            );
-            return $notFound;
+                $notFound[0] = array(
+                    "post_id" => "0",
+                    "discovered_by" => 0,
+                    "message" => "No more Posts found",
+                    "created_at" => "2017-02-11T16:44:50.385Z",
+                    "updated_at" => "2017-02-11T16:44:50.385Z",
+                    "pin_count" => 0,
+                    "color" => "5682a3",
+                    "got_thanks" => FALSE,
+                    "post_own" => "friend",
+                    "discovered" => 0,
+                    "distance" => 9,
+                    "vote_count" => 0,
+                    "location" =>
+                    array("name" => "Berlin",
+                      "loc_coordinates" =>
+                      array(
+                        "lat" => 0,
+                        "lng" => 0
+                      ),
+                      "loc_accuracy" => 0,
+                      "country" => "",
+                      "city" => "",
+                    ),
+                    "tags" =>
+                    array(),
+                    "user_handle" => "0"
+                );
+                return $notFound;
+            }
+            else
+            {
+                return FALSE;
+            }
         }
 	}
 }

@@ -9,11 +9,13 @@ if(isset($_GET['lastPostId']))
 	?>
 	<div class="nextPosts">
 	<?php
-	foreach($posts as $post)
+	if(!(gettype($posts) == 'boolean'))
 	{
-
-		$view->lastPostId = $post['post_id'];
-		$view->jodelToHtml($post);	
+		foreach($posts as $post)
+		{
+			$view->lastPostId = $post['post_id'];
+			$view->jodelToHtml($post);	
+		}
 	}
 	?>
 	</div>
