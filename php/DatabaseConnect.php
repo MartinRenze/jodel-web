@@ -52,9 +52,18 @@ $query2 = "CREATE TABLE IF NOT EXISTS `votes` (
 			 `postId` varchar(255) NOT NULL,
 			 `type` varchar(255) NOT NULL,
 			 PRIMARY KEY  (`id`)
-			 ) DEFAULT CHARSET=utf8";		 
+			 ) DEFAULT CHARSET=utf8";
+
+$query3	 = "CREATE TABLE IF NOT EXISTS `users` (
+			 `id` int(11) unsigned NOT NULL auto_increment,
+			 `device_uid` varchar(255) NOT NULL,
+			 `rights` varchar(255) NOT NULL,
+			 `user_token` varchar(255) NOT NULL,
+			 `remaining_votes` INT NOT NULL,
+			 PRIMARY KEY  (`id`)
+			 ) DEFAULT CHARSET=utf8";
 		 
-  if(!$db->query($query) || !$db->query($query2))
+  if(!$db->query($query) || !$db->query($query2) || !$db->query($query3))
   {
     throw new Exception($db->error($mysqli));
   }

@@ -9,6 +9,7 @@ class View
     public $postId;
     public $isDetailedView;
     public $baseUrl;
+    public $rights;
 
 	public $lastPostId = '';
 
@@ -20,6 +21,19 @@ class View
         $this->hashtag = urldecode($hashtag);
         $this->view = $view;
         $this->postId = $postId;
+
+        if(isUserAdmin())
+        {
+            $this->rights = 'admin';
+        }
+        else if(isUserVoter())
+        {
+            $this->rights = 'voter';
+        }
+        else
+        {
+            $this->rights = 'user';
+        }
 
         if($postId == '')
         {
@@ -132,7 +146,7 @@ class View
                         </span>
 						<?php
 						}															  
-						if (isUserAdmin())
+						if($this->rights == 'admin' || $this->rights == 'voter')
 						{
 						?>
 						<span class="voting">

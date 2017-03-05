@@ -71,7 +71,32 @@ function configPropertyExists($config, $property)
         return TRUE;
     }
 }
-function isUserAdmin() {
+
+function isUserVoter()
+{
+	if(isset($_COOKIE['JodelVoterPassword']))
+	{	
+		$db = new DatabaseConnect();
+		$result = $db->query("SELECT id FROM users WHERE user_token = '" . $_COOKIE['JodelVoterPassword'] . "'");
+		if($result->num_rows == 0)
+		{
+			$db->close();
+			return FALSE;
+		}
+		else
+		{
+			$db->close();
+			return TRUE;
+		}
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+function isUserAdmin()
+{
 	global $config;
 	if (isset($_COOKIE['JodelAdminPassword']) && configPropertyExists($config, 'pw') && $config['pw'] == $_COOKIE['JodelAdminPassword'])
 	{

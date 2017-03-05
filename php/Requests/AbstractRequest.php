@@ -116,6 +116,7 @@ abstract class AbstractRequest
             case 502:
                 error_log('Error 502 - ' . print_r($result, true));
                 $result = json_decode($result->body, true);
+                header('location:'.$_SERVER['PHP_SELF']);
                 break;
             case 503:
                 error_log('Error 503 - ' . print_r($result, true));

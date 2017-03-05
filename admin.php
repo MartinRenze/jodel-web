@@ -2,27 +2,64 @@
 
 include 'php/jodel-web.php';
 
-if((!isset($_GET['pw']) || $config['pw'] != $_GET['pw']) && !isUserAdmin())
-{
-	error_log($_SERVER['REMOTE_ADDR']  . ' used a wrong password on admin.php');
-	die();
-}
-else if (isset($_GET['pw']))
+
+if(isset($_GET['pw']))
 {
 	setcookie('JodelAdminPassword', $_GET['pw'], time()+60*60*24*365*10);
 	error_log('admin password saved for [' . $_SERVER ['HTTP_USER_AGENT'] . ']');
+	header('Location: ' . $baseUrl . 'admin.php');
+	exit;
+}
+else if(isset($_GET['voterPw']))
+{
+	setcookie('JodelVoterPassword', $_GET['voterPw'], time()+60*60*24*365*10);
+	error_log('voter password saved for [' . $_SERVER ['HTTP_USER_AGENT'] . ']');
+	header('Location: ' . $baseUrl . 'admin.php');
+	exit;
+}
+
+if(isUserAdmin())
+{
+	$userIsAdmin = true;
+	$userIsVoter = true;
+}
+else if(isUserVoter())
+{
+	$userIsAdmin = false;
+	$userIsVoter = true;
+}
+else
+{
+	error_log($_SERVER['REMOTE_ADDR']  . ' used a wrong voterPw / pw on admin.php');
+	die();
 }
 
 
-
-if(isset($_POST['createAccount']) && $_POST['createAccount'])
+if($userIsAdmin && isset($_POST['createAccount']) && $_POST['createAccount'])
 {
 	$newJodelAccount = new JodelAccount();
 }
 
+if($userIsAdmin && isset($_POST['createVoter']) && $_POST['createVoter'])
+{
+	//insert voter into db
+	$db = new DatabaseConnect();
+    $result = $db->query("INSERT INTO users (user_token, remaining_votes, device_uid, rights)
+                    VALUES ('" 	. $db->escape_string($_POST['user_token'])
+                    	. "','" . $db->escape_string($_POST['remaining_votes'])
+                    	. "','" . $db->escape_string($_POST['device_uid'])
+                    	. "','" . $db->escape_string($_POST['rights']) . "')");
+    
+    if($result === false){
+            $error = db_error();
+            error_log($error);
+            error_log("Adding Voter failed: (" . $result->errno . ") " . $result->error);
+    } 
+}
 
 //Vote
-if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity']))
+/*
+if($userIsVoter && isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity']))
 {
 	$i = 0;
 	$result = $db->query("SELECT access_token, device_uid FROM accounts WHERE device_uid NOT IN (SELECT device_uid FROM votes WHERE postId = '" . $_POST['postId'] . "')");
@@ -42,10 +79,10 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 	}
 	else
 	{
-		echo "Error: 0 results";
+		error_log("Error: 0 results");
 	}
 }
-
+*/
 
 ?>
 <!DOCTYPE html>
@@ -104,7 +141,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 			<nav class="navbar navbar-full navbar-dark navbar-fixed-top">
 				<div class="container">					
 						<h1>
-						<a href="./" class="spinnable">
+						<a href="./admin.php" class="spinnable">
 						
 						JodelBlue <i class="fa fa-refresh fa-1x"></i></a>
 					</h1>					
@@ -117,6 +154,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 				<article class="topContent col-sm-8">
 
 					<content id="posts" class="adminpanel">
+						<?php if($userIsAdmin) { ?>
 						<h2>account management</h2>
 						<form method="post">
 							<div>
@@ -127,17 +165,36 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 							accounts in the database</div>
 							<button type="submit" name="createAccount" value="TRUE">Create new Account</button>
 						</form>
+						<br>
+						<h3>Create Voter</h3>
+						<form method="post">
+							<div>
+							<input type="text" name="user_token" placeholder="user_token" required="true"><br>
+							<input type="number" name="remaining_votes" placeholder="remaining_votes" required="true"><br>
+							<input type="text" name="device_uid" placeholder="device_uid" required="true"><br>
+							<input type="text" name="rights" placeholder="rights" required="true"><br>
+							<button type="submit" name="createVoter" value="TRUE">Create new Voter</button>
+						</form>
 						<hr>
+						<?php
+						}
+
+						if($userIsVoter) {
+						?>
 						<h2>Voting</h2>
+						<form>
 							<input placeholder="quantity" id="quantityDelay" type="number" name="quantity"><br>
-							<input placeholder="min interval" id="minDelay" value="<?php echo $config["minInterval"]?>" type="text" name="min"><br>
-							<input placeholder="max interval" id="maxDelay" value="<?php echo $config["maxInterval"]?>" type="text" name="max"><br>
-							<input placeholder="postId" id="postIdDelay" value="<?php echo $_GET["postId"]?>" type="text" name="postId"><br>
-							<button name="vote" value="up" class="half" onClick="vote('up');">Upvote</button>
-							<button name="vote" value="down" class="half" onClick="vote('down');">Downvote</button><br>
+							<input placeholder="min interval" id="minDelay" value="<?php echo $config['minInterval'];?>" type="text" name="min"><br>
+							<input placeholder="max interval" id="maxDelay" value="<?php echo $config['maxInterval'];?>" type="text" name="max"><br>
+							<input placeholder="postId" id="postIdDelay" value="<?php if(isset($_GET['postId'])) echo $_GET['postId'];?>" type="text" name="postId"><br>
+							<button type="button" name="vote" value="up" class="half" onclick="voteWithAjax('up');">Upvote</button>
+							<button type="button" name="vote" value="down" class="half" onclick="voteWithAjax('down');">Downvote</button><br>
+						</form>
 							<progress id="progressDelay" value="0" max="100"></progress>
 							<div id="ResponseMessage"></div>
-							<div id="ResponseCaptcha"></div>	
+							<div id="ResponseCaptcha"></div>
+
+						<?php } ?>
 					</content>
 				</article>
 			</div>
@@ -152,7 +209,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 		<script>
 			//delayed voting
 			var rekData;
-			function vote(type)
+			function voteWithAjax(type)
 			{
 				var id = $("#postIdDelay").val();
 				var quantity = parseInt($("#quantityDelay").val());
@@ -190,7 +247,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 			{
 				$.ajax({
 				  type: "POST",
-				  url: "<?php echo $baseUrl;?>vote-ajax.php?pw=<?php echo $_GET["pw"]?>",
+				  url: "<?php echo $baseUrl;?>vote-ajax.php",
 				  data: {"vote" : data["vote"],
 						 "postId" : data["id"]},
 				  success: function(result){
@@ -207,7 +264,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 						  $("#ResponseMessage").html(response["message"]);
 						  if (response["captcha"] != null) {
 							  rekData = data;
-							  $("#ResponseCaptcha").append( "<div id='captchaWrapper_" + data["i"] + "'><img src='" + response["captcha"]["image_url"] + "' style='width:100%'><div class='captchaWrapper'><input id='box_0' type='checkbox'><input id='box_1' type='checkbox'><input id='box_2' type='checkbox'><input id='box_3' type='checkbox'><input id='box_4' type='checkbox'><input id='box_5' type='checkbox'><input id='box_6' type='checkbox'><input id='box_7' type='checkbox'><input id='box_8' type='checkbox'></div><button onClick=\"verifyAccount(" + data["i"] + ", '" + response["captcha"]["key"] + "' , '" + response["deviceUid"] + "');\">Verify</button></div>");
+							  $("#ResponseCaptcha").append( "<div id='captchaWrapper_" + data["i"] + "'><form><p>Check all images with Coons on it (Coons look like <img style=\"height: 1.0em; width: unset;\" src=\"img/coon.png\">).</p><img src='" + response["captcha"]["image_url"] + "' style='width:100%'><div class='captchaWrapper'><input id='box_0' type='checkbox'><input id='box_1' type='checkbox'><input id='box_2' type='checkbox'><input id='box_3' type='checkbox'><input id='box_4' type='checkbox'><input id='box_5' type='checkbox'><input id='box_6' type='checkbox'><input id='box_7' type='checkbox'><input id='box_8' type='checkbox'></div><button type=\"button\" onclick=\"verifyAccount(" + data["i"] + ", '" + response["captcha"]["key"] + "' , '" + response["deviceUid"] + "');\">Verify</button></form></div>");
 							  //verifyAccount(data["i"], response["captcha"]["key"], response["deviceUid"]);
 						  }
 					  }
@@ -244,7 +301,7 @@ if(isset($_POST['vote']) && isset($_POST['postId']) && isset($_POST['quantity'])
 				console.log(solution);
 				$.ajax({
 				  type: "POST",
-				  url: "<?php echo $baseUrl;?>vote-ajax.php?pw=<?php echo $_GET["pw"]?>&solution=" + solution + "&key="+key,
+				  url: "<?php echo $baseUrl;?>vote-ajax.php?solution=" + solution + "&key="+key,
 				  data: {"deviceUid" : deviceUid},
 				  success: function(result){
 					  var response = JSON.parse(result);

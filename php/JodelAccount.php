@@ -44,6 +44,7 @@ class JodelAccount
         }*/
     }
 
+/*
     function showCaptcha()
     {
         $accountCreator = new GetCaptcha();
@@ -61,13 +62,14 @@ class JodelAccount
         echo    '<p>Enter Key (copy pasta from top): <input type="text" value="' . $captcha['key'] . '" name="key" /></p>';
         echo    '<p>Find the Coons (example: they are on picture 3, 4 and 5. You enter 2-3-4. Becouse we start counting at 0): <input type="text" name="solution" /></p>';
         echo    '<input type="hidden" name="deviceUid" value="' . $this->deviceUid . '">';
-        echo    '<input type="hidden" name="pw" value="upVote">';
+        echo    '<input type="hidden" name="pw" value="">';
         echo    '<p><input type="submit" /></p>';
         echo '</form>';
 
         die();
         
     }
+    */
 
     function getCaptcha()
     {
@@ -258,8 +260,7 @@ class JodelAccount
         {
             if(!$this->isAccountVerified())
             {
-                $view = new View();
-                $this->showCaptcha();
+                
             }
 
             if(!$this->hasVoted($postId))
@@ -502,7 +503,7 @@ class JodelAccount
 
     function addVoteWithPostIdAndType($postId, $voteType)
     {
-        $db = new DatabaseConnect();  
+        $db = new DatabaseConnect();
 
         $postId = $db->real_escape_string($postId);
         $voteType = $db->real_escape_string($voteType);
