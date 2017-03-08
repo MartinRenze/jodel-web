@@ -242,8 +242,8 @@ if($userIsVoter && isset($_POST['vote']) && isset($_POST['postId']) && isset($_P
 											<input placeholder="postId" class="form-control" id="postIdDelay" value="<?php if(isset($_GET['postId'])) echo $_GET['postId'];?>" type="text" name="postId">
 										</div>
 										<div class="row">
-											<div class="col-6 col-sm-6"><button type="button" name="vote" value="up" class="half" onclick="voteWithAjax('up');">Upvote</button></div>
-											<div class="col-6 col-sm-6"><button type="button" name="vote" value="down" class="half" onclick="voteWithAjax('down');">Downvote</button></div>
+											<div class="col-6 col-xs-6"><button type="button" name="vote" value="up" class="half" onclick="voteWithAjax('up');">Upvote</button></div>
+											<div class="col-6 col-xs-6"><button type="button" name="vote" value="down" class="half" onclick="voteWithAjax('down');">Downvote</button></div>
 										</div>
 									</form>
 									<progress id="progressDelay" value="0" max="100"></progress>
