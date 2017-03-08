@@ -178,6 +178,7 @@ if($userIsVoter && isset($_POST['vote']) && isset($_POST['postId']) && isset($_P
 												<?php
 													$result = $db->query("SELECT COUNT(*) FROM accounts");
 													echo $result->fetch_row()[0];
+													$db->close();
 												?>
 												accounts in the database
 											</div>
@@ -224,11 +225,17 @@ if($userIsVoter && isset($_POST['vote']) && isset($_POST['postId']) && isset($_P
 										</div>
 										<div class="form-group">
 											<label for="minDelay">Minimum delay</label>
-											<input placeholder="min interval" class="form-control" id="minDelay" value="<?php echo $config['minInterval'];?>" type="number" name="min">
+											<div class="input-group">
+												<input placeholder="min interval" class="form-control" id="minDelay" value="<?php echo $config['minInterval'];?>" type="number" name="min">
+												<span class="input-group-addon">seconds</span>
+											</div>
 										</div>
 										<div class="form-group">
 											<label for="maxDelay">Maximum delay</label>
-											<input placeholder="max interval" class="form-control" id="maxDelay" value="<?php echo $config['maxInterval'];?>" type="number" name="max">
+											<div class="input-group">
+												<input placeholder="max interval" class="form-control" id="maxDelay" value="<?php echo $config['maxInterval'];?>" type="number" name="max">
+												<span class="input-group-addon">seconds</span>
+											</div>
 										</div>
 										<div class="form-group">
 											<label for="postIdDelay">Post Id</label>

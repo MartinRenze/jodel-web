@@ -130,7 +130,7 @@ else
 					{
                			error_log("Update remaining votes failed: (" . $db->errno . ") " . $db->error);
                		}
-
+               		$db->close();
 					$jodelAccount->votePostId($_POST['postId'], $_POST['vote']);
 				}
 			}

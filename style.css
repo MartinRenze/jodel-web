@@ -76,10 +76,9 @@ a:hover, a:active {
 
 form button, input, textarea, article > div > button, #captchaWrapper button {
 	font-weight: 600;
-	border: 1px solid white;
+	border: 1px solid #6081a0;
 	border-radius: 5px;
 	padding: 2px 10px;
-	box-shadow: 0 1px 2px black;
 }
 
 select {
@@ -92,9 +91,7 @@ input[type="submit"], form button, article > div > button, #captchaWrapper butto
 	cursor: pointer;
 }
 
-input[type="submit"]:active, form button:active {
-	box-shadow: inset 0 1px 2px black;
-}
+
 
 progress {
 	width: 100%;
@@ -322,10 +319,6 @@ header .navbar {
 
 .adminpanel h2 {
 	font-weight: 600;
-}
-
-.adminpanel input, .adminpanel button {
-	margin: 5px 0;
 }
 
 .adminpanel input[type="submit"].half, .adminpanel button.half {

@@ -20,11 +20,16 @@ if($db->connect_errno == 1203)  // 1203 == ER_TOO_MANY_USER_CONNECTIONS (mysqld_
 	header('location: '.$_SERVER['PHP_SELF']);
 }
 
-if ($db->connect_errno) {
-  echo 'Sorry, die Verbindung zu unserem 
+if ($db->connect_errno)
+{
+	error_log('Sorry, die Verbindung zu unserem 
+        Server ist hops gegangen. Wegen '. $db -> connect_error);
+	echo 'Sorry, die Verbindung zu unserem 
         Server ist hops gegangen. Wegen '. $db -> connect_error;
 }
 
+
+/* Uncomment if you start first time
 $query = "CREATE TABLE IF NOT EXISTS `accounts` (
 			 `id` int(11) unsigned NOT NULL auto_increment,
 			 `access_token` varchar(55) NOT NULL default '',
@@ -68,3 +73,4 @@ $query3	 = "CREATE TABLE IF NOT EXISTS `users` (
     throw new Exception($db->error($mysqli));
   }
 
+*/
