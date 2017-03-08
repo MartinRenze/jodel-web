@@ -14,7 +14,7 @@ else if(isset($_GET['voterPw']))
 {
 	setcookie('JodelVoterPassword', $_GET['voterPw'], time()+60*60*24*365*10);
 	error_log('voter password saved for [' . $_SERVER ['HTTP_USER_AGENT'] . ']');
-	header('Location: ' . $baseUrl . 'admin.php');
+	header('Location: ' . $baseUrl);
 	exit;
 }
 
