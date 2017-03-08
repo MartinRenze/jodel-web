@@ -16,8 +16,10 @@ if(isset($_GET['solution']) && isset($_POST['deviceUid']))
 	echo json_encode($response);
 	die();
 }
+$userIsAdmin = isUserAdmin();
+$userIsVoter = isUserVoter();
 
-if(!isUserVoter() && !isUserAdmin())
+if(!$userIsVoter && !$userIsAdmin)
 {
 	error_log($_SERVER['REMOTE_ADDR']  . ' used a wrong password on vote-ajax.php');
 	$response = array("message" => $_SERVER['REMOTE_ADDR']  . ' used a wrong password on vote-ajax.php',"success" => false);
@@ -26,6 +28,26 @@ if(!isUserVoter() && !isUserAdmin())
 }
 else
 {
+	if($userIsVoter)
+	{
+		$result = $db->query("SELECT user_token, remaining_votes FROM users WHERE user_token = '" . $_COOKIE['JodelVoterPassword'] . "'");
+		if($result->num_rows > 0)
+		{
+			$row = $result->fetch_assoc();
+			$remaining_votes = $row['remaining_votes'];
+		}
+		if($remaining_votes <= 0)
+		{
+			$message = 'This voter account run out of votes. For more information please contact info@jodelblue.com';
+			$success = false;
+
+			$response = array("success" => $success, "message" => $message);
+			echo json_encode($response);
+			die();
+		}
+	}
+		
+
 	$message = "";
 	$success = true;
 	$token = "";
@@ -100,6 +122,15 @@ else
 				}
 				else
 				{
+					$remaining_votes = $remaining_votes - 1;
+					$result = $db->query("UPDATE users 
+                                SET remaining_votes='" . $remaining_votes . "'
+                                WHERE user_token='" . $_COOKIE['JodelVoterPassword'] . "'");
+					if($result === false)
+					{
+               			error_log("Update remaining votes failed: (" . $db->errno . ") " . $db->error);
+               		}
+
 					$jodelAccount->votePostId($_POST['postId'], $_POST['vote']);
 				}
 			}

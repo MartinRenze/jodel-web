@@ -324,22 +324,14 @@ header .navbar {
 	font-weight: 600;
 }
 
-.adminpanel label {
-	color: #6081a0;
-}
-
 .adminpanel input, .adminpanel button {
 	margin: 5px 0;
 }
 
 .adminpanel input[type="submit"].half, .adminpanel button.half {
-	width: 115px;
+
 	cursor: pointer;
-}
-
-
-.adminpanel progress {
-	width: 235px;
+	width: 100%;
 }
 
 .captchaWrapper {

@@ -22,11 +22,23 @@ if(isUserAdmin())
 {
 	$userIsAdmin = true;
 	$userIsVoter = true;
+	$votesRemaining = 'Unlimited';
 }
 else if(isUserVoter())
 {
 	$userIsAdmin = false;
 	$userIsVoter = true;
+
+	$result = $db->query("SELECT user_token, remaining_votes FROM users WHERE user_token = '" . $_COOKIE['JodelVoterPassword'] . "'");
+	if($result->num_rows > 0)
+	{
+		$row = $result->fetch_assoc();
+		$votesRemaining = $row['remaining_votes'];
+	}
+	else
+	{
+		error_log('Hard error: isUser voter, get remaining votes in admin.php');
+	}
 }
 else
 {
@@ -140,60 +152,98 @@ if($userIsVoter && isset($_POST['vote']) && isset($_POST['postId']) && isset($_P
 		<header>
 			<nav class="navbar navbar-full navbar-dark navbar-fixed-top">
 				<div class="container">					
-						<h1>
-						<a href="./admin.php" class="spinnable">
-						
-						JodelBlue <i class="fa fa-refresh fa-1x"></i></a>
+					<h1>
+						<a href="./admin.php" class="spinnable">						
+							JodelBlue <i class="fa fa-refresh fa-1x"></i>
+						</a>
 					</h1>					
 				</div>
 			</nav>
 		</header>
 		
 		<div class="mainContent container">		
-			<div class="content row">
-				<article class="topContent col-sm-8">
-
+			<div class="row">
+				<article class="topContent col-12 col-sm-12">
 					<content id="posts" class="adminpanel">
 						<?php if($userIsAdmin) { ?>
-						<h2>account management</h2>
-						<form method="post">
-							<div>
-							<?php
-								$result = $db->query("SELECT COUNT(*) FROM accounts");
-								echo $result->fetch_row()[0];
-							?>
-							accounts in the database</div>
-							<button type="submit" name="createAccount" value="TRUE">Create new Account</button>
-						</form>
-						<br>
-						<h3>Create Voter</h3>
-						<form method="post">
-							<div>
-							<input type="text" name="user_token" placeholder="user_token" required="true"><br>
-							<input type="number" name="remaining_votes" placeholder="remaining_votes" required="true"><br>
-							<input type="text" name="device_uid" placeholder="device_uid" required="true"><br>
-							<input type="text" name="rights" placeholder="rights" required="true"><br>
-							<button type="submit" name="createVoter" value="TRUE">Create new Voter</button>
-						</form>
+							<div class="row">
+								<div class="col-md-12">
+									<h2>Account management</h2>
+								</div>
+
+								<div class="col-md-4">
+										<h3>User accounts</h3>
+										<form method="post">
+											<div>
+												<?php
+													$result = $db->query("SELECT COUNT(*) FROM accounts");
+													echo $result->fetch_row()[0];
+												?>
+												accounts in the database
+											</div>
+											<button type="submit" name="createAccount" value="TRUE">Create new Account</button>
+										</form>
+								</div>
+
+								<div class="col-md-8">
+									<h3>Create Voter</h3>
+									<form method="post">
+										<div class="form-group">
+											<label for="user_token">User token</label>
+											<input type="text" class="form-control" id="user_token" name="user_token" placeholder="user_token" required="true">
+										</div>
+										<div class="form-group">
+											<label for="remaining_votes">Remaining votes</label>
+											<input type="number" class="form-control" name="remaining_votes" placeholder="remaining_votes" required="true">
+										</div>
+										<div class="form-group">
+											<label for="device_uid">Device Uid</label>
+											<input type="text" class="form-control" name="device_uid" placeholder="device_uid" required="true">
+										</div>
+										<div class="form-group">
+											<label for="rights">Rights</label>
+											<input type="text" class="form-control" name="rights" placeholder="rights" required="true">
+										</div>
+										<button type="submit" name="createVoter" value="TRUE">Create new Voter</button>
+									</form>
+								</div>							
+							</div>
 						<hr>
 						<?php
 						}
 
 						if($userIsVoter) {
 						?>
-						<h2>Voting</h2>
-						<form>
-							<input placeholder="quantity" id="quantityDelay" type="number" name="quantity"><br>
-							<input placeholder="min interval" id="minDelay" value="<?php echo $config['minInterval'];?>" type="text" name="min"><br>
-							<input placeholder="max interval" id="maxDelay" value="<?php echo $config['maxInterval'];?>" type="text" name="max"><br>
-							<input placeholder="postId" id="postIdDelay" value="<?php if(isset($_GET['postId'])) echo $_GET['postId'];?>" type="text" name="postId"><br>
-							<button type="button" name="vote" value="up" class="half" onclick="voteWithAjax('up');">Upvote</button>
-							<button type="button" name="vote" value="down" class="half" onclick="voteWithAjax('down');">Downvote</button><br>
-						</form>
-							<progress id="progressDelay" value="0" max="100"></progress>
-							<div id="ResponseMessage"></div>
-							<div id="ResponseCaptcha"></div>
-
+							<div class="row">								
+								<div class="col-12 col-sm-12">
+								<h2>Voting (<?php echo $votesRemaining;?> votes remaining)</h2>
+									<form>
+										<div class="form-group">
+											<label for="quantityDelay">Quantity</label>
+											<input placeholder="quantity" class="form-control" id="quantityDelay" type="number" name="quantity">
+										</div>
+										<div class="form-group">
+											<label for="minDelay">Minimum delay</label>
+											<input placeholder="min interval" class="form-control" id="minDelay" value="<?php echo $config['minInterval'];?>" type="number" name="min">
+										</div>
+										<div class="form-group">
+											<label for="maxDelay">Maximum delay</label>
+											<input placeholder="max interval" class="form-control" id="maxDelay" value="<?php echo $config['maxInterval'];?>" type="number" name="max">
+										</div>
+										<div class="form-group">
+											<label for="postIdDelay">Post Id</label>
+											<input placeholder="postId" class="form-control" id="postIdDelay" value="<?php if(isset($_GET['postId'])) echo $_GET['postId'];?>" type="text" name="postId">
+										</div>
+										<div class="row">
+											<div class="col-6 col-sm-6"><button type="button" name="vote" value="up" class="half" onclick="voteWithAjax('up');">Upvote</button></div>
+											<div class="col-6 col-sm-6"><button type="button" name="vote" value="down" class="half" onclick="voteWithAjax('down');">Downvote</button></div>
+										</div>
+									</form>
+									<progress id="progressDelay" value="0" max="100"></progress>
+									<div id="ResponseMessage"></div>
+									<div id="ResponseCaptcha"></div>
+								</div>
+							</div>
 						<?php } ?>
 					</content>
 				</article>
@@ -202,9 +252,14 @@ if($userIsVoter && isset($_POST['vote']) && isset($_POST['postId']) && isset($_P
 		
 		
 		<!-- jQuery, Tether, Bootstrap JS and own-->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
-    	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8" crossorigin="anonymous"></script>
-    	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+		<script
+			  src="https://code.jquery.com/jquery-3.1.1.min.js"
+			  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+			  crossorigin="anonymous"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	    <script src="<?php echo $baseUrl;?>js/jQueryEmoji.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.1.1/ekko-lightbox.min.js" integrity="sha256-1odJPEl+KoMUaA1T7QNMGSSU/r5LCKCRC6SL8P0r2gY=" crossorigin="anonymous"></script>
 
 		<script>
 			//delayed voting
