@@ -91,9 +91,24 @@ class JodelAccount
         return $data['verified'];
     }
 
+    function getGeocodingToken()
+    {
+        if(!isset($config['geocodingToken']) ||
+            $config['geocodingToken'] == NULL ||
+            $config['geocodingToken'] == '' ||
+            $config['geocodingToken'] == 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+        {
+            error_log("Please set a Google Maps Geocoding Token!");
+        }
+        else
+        {
+            return $config['geocodingToken'];
+        }
+    }
+
     function locationEquals($city)
     {
-        $url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($city) . '&key=AIzaSyCwhnja-or07012HqrhPW7prHEDuSvFT4w';
+        $url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($city) . '&key=' . $this->getGeocodingToken();
         $result = Requests::post($url);
         if(json_decode($result->body, true)['status'] == 'ZERO_RESULTS' || json_decode($result->body, true)['status'] == 'INVALID_REQUEST')
         {
@@ -146,7 +161,7 @@ class JodelAccount
         }                
         else
         {
-            $url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($_GET['city']) . '&key=AIzaSyCwhnja-or07012HqrhPW7prHEDuSvFT4w';
+            $url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($_GET['city']) . '&key=' . $this->getGeocodingToken();
             $result = Requests::post($url);
             if(json_decode($result->body, true)['status'] == 'ZERO_RESULTS' || json_decode($result->body, true)['status'] == 'INVALID_REQUEST')
             {

@@ -18,6 +18,8 @@ pw				= password
 botDeviceUid 		= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 karmaDeviceUid		= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 Url					= https://www.mySite.com/
+;Get a Google Maps Geocoding API Key 
+geocodingToken		= xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 
 [Voting]
 ;standard values for the delayed voting
