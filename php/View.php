@@ -169,18 +169,6 @@ class View
                                         </span>
                                         <?php 
                                     }
-                                    else
-                                    {
-                                        //Is not parent Jodel in detailed View
-                                        if(!array_key_exists('child_count', $post))
-                                        {
-                                            ?>
-                                            <span data-tooltip="Author">
-                                                <i class="fa fa-user-o"></i> #<?php echo $post['user_handle'];?> |
-                                            </span>
-                                            <?php
-                                        }
-                                    }
                                 }
                                 ?>
 
