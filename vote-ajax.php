@@ -5,7 +5,8 @@ include 'php/jodel-web.php';
 if(isset($_GET['postId']) && $_GET['vote'])
 {
 	header('Content-Type: application/json');
-    echo json_encode($jodelAccountForKarma->votePostId($_GET['postId'], $_GET['vote']));
+	$voteResult = $jodelAccountForKarma->votePostId($_GET['postId'], $_GET['vote']);
+    echo json_encode($voteResult);
     die();
 }
 
@@ -83,16 +84,20 @@ else
 				}
 				else
 				{
-					$remaining_votes = $remaining_votes - 1;
-					$result = $db->query("UPDATE users 
-                                SET remaining_votes='" . $remaining_votes . "'
-                                WHERE user_token='" . $_COOKIE['JodelVoterPassword'] . "'");
-					if($result === false)
+					if($userIsVoter)
 					{
-               			error_log("Update remaining votes failed: (" . $db->errno . ") " . $db->error);
+						$remaining_votes = $remaining_votes - 1;
+						$result = $db->query("UPDATE users 
+	                                SET remaining_votes='" . $remaining_votes . "'
+	                                WHERE user_token='" . $_COOKIE['JodelVoterPassword'] . "'");
+						if($result === false)
+						{
+	               			error_log("Update remaining votes failed: (" . $db->errno . ") " . $db->error);
+	               		}
+               			$db->close();
                		}
-               		$db->close();
 					$jodelAccount->votePostId($_POST['postId'], $_POST['vote']);
+					//Feedback
 				}
 			}
 			else

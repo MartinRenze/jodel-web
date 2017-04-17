@@ -93,6 +93,7 @@ class JodelAccount
 
     function getGeocodingToken()
     {
+        $config = parse_ini_file('config/config.ini.php');
         if(!isset($config['geocodingToken']) ||
             $config['geocodingToken'] == NULL ||
             $config['geocodingToken'] == '' ||
@@ -275,6 +276,11 @@ class JodelAccount
         {
             if(!$this->isAccountVerified())
             {
+                error_log('Account is not Verified! jodelAccount.php Line 279');
+                return FALSE;
+            }
+            else
+            {
                 
             }
 
@@ -303,6 +309,7 @@ class JodelAccount
                 else if(array_key_exists('error', $data))
                 {
                     error_log('Could not vote - Error: ' . $data['error']);
+                    return FALSE;
                 }
                 else
                 {
@@ -315,8 +322,10 @@ class JodelAccount
                 return FALSE;
             }
         }
-
-        return FALSE;
+        else
+        {
+            return FALSE;
+        }
     }
 
     //ToDo Spider Check
