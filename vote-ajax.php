@@ -107,11 +107,11 @@ else
 			}
 		}
 
-	if (isset($captcha))
+	if(isset($captcha))
 	{
 		$response = array("success" => $success, "message" => $message, "captcha" => $captcha, "deviceUid" => $deviceUid);
 	}
-	else 
+	else
 	{
 		$response = array("success" => $success, "message" => $message);
 	}

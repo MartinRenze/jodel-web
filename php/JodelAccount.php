@@ -109,20 +109,6 @@ class JodelAccount
 
     function locationEquals($city)
     {
-        $url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . htmlspecialchars($city) . '&key=' . $this->getGeocodingToken();
-        $result = Requests::post($url);
-        if(json_decode($result->body, true)['status'] == 'ZERO_RESULTS' || json_decode($result->body, true)['status'] == 'INVALID_REQUEST')
-        {
-            error_log('Error locationEquals');
-            return FALSE;
-        }
-        else
-        {
-            $name = json_decode($result->body, true)['results']['0']['address_components']['0']['long_name'];
-            $lat = json_decode($result->body, true)['results']['0']['geometry']['location']['lat'];
-            $lng = json_decode($result->body, true)['results']['0']['geometry']['location']['lng'];
-        }
-
         $db = new DatabaseConnect();
         $result = $db->query("SELECT * FROM accounts WHERE device_uid='" . $this->deviceUid  . "'");
         
@@ -143,7 +129,7 @@ class JodelAccount
             error_log("Error no Location found - getLocation");
         }
 
-        if($location->getLat() == $lat && $location->getLng() == $lng && $location->getCityName() == $name)
+        if($location->getCityName() == $city)
         {
             return TRUE;
         }  

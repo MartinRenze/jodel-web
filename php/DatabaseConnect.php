@@ -67,10 +67,18 @@ $query3	 = "CREATE TABLE IF NOT EXISTS `users` (
 			 `remaining_votes` INT NOT NULL,
 			 PRIMARY KEY  (`id`)
 			 ) DEFAULT CHARSET=utf8";
+
+$queryCitys	 = "CREATE TABLE IF NOT EXISTS `citys` (
+			 `id` int(11) unsigned NOT NULL auto_increment,
+			 `name` varchar(255) NOT NULL,
+			 `lat` varchar(255) NOT NULL,
+			 `lng` varchar(255) NOT NULL,
+			 `country` INT NOT NULL,
+			 PRIMARY KEY  (`id`)
+			 ) DEFAULT CHARSET=utf8";
 		 
-  if(!$db->query($query) || !$db->query($query2) || !$db->query($query3))
+  if(!$db->query($query) || !$db->query($query2) || !$db->query($query3) || !$db->query($queryCitys))
   {
     throw new Exception($db->error($mysqli));
   }
-
 */
