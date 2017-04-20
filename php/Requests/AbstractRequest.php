@@ -86,7 +86,8 @@ abstract class AbstractRequest
                 error_log('Error 400 - ' . print_r($result, true));
                 break;
             case 401:
-                //$result = json_decode($result->body, true);
+                $resultOld = $result;
+                $result = json_decode($result->body, true);
 
                 if(is_array($result) && $result['error'] == 'length')
                 {
@@ -94,7 +95,7 @@ abstract class AbstractRequest
                 }
                 else
                 {
-                    error_log('Error 401 - ' . print_r($result, true));
+                    error_log('Error 401 - ' . print_r($resultOld, true));
                 }
                 break;
             case 404:
