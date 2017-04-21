@@ -86,17 +86,26 @@ abstract class AbstractRequest
                 error_log('Error 400 - ' . print_r($result, true));
                 break;
             case 401:
-                $resultOld = $result;
-                $result = json_decode($result->body, true);
 
-                if(is_array($result) && $result['error'] == 'length')
+                if($result == "Unauthorized")
                 {
-
+                    error_log("Error 401: Unauthorized");
                 }
                 else
                 {
-                    error_log('Error 401 - ' . print_r($resultOld, true));
+                    $result = json_decode($result->body, true);
+
+                    if(is_array($result) && $result['error'] == 'length')
+                    {
+
+                    }
+                    else
+                    {
+                        error_log('Error 401 - ' . print_r($result, true));
+                    }
                 }
+
+
                 break;
             case 404:
                 error_log('Error 404 - ' . print_r($result, true));

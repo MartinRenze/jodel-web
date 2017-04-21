@@ -312,11 +312,11 @@ class View
             $accountCreator->location = $location;
             $data = $accountCreator->execute();
         }
-    	if(array_key_exists('recent', $data) && array_key_exists(0, $data['recent']))
+    	if(is_array($data) && array_key_exists('recent', $data) && array_key_exists(0, $data['recent']))
         {
             return $data['recent'];
         }
-        else if(array_key_exists('posts', $data)&& array_key_exists(0, $data['posts']))
+        else if(is_array($data) && array_key_exists('posts', $data)&& array_key_exists(0, $data['posts']))
         {
             return $data['posts'];
         }
