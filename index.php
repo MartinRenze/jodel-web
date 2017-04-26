@@ -137,14 +137,13 @@
 								}
 								else
 								{
-
-
 									if(isset($_GET['postId']) && isset($_GET['getPostDetails'])) { ?>
 									<h2>Comment on Jodel</h2>
-									<form method="POST">				
+									<form enctype="multipart/form-data" method="POST">				
 											<input type="hidden" name="ancestor" value="<?php echo htmlspecialchars($_GET['postId']);?>" />
-											<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea> 
-										<br />
+											<textarea id="message" name="message" placeholder="Send a comment on a Jodel to all students within 10km" required></textarea>
+											<input type="hidden" name="MAX_FILE_SIZE" value="999990000" />
+											<input name="image" type="file" />
 										<input type="submit" value="SEND" /> 
 									</form>
 										<?php } else { ?>
@@ -160,7 +159,6 @@
 											<option value="DD5F5F">Red</option>
 											<option value="FF9908">Orange</option>
 										</select> 
-										<br />
 										<input type="hidden" name="MAX_FILE_SIZE" value="999990000" />
 										<input name="image" type="file" />
 										<input type="submit" value="SEND" /> 

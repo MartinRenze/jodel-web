@@ -21,56 +21,32 @@ include 'templates/header.php';
 							<p>info@jodelblue.com</p>
 
 							<p><a style="color: #fff; text-decoration: underline;" href="https://github.com/mmainstreet/jodel-web">JodelBlue on GitHub</a></p>
-						</article>
-						<hr>
-						<article>
-							<div>
-								<h2>Donate to JodelBlue</h2>
-
-								<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-									<input type="hidden" name="cmd" value="_s-xclick">
-									<input type="hidden" name="hosted_button_id" value="RR45538QV3VXE">
-									<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-									<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1">
-								</form>
-								
-								<p class="bitcoin-address">Bitcoin-address: <a href="img/bitcoin-address.png">1DzaUWm9Du6CUQLj6QTGC9kpxzKE3yZZHV</a></p>
-
-								<progress max="3500" value="3416"></progress>
-								<p>
-									My payments to keep this Project up so far:
-								</p>
-								<ul>
-									<li>Webspace 15€ - goes till 01-03-2018</li>
-									<li>Domain 20€ - goes till 06-12-2017</li>
-								</ul>
-							</div>
-						</article>
+						</article>						
 					</content>
 
 					<footer>
-						<table>
-							<tr>
-								<td class="time">
-									<span data-tooltip="Time">
-										<i class="fa fa-clock-o"></i>
-										0s
-									</span> 
-								</td>
-								<td class="comments">
-								</td>
-								<td class="distance">
-									<span data-tooltip="Author">
-										<i class="fa fa-user-o"></i> JodelBlue |
-									</span>
-									<span data-tooltip="Distance">
-										<i class="fa fa-map-marker"></i>
-										0 km
-									</span>
-								</td>
-							</tr>
-						</table>
-					</footer>
+		                <span class="wrapper">
+		                    
+		                        <span class="time">
+		                            <span class="tip" data-tooltip="Time">
+		                                <i class="fa fa-clock-o"></i>
+		                                0s
+		                                <span class="tiptext">now</span>
+		                            </span> 
+		                        </span>
+		                        <span class="distance">
+		                            <span data-tooltip="Author">
+		                                <i class="fa fa-user-o"></i> JodelBlue |
+		                            </span>
+		                            <span class="tip" data-tooltip="Distance">
+		                                <i class="fa fa-map-marker"></i>
+		                                0 km
+		                                <span class="tiptext">jodelblue.com</span>
+		                            </span>
+		                        </span>
+		                    
+		                </span>
+		            </footer>
 				</article>
 
 			</content>
