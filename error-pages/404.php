@@ -47,8 +47,7 @@
 
 									<span data-tooltip="Author">
 										<i class="fa fa-user-o"></i> JodelBlue |
-									</span>
-											
+									</span>		
 
 
 
@@ -65,5 +64,6 @@
 			</content>
 		</article>
 	</div>
+
 </div>
 <?php include(realpath(__DIR__ . '/..') . '/templates/footer.php');?>

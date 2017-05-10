@@ -108,8 +108,18 @@ abstract class AbstractRequest
 
                 break;
             case 404:
+
+
                 error_log('Error 404 - ' . print_r($result, true));
                 $result = json_decode($result->body, true);
+
+                if(array_key_exists('error', $result) && $result['error'] == 'post_blocked')
+                {
+                    header('HTTP/1.0 404 Not Found');
+                    include('error-pages/404.php');
+                    exit();
+                }
+
                 break;
 			case 477:
                 $result = json_decode($result->body, true);

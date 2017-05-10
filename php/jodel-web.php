@@ -50,7 +50,7 @@ if(isset($_GET['solution']) && isset($_GET['key']) && isset($_GET['deviceUid']))
 function user_log($msg)
 {
     $log  = $msg . PHP_EOL;
-    file_put_contents(realpath(__DIR__ . '/..') . '/logs/user_log-' . date("j.n.Y") . '.txt', $log, FILE_APPEND);
+    file_put_contents(realpath(__DIR__ . '/..') . '/logs/user_log-' . date("Y.n.j") . '.txt', $log, FILE_APPEND);
 }
 
 function isUserBot()

@@ -167,17 +167,6 @@
 							<?php } ?>
 							</div>
 						</article>
-							
-						<article>
-							<div>
-								<h2>Thank you for donating!</h2>							
-
-								<progress max="3500" value="3871"></progress>
-								<p>
-									The money will be enough until end of 2017.
-								</p>
-							</div>
-						</article>
 					</div>
 				</aside>
 			</div>
