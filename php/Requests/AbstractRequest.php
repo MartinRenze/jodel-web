@@ -4,9 +4,9 @@ abstract class AbstractRequest
 {	
     const CLIENTID = '81e8a76e-1e02-4d17-9ba0-8a7020261b26';
     const APIURL = 'https://api.go-tellm.com/api';
-    const SECRET = 'bJYlFZkrnLpLMVisrbstPDNsaYHPbzcKRSpqtjtt';
-    const USERAGENT = 'Jodel/4.42.4 Dalvik/2.1.0 (Linux; U; Android 5.1.1; )';
-    const CLIENT_TYPE = 'android_4.42.4';
+    const SECRET = 'FYRQOjgJpZHvfbuseuJHLGPCZxzCreTTjekmUdsT';
+    const USERAGENT = 'Jodel/4.48.0 Dalvik/2.1.0 (Linux; U; Android 5.1.1; )';
+    const CLIENT_TYPE = 'android_4.48.0';
     
     private $accessToken = null;
     private $payLoad;
